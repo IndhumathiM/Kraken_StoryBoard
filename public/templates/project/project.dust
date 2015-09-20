@@ -1,0 +1,100 @@
+{>"layouts/master" /}
+{<title}
+    Project Editor
+{/title}
+
+{<body}
+    {+hoody /}
+
+    <h2>Project Editor</h2>
+    <main role="main">
+        <div class="mb2">
+            <fieldset>
+                <legend>Add a new Project</legend>
+                <form method="POST" action="/project">
+
+                    <label for="projectName">ProjectName: </label>
+                    <input name="projectName" placeholder="Project Name"><br>
+
+                    <label for="projectNo">ProjectNo: </label>
+                    <input name="projectNo" placeholder="Project No"><br>
+
+                    <label for="startDate">StartDate: </label>
+                    <input type="date" name="startDate" placeholder="StartDate"><br>
+
+                    <label for="endDate">EndDate: </label>
+                    <input type="date" name="endDate" placeholder="EndDate"><br>
+
+                    <label for="releases">Releases: </label>
+                    <input name="releases" placeholder="Releases"><br>
+
+                    <label for="sprintDuration">Sprint Duration: </label>
+                    <input name="sprintDuration" placeholder="weeks"><br>
+
+                    <label for="teamno">TeamNo: </label>
+                    <input name="teamno" placeholder="Teamno"><br>
+
+                    <label for="teamname">TeamName: </label>
+                    <input name="teamname" placeholder="TeamName"><br>
+
+
+                    <label for="member1">Member1: </label>
+                    <input name="member1" placeholder="Member1"><br>
+
+                    <label for="member2">Member2: </label>
+                    <input name="member2" placeholder="Member2"><br>
+
+                    <label for="member3">Member3: </label>
+                    <input name="member3" placeholder="Member3"><br>
+
+                     <label for="member4">Member4: </label>
+                    <input name="member4" placeholder="Member4"><br>
+
+                     <label for="member5">Member5: </label>
+                     <input name="member5" placeholder="Member5"><br>
+
+
+                    <input type="hidden" name="_csrf" value="{_csrf}">
+                    <input type="submit" value="Save">
+                </form>
+            </fieldset>
+        </div>
+
+        <div class="products">
+            {?projects}
+                <fieldset>
+                    <legend>Project List</legend>
+                    <ul class="nm-np inline">
+                        {#projects}
+                            <li>
+                                <form method="POST" action="/project">
+                                    <input type="hidden" name="item_id" value="{.id}">
+
+                                    <h3 class="nm-np"><a href='/project/{.id}'>{.projectName}</h3>
+
+
+
+                                    <input type="submit" value="Delete">
+                                    <!--If we don't at the Cross-Site Request Forgey token, this POST will be rejected-->
+                                    <input type="hidden" name="_csrf" value="{_csrf}">
+                                    <input type="hidden" name="_method" value="DELETE">
+
+                                 <h3 class="nm-np"><a href='/project/{.id}/edit'>Edit</a></h3>
+
+                                <h3 class="nm-np"><a href='{.id}/story'>Add Stories</a></h3>
+
+                                   <h3 class="nm-np"><a href='{.id}/team'>Add Team</a></h3>
+
+
+
+                                </form>
+                            </li>
+                        {/projects}
+                    </ul>
+                </fieldset>
+            {:else}
+                There are no projects :(
+            {/projects}
+        </div>
+    </main>
+{/body}

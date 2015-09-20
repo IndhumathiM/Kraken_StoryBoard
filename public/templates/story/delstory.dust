@@ -1,0 +1,39 @@
+ {>"layouts/master" /}
+ {<title}
+    Delete Story
+ {/title}
+
+ {<body}
+     <h2>Story Editor</h2>
+     <main role="main">
+         <div class="mb2">
+
+             <fieldset>
+                 <legend>Delete Story Details</legend>
+                               {#projects.story}
+
+       <form method="DELETE" action="/story/delete/{projects._id}/{name}">
+       <input type="hidden" name="_method" value="DELETE">
+
+       <input name="name" placeholder="Story Name", value="{name}"><br>
+
+       <input name="creator" placeholder="Creator", value="{creator}"><br>
+       <input type="date" name="date" placeholder="Date", value="{date}"><br>
+       <input name="desc" placeholder="Description", value="{desc}"><br>
+       <input name="sprintNo" placeholder="SprintNo", value="{sprintNo}"><br>
+         <input name="teamMember" placeholder="TeamMember", value="{teamMember}"><br>
+       <input name="status" placeholder="Status", value="{status}"><br>
+       <input name="sprintStartDate" placeholder="StartDate", value="{sprintStartDate}"><br>
+       <input name="sprintEndDate" placeholder="EndDate", value="{sprintEndDate}"><br>
+
+         <input type="submit" value="Confirm Delete?">
+         <input type="hidden" name="_csrf" value="{_csrf}">
+                                {/projects.story}
+
+        </form>
+
+ </fieldset>
+        </div>
+            </main>
+
+{/body}

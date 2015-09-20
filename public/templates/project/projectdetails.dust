@@ -1,0 +1,64 @@
+{>"layouts/master" /}
+{<title}
+    Project Details
+
+{/title}
+
+{<body}
+    <h2>Project Details</h2>
+        <div class="grey">
+            <fieldset>
+                <legend>{projects.projectName}</legend>
+
+<ul>
+
+<li> ProjectNo: {projects.projectNo} </li>
+<li> StartDate: {projects.startDate}  </li>
+<li> EndDate: {projects.endDate}  </li>
+<li> Releases: {projects.releases}  </li>
+<li> Sprint Duration: {projects.sprintDuration}  </li>
+<li> Number of Sprints: {projects.noOfSprint}  </li>
+<li> Teamno: {projects.teamno}  </li>
+<li> Teamname: {projects.teamname}  </li>
+<li> Member1: {projects.member1}  </li>
+<li> Member2: {projects.member2}  </li>
+<li> Member3: {projects.member3}  </li>
+<li> Member4: {projects.member4}  </li>
+<li> Member5: {projects.member5}  </li>
+
+
+<li> id: {projects._id}  </li>
+  <li>  <a href='/{projects._id}/stories'>Stories</a></li>
+
+</ul>
+
+  </fieldset>
+        </div>
+            </main>
+
+             <fieldset>
+
+       <form method="POST" action="/{projects._id}/story/search/name">
+
+                     <label for="name">StoryName: </label>
+                      <input name="storyName" placeholder="Story Name"><br>
+                      <input type="submit" value="Search">
+                      <input type="hidden" name="_csrf" value="{_csrf}">
+
+                       </form>
+                       </fieldset>
+                     </div>
+              <fieldset>
+
+     <form method="POST" action="/{projects._id}/story/search/date">
+
+                     <label for="name">Search story by releaseDate: </label>
+                      <input type="date" name="releaseDate" placeholder="Release Date"><br>
+                      <input type="submit" value="Search">
+                      <input type="hidden" name="_csrf" value="{_csrf}">
+
+                      </form>
+                      </fieldset>
+                  </div>
+
+{/body}

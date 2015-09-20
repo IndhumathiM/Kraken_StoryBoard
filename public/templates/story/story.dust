@@ -1,0 +1,73 @@
+{>"layouts/master" /}
+{<title}
+    Story Editor
+{/title}
+
+{<body}
+    <h2>Story Editor</h2>
+    <main role="main">
+        <div class="mb2">
+            <fieldset>
+                <legend>Add a new Story</legend>
+
+       <form method="POST" action="/story/{projects._id}">
+       <input type="hidden" name="_method" value="PUT">
+                    <input name="name" placeholder="Story Name"><br>
+                    <input name="creator" placeholder="Creator"><br>
+                    <input type="date" name="date" placeholder="Creation Date"><br>
+                    <input name="desc" placeholder="Description"><br>
+                   <input name="sprintNo" placeholder="SprintNo"><br>
+                   <input name="teamMember" placeholder="Team Member"><br>
+                   <input name="status" placeholder="status"><br>
+
+                    <input type="hidden" name="_csrf" value="{_csrf}">
+                    <input type="submit" value="Save">
+                </form>
+            </fieldset>
+        </div>
+
+        <div class="products">
+            {?projects}
+                <fieldset>
+                    <legend>Story List</legend>
+                    <ul class="nm-np inline">
+                        {#projects.story}
+
+                            <li>
+                                <form method="POST" action="/story/delete/{projects.id}/{name}">
+
+                                           <input type="hidden" name="_method" value="POST">
+
+                                    <ul>
+                                    <li> Name: {name} </li>
+                                    <li> Creator: {creator}  </li>
+                                    <li> Creation Date: {date}  </li>
+                                    <li> Desc: {desc}  </li>
+                                    <li> SprintNo: {sprintNo}  </li>
+                                    <li> TeamMember: {teamMember}  </li>
+                                     <li> Status: {status}  </li>
+                                    <li> sprintStartDate: {sprintStartDate}  </li>
+                                    <li> sprintEndDate: {sprintEndDate}  </li>
+
+                                    </ul>
+
+
+
+                                    <input type="submit" value="Delete">
+                                    <!--If we don't at the Cross-Site Request Forgey token, this POST will be rejected-->
+                                    <input type="hidden" name="_csrf" value="{_csrf}">
+                                    <input type="hidden" name="_method" value="DELETE">
+
+                                    <h3 class="nm-np"><a href='/story/{projects._id}/edit/{name}'>Edit</a></h3>
+
+                                </form>
+                            </li>
+                        {/projects.story}
+                    </ul>
+                </fieldset>
+            {:else}
+                There are no stories :(
+            {/projects}
+        </div>
+    </main>
+{/body}

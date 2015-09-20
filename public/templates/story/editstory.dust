@@ -1,0 +1,37 @@
+ {>"layouts/master" /}
+ {<title}
+     Story Editor
+ {/title}
+
+ {<body}
+     <h2>Story Editor</h2>
+     <main role="main">
+         <div class="mb2">
+
+             <fieldset>
+                 <legend>Edit Story Details</legend>
+                               {#projects.story}
+
+       <form method="POST" action="/story/update/{projects._id}/{name}">
+       <input type="hidden" name="_method" value="PUT">
+
+       <input name="name" placeholder="Story Name", value="{name}"><br>
+
+       <input name="creator" placeholder="Creator", value="{creator}"><br>
+       <input type="date" name="date" placeholder="Date", value="{date}"><br>
+       <input name="desc" placeholder="Description", value="{desc}"><br>
+       <input name="sprintNo" placeholder="SprintNo", value="{sprintNo}"><br>
+      <input name="teamMember" placeholder="TeamMember", value="{teamMember}"><br>
+       <input name="status" placeholder="Status", value="{status}"><br>
+
+         <input type="submit" value="Update">
+         <input type="hidden" name="_csrf" value="{_csrf}">
+                                {/projects.story}
+
+        </form>
+
+ </fieldset>
+        </div>
+            </main>
+
+{/body}
