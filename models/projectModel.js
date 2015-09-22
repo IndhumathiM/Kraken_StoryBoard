@@ -15,11 +15,7 @@ var projectModel = function () {
         sprintCount:String,
             teamname: String,
             teamno: String,
-            member1: String,
-            member2: String,
-            member3: String,
-            member4: String,
-            member5: String,
+            members:[ String],
 
         story:
             [{

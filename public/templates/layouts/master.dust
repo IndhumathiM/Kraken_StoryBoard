@@ -19,7 +19,6 @@
                 <li><a href="/admin">Admin</a></li>
 
                 <li><a href="/project">Project</a></li>
-                <li><a href="/team">Team</a></li>
 
                 <li>
                     {#user}

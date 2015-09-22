@@ -12,16 +12,57 @@
 
        <form method="POST" action="/story/{projects._id}">
        <input type="hidden" name="_method" value="PUT">
-                    <input name="name" placeholder="Story Name"><br>
-                    <input name="creator" placeholder="Creator"><br>
-                    <input type="date" name="date" placeholder="Creation Date"><br>
-                    <input name="desc" placeholder="Description"><br>
-                   <input name="sprintNo" placeholder="SprintNo"><br>
-                   <input name="teamMember" placeholder="Team Member"><br>
-                   <input name="status" placeholder="status"><br>
+        <table>
+            <tr>
+                <td>
+                    <label for="name">Name: </label>
+                    <input name="name" placeholder="Story Name">
+                    </td> </tr>
+                <tr> <td>
+                     <label for="creator">Creator: </label>
+                    <input name="creator" placeholder="Creator">
+                    </td></tr>
+                <tr> <td>
+                    <label for="creation date">Creation Date: </label>
+                    <input type="date" name="date" placeholder="Creation Date">
+                     </tr> </td>
+                <tr> <td>
+                    <label for="desc">Description: </label>
+                    <input name="desc" placeholder="Description">
+                    </tr> </td>
 
-                    <input type="hidden" name="_csrf" value="{_csrf}">
+                 <tr> <td>
+                    <label for="sprintNo">Sprint No: </label>
+                   <input name="sprintNo" placeholder="SprintNo">
+                   </tr> </td>
+
+                    <tr> <td>
+                    <label for="Developer">Developer: </label>
+                   <select name="teamMember">
+                   <option value={projects.members[0]}>{projects.members[0]}</option>
+                   <option value={projects.members[1]}>{projects.members[1]}</option>
+                   <option value={projects.members[2]}>{projects.members[2]}</option>
+                   <option value={projects.members[3]}>{projects.members[3]}</option>
+                   <option value={projects.members[4]}>{projects.members[4]}</option>
+                   </select>
+                    </tr> </td>
+
+                    <tr> <td>
+                     <label for="Status">Status: </label>
+                    <select name="status">
+                          <option value=Backlog>Backlog</option>
+                           <option value=Defined>Defined</option>
+                           <option value=In Progress>In Progress</option>
+                           <option value=Done>Done</option>
+                           <option value=Accepted>Accepted</option>
+                    </select>
+                    </tr> </td>
+
+                    <tr> <td>
+                      <input type="hidden" name="_csrf" value="{_csrf}">
                     <input type="submit" value="Save">
+                    </tr> </td>
+                </table>
                 </form>
             </fieldset>
         </div>
@@ -44,7 +85,7 @@
                                     <li> Creation Date: {date}  </li>
                                     <li> Desc: {desc}  </li>
                                     <li> SprintNo: {sprintNo}  </li>
-                                    <li> TeamMember: {teamMember}  </li>
+                                    <li> Developer: {teamMember}  </li>
                                      <li> Status: {status}  </li>
                                     <li> sprintStartDate: {sprintStartDate}  </li>
                                     <li> sprintEndDate: {sprintEndDate}  </li>
@@ -53,7 +94,7 @@
 
 
 
-                                    <input type="submit" value="Delete">
+                                    <input type="submit" value="DELETE">
                                     <!--If we don't at the Cross-Site Request Forgey token, this POST will be rejected-->
                                     <input type="hidden" name="_csrf" value="{_csrf}">
                                     <input type="hidden" name="_method" value="DELETE">

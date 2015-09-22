@@ -115,11 +115,11 @@ module.exports = function (router) {
         /*  var sprintCount = Math.floor((Math.floor((new Date(endDate) - new Date(startDate)) / (24 * 3600 * 1000 * 7))) / sprintDuration); */
         var teamno = req.body.teamno && req.body.teamno.trim();
         var teamname = req.body.teamname && req.body.teamname.trim();
-        var member1 = req.body.member1 && req.body.member1.trim();
-        var member2 = req.body.member2 && req.body.member2.trim();
-        var member3 = req.body.member3 && req.body.member3.trim();
-        var member4 = req.body.member4 && req.body.member4.trim();
-        var member5 = req.body.member5 && req.body.member5.trim();
+        var members =[ req.body.member1 && req.body.member1.trim(),
+            req.body.member2 && req.body.member2.trim(),
+            req.body.member3 && req.body.member3.trim(),
+            req.body.member4 && req.body.member4.trim(),
+            req.body.member5 && req.body.member5.trim()];
 
 
 
@@ -130,7 +130,7 @@ module.exports = function (router) {
             return;
         }
 
-        var newProject = new Project({projectName: projectName,projectNo: projectNo,startDate: startDate,endDate: endDate,releases: releases,sprintDuration: sprintDuration,teamno: teamno,teamname: teamname,member1: member1,member2: member2,member3: member3,member4: member4,member5: member5});
+        var newProject = new Project({projectName: projectName,projectNo: projectNo,startDate: startDate,endDate: endDate,releases: releases,sprintDuration: sprintDuration,teamno: teamno,teamname: teamname,members:members});
 
         //Show it in console for educational purposes...
         newProject.whatAmI();
@@ -194,11 +194,11 @@ module.exports = function (router) {
                 sprintDuration:req.body.sprintDuration,
                 teamno:req.body.teamno,
                 teamname:req.body.teamname,
-                member1:req.body.member1,
-                member2:req.body.member2,
-                member3:req.body.member3,
-                member4:req.body.member4,
-                member5:req.body.member5
+                members:[ req.body.member1,
+                          req.body.member2,
+                          req.body.member3,
+                          req.body.member4,
+                          req.body.member5]
 
 
 

@@ -21,11 +21,11 @@
         <input name="sprintDuration" placeholder="Duration", value="{projects.sprintDuration}"><br>
        <input name="teamno" placeholder="TeamNo", value="{projects.teamno}"><br>
        <input name="teamname" placeholder="TeamName", value="{projects.teamname}"><br>
-       <input name="member1" placeholder="Member1", value="{projects.member1}"><br>
-       <input name="member2" placeholder="Member2", value="{projects.member2}"><br>
-       <input name="member3" placeholder="Member3", value="{projects.member3}"><br>
-       <input name="member4" placeholder="Member4", value="{projects.member4}"><br>
-       <input name="member5" placeholder="Member5", value="{projects.member5}"><br>
+       <input name="member1" placeholder="Member1", value="{projects.members[0]}"><br>
+       <input name="member2" placeholder="Member2", value="{projects.members[1]}"><br>
+       <input name="member3" placeholder="Member3", value="{projects.members[2]}"><br>
+       <input name="member4" placeholder="Member4", value="{projects.members[3]}"><br>
+       <input name="member5" placeholder="Member5", value="{projects.members[4]}"><br>
 
 
          <input type="submit" value="Update">

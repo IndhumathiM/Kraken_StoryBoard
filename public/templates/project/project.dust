@@ -2,9 +2,8 @@
 {<title}
     Project Editor
 {/title}
-
 {<body}
-    {+hoody /}
+
 
     <h2>Project Editor</h2>
     <main role="main">
@@ -14,7 +13,7 @@
                 <form method="POST" action="/project">
 
                     <label for="projectName">ProjectName: </label>
-                    <input name="projectName" placeholder="Project Name"><br>
+                    <input name="projectName" id="name" placeholder="Project Name"><br>
 
                     <label for="projectNo">ProjectNo: </label>
                     <input name="projectNo" placeholder="Project No"><br>
@@ -66,28 +65,25 @@
                     <legend>Project List</legend>
                     <ul class="nm-np inline">
                         {#projects}
-                            <li>
-                                <form method="POST" action="/project">
-                                    <input type="hidden" name="item_id" value="{.id}">
+                          <li>
+                              <form method="POST" action="/project">
+                              <input type="hidden" name="item_id" value="{.id}">
 
-                                    <h3 class="nm-np"><a href='/project/{.id}'>{.projectName}</h3>
-
-
-
-                                    <input type="submit" value="Delete">
-                                    <!--If we don't at the Cross-Site Request Forgey token, this POST will be rejected-->
-                                    <input type="hidden" name="_csrf" value="{_csrf}">
-                                    <input type="hidden" name="_method" value="DELETE">
-
-                                 <h3 class="nm-np"><a href='/project/{.id}/edit'>Edit</a></h3>
-
-                                <h3 class="nm-np"><a href='{.id}/story'>Add Stories</a></h3>
-
-                                   <h3 class="nm-np"><a href='{.id}/team'>Add Team</a></h3>
+                               <h3 class="nm-np"><a href='/project/{.id}'>{.projectName}</h3>
 
 
 
-                                </form>
+                               <input type="submit" value="Delete">
+                               <!--If we don't at the Cross-Site Request Forgey token, this POST will be rejected-->
+                               <input type="hidden" name="_csrf" value="{_csrf}">
+                              <input type="hidden" name="_method" value="DELETE">
+
+                              <h3 class="nm-np"><a href='/project/{.id}/edit'>Edit</a></h3>
+
+                              <h3 class="nm-np"><a href='{.id}/story'>Add Stories</a></h3>
+
+
+                                           </form>
                             </li>
                         {/projects}
                     </ul>
@@ -97,4 +93,5 @@
             {/projects}
         </div>
     </main>
+
 {/body}
