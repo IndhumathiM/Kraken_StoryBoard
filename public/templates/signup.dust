@@ -20,10 +20,14 @@
                    <td> <label for="password">Password: </label> </td>
                    <td> <input id="password" name="password" type="password"/></td>
                </tr>
-               <tr>
+                <tr>
                    <td> <label for="role">Role: </label> </td>
-                   <td> <input name="role" placeholder="Role"></td>
-                </tr>
+                          <td>    <select name="role">
+                                       <option value=developer>Developer</option>
+                                              <option value=owner>Owner</option>
+
+                                    </select>
+                           </td>    </tr>
                 <tr>
                     <td>  <input type="submit" value="SignUp"/> </td>
                         <input type="hidden" name="_csrf" value="{_csrf}"/>
