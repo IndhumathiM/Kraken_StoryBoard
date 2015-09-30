@@ -105,7 +105,7 @@ module.exports = function (router) {
     /**
      * Add a new project to the database.
      */
-    router.post('/project', function (req, res) {
+    router.post('/home', function (req, res) {
         var projectName = req.body.projectName && req.body.projectName.trim();
         var projectNo = req.body.projectNo && req.body.projectNo.trim();
         var startDate = req.body.startDate && req.body.startDate.trim();
@@ -126,7 +126,7 @@ module.exports = function (router) {
 
 
         if (projectName === '') {
-            res.redirect('/project#BadInput');
+            res.redirect('/home#BadInput');
             return;
         }
 
@@ -145,7 +145,7 @@ module.exports = function (router) {
                 console.log('save error', err);
             }
 
-            res.redirect('/project');
+            res.redirect('/home');
         });
     });
 
@@ -415,7 +415,10 @@ module.exports = function (router) {
             });
     });
 
-
+//Getting project Registration page
+    router.get('/projectregistration', function(req, res) {
+        res.render('project/projectregistration');
+    });
 
 
 

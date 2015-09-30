@@ -17,6 +17,7 @@
                 <li><a href="/profile">Profile</a></li>
 
                 <li><a href="/project">Project</a></li>
+                <li><a href="/projectregistration">ProjectRegistration</a></li>
 
                 <li>
                     {#user}
