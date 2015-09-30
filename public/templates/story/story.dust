@@ -50,11 +50,11 @@
                     <tr> <td>
                      <label for="Status">Status: </label>
                     <select name="status">
-                          <option value=Backlog>Backlog</option>
-                           <option value=Defined>Defined</option>
-                           <option value=In Progress>In Progress</option>
-                           <option value=Done>Done</option>
-                           <option value=Accepted>Accepted</option>
+                          <option value="Backlog">Backlog</option>
+                           <option value="Defined">Defined</option>
+                           <option value="In Progress">In Progress</option>
+                           <option value="Done">Done</option>
+                           <option value="Accepted">Accepted</option>
                     </select>
                     </tr> </td>
 

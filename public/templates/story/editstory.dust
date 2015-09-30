@@ -16,18 +16,35 @@
        <input type="hidden" name="_method" value="PUT">
 
        <input name="name" placeholder="Story Name", value="{name}"><br>
-
        <input name="creator" placeholder="Creator", value="{creator}"><br>
        <input type="date" name="date" placeholder="Date", value="{date}"><br>
        <input name="desc" placeholder="Description", value="{desc}"><br>
        <input name="sprintNo" placeholder="SprintNo", value="{sprintNo}"><br>
-      <input name="teamMember" placeholder="TeamMember", value="{teamMember}"><br>
-       <input name="status" placeholder="Status", value="{status}"><br>
 
+
+
+       <select name="status" >
+              <option value="{status}" selected>{status} </option>
+              <option value=Backlog>Backlog </option>
+              <option value=Defined>Defined</option>
+              <option value=InProgress>In Progress</option>
+              <option value=Done>Done </option>
+              <option value=Accepted>Accepted</option>
+       </select>
+
+<br>
+   <select name="teamMember">
+       <option value="{teamMember}" selected>{teamMember}</option>
+       <option value="{projects.members[0]}">{projects.members}</option>
+       <option value="{projects.members[1]}">{projects.members[1]}</option>
+       <option value={projects.members[2]}>{projects.members[2]}</option>
+       <option value={projects.members[3]}>{projects.members[3]}</option>
+       <option value={projects.members[4]}>{projects.members[4]}</option>
+
+       </select>
          <input type="submit" value="Update">
          <input type="hidden" name="_csrf" value="{_csrf}">
-                                {/projects.story}
-
+         {/projects.story}
         </form>
 
  </fieldset>
