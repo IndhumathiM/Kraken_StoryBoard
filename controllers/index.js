@@ -85,9 +85,12 @@ module.exports = function (router) {
         newUser.save(function (err) {
             if (err) {
                 console.log('save error', err);
-            }
+                res.json("Username is not unique") ;
 
-            res.redirect('/login');
+            }else {
+
+                res.redirect('/login');
+            }
         });
     });
 

@@ -15,8 +15,8 @@
                 {/messages}
                 <table>
                     <tr>
-                        <td><label for="username">Login: </label></td>
-                        <td><input id="username" name="username" type="text"/></td>
+                        <td><label for="username">Login : </label></td>
+                        <td><input id="username" name="username" placeholder="EmailId" type="email"/></td>
                     </tr>
                     <tr>
                         <td><label for="password">Password: </label></td>

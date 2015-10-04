@@ -14,7 +14,7 @@
                </tr>
                <tr>
                   <td>  <label for="login">UserName: </label></td>
-                  <td>  <input name="login" placeholder="UserName"></td>
+                  <td>  <input name="login" placeholder="EmailId" type="email"></td>
                </tr>
                <tr>
                    <td> <label for="password">Password: </label> </td>

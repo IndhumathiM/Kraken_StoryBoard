@@ -19,7 +19,6 @@
 
 
                                <input type="submit" value="Delete">
-                               <!--If we don't at the Cross-Site Request Forgey token, this POST will be rejected-->
                                <input type="hidden" name="_csrf" value="{_csrf}">
                               <input type="hidden" name="_method" value="DELETE">
 
