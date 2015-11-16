@@ -3,61 +3,38 @@
     Project Editor
 {/title}
 {<body}
-
-
-    <h2>Project Editor</h2>
-    <main role="main">
-        <div class="mb2">
-            <fieldset>
-                <legend>Add a new Project</legend>
-                <form method="POST" action="/home">
-
-                    <label for="projectName">ProjectName: </label>
-                    <input name="projectName" id="name" placeholder="Project Name"><br>
-
-                    <label for="projectNo">ProjectNo: </label>
-                    <input name="projectNo" placeholder="Project No"><br>
-
-                    <label for="startDate">StartDate: </label>
-                    <input type="date" name="startDate" placeholder="StartDate"><br>
-
-                    <label for="endDate">EndDate: </label>
-                    <input type="date" name="endDate" placeholder="EndDate"><br>
-
-                    <label for="releases">Releases: </label>
-                    <input name="releases" placeholder="Releases"><br>
-
-                    <label for="sprintDuration">Sprint Duration: </label>
-                    <input name="sprintDuration" placeholder="weeks"><br>
-
-                    <label for="teamno">TeamNo: </label>
-                    <input name="teamno" placeholder="Teamno"><br>
-
-                    <label for="teamname">TeamName: </label>
-                    <input name="teamname" placeholder="TeamName"><br>
-
-
-                    <label for="member1">Member1: </label>
-                    <input name="member1" placeholder="Member1"><br>
-
-                    <label for="member2">Member2: </label>
-                    <input name="member2" placeholder="Member2"><br>
-
-                    <label for="member3">Member3: </label>
-                    <input name="member3" placeholder="Member3"><br>
-
-                     <label for="member4">Member4: </label>
-                    <input name="member4" placeholder="Member4"><br>
-
-                     <label for="member5">Member5: </label>
-                     <input name="member5" placeholder="Member5"><br>
-
-
-                    <input type="hidden" name="_csrf" value="{_csrf}">
-                    <input type="submit" value="Save">
-                </form>
-            </fieldset>
-        </div>
-         </main>
-
-        {/body}
+<h2>Project Editor</h2>
+<main role="main">
+<div class="mb2">
+    <fieldset>
+        <legend>Add a new Project</legend>
+        <form method="POST" action="/home">
+<div class = "content">
+    <div class = "left">
+        <label for="projectName">ProjectName: </label><br>
+        <label for="projectNo">ProjectNo: </label><br>
+        <label for="startDate">StartDate: </label><br>
+        <label for="endDate">EndDate: </label><br>
+        <label for="releases">Releases: </label><br>
+        <label for="sprintDuration">Sprint Duration: </label><br>
+        <label for="teamno">TeamNo: </label><br>
+        <label for="teamname">TeamName: </label><br>
+        <input type="hidden" name="_csrf" value="{_csrf}">
+        <input type="submit" value="Save">
+    </div>
+    <div class = "right">
+        <input name="projectName" id="name" placeholder="Project Name"><br>
+        <input name="projectNo" placeholder="Project No"><br>
+        <input type="date" name="startDate" placeholder="StartDate"><br>
+        <input type="date" name="endDate" placeholder="EndDate"><br>
+        <input name="releases" placeholder="Releases"><br>
+        <input name="sprintDuration" placeholder="weeks"><br>
+        <input name="teamno" placeholder="Teamno"><br>
+        <input name="teamname" placeholder="TeamName"><br>
+    </div>
+</div>
+        </form>
+    </fieldset>
+</div>
+</main>
+{/body}

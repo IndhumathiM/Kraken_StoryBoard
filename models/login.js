@@ -3,6 +3,6 @@
 
 module.exports = function LoginModel() {
     return {
-        name: 'login'
+        name: 'Login Page'
     };
 };

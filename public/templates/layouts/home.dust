@@ -1,7 +1,29 @@
-{>"layouts/master" /}
+ {>"layouts/master" /}
 {<title}
     Project Editor
 {/title}
 
 {<body}
+<h2>Project Details</h2>
+{?projects}
+<div class="grey">
+ <fieldset>
+    <legend>{projects.projectName}</legend>
+      {#projects}
+        <ul>
+            <li> ProjectNo: {projectName} </li>
+            <li> StartDate: {startDate}  </li>
+            <li> EndDate: {endDate}  </li>
+            <li> Releases: {releases}  </li>
+            <li> Sprint Duration: {sprintDuration}  </li>
+            <li> Number of Sprints: {noOfSprint}  </li>
+            <li> Teamno: {teamno}  </li>
+            <li> Teamname: {teamname}  </li>
+        </ul>
+      {/projects}
+ </fieldset>
+</div>
+{:else}
+This User is not registered in any projects
+{/projects}
 {/body}

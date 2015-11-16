@@ -3,6 +3,8 @@
 
 var LoginModel = require('../../models/login'),
  passport = require('passport');
+var user = require('../../models/user');
+
 
 
 module.exports = function (router) {
@@ -29,15 +31,15 @@ module.exports = function (router) {
      * Failed authentications will go back to the login page with a helpful error message to be displayed.
      */
     router.post('/', function (req, res) {
-
-        passport.authenticate('local', {
+        console.log(req.body.username);
+        req.session.userName = req.body.username;
+        passport.authenticate('local',
+            {
             successRedirect: req.session.goingTo || '/home',
             failureRedirect: '/login',
             failureFlash: true
         })(req, res);
 
     });
-
-
 
 };

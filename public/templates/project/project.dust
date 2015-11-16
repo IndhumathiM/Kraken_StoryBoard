@@ -1,40 +1,32 @@
 {>"layouts/master" /}
-{<title}
-    Project Editor
-{/title}
+ <head>
+    {<title}Project Editor{/title}
+ </head>
 {<body}
+<div class="products">
+{?projects}
+<fieldset>
+<legend>Project List</legend>
+    <ul class="nm-np inline">
+        {#projects}
+             <li>
+                  <form method="POST" action="/project">
+                      <input type="hidden" name="item_id" value="{.id}">
+                      <h3 class="nm-np"><a href='/project/{.id}'>{.projectName}</h3>
 
-        <div class="products">
-            {?projects}
-                <fieldset>
-                    <legend>Project List</legend>
-                    <ul class="nm-np inline">
-                        {#projects}
-                          <li>
-                              <form method="POST" action="/project">
-                              <input type="hidden" name="item_id" value="{.id}">
+                      <input type="submit" value="Delete">
+                      <input type="hidden" name="_csrf" value="{_csrf}">
+                      <input type="hidden" name="_method" value="DELETE">
 
-                               <h3 class="nm-np"><a href='/project/{.id}'>{.projectName}</h3>
-
-
-
-                               <input type="submit" value="Delete">
-                               <input type="hidden" name="_csrf" value="{_csrf}">
-                              <input type="hidden" name="_method" value="DELETE">
-
-                              <h3 class="nm-np"><a href='/project/{.id}/edit'>Edit</a></h3>
-
-                              <h3 class="nm-np"><a href='{.id}/story'>Add Stories</a></h3>
-
-
-                                           </form>
-                            </li>
-                        {/projects}
-                    </ul>
-                </fieldset>
-            {:else}
-                There are no projects :(
-            {/projects}
-
-
+                      <h3 class="nm-np"><a href='/project/{.id}/edit'>Edit</a></h3>
+                      <h3 class="nm-np"><a href='{.id}/story'>Add Stories</a></h3>
+                      <h3 class="nm-np"><a href='{.id}/addMember'>Add Member</a></h3>
+                  </form>
+             </li>
+       {/projects}
+   </ul>
+</fieldset>
+{:else}
+    There are no projects
+{/projects}
 {/body}

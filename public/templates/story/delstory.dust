@@ -3,6 +3,10 @@
     Delete Story
  {/title}
 
+ <head>
+ <link rel="stylesheet" href="../../css/app.css"/>
+ </head>
+
  {<body}
      <h2>Story Editor</h2>
      <main role="main">

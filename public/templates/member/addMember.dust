@@ -1,0 +1,27 @@
+{>"layouts/master" /}
+{<title}
+    Story Editor
+{/title}
+ <head>
+ <link rel="stylesheet" href="../../css/app.css"/>
+ </head>
+{<body}
+    <h2>Story Editor</h2>
+        <div class="mb2">
+            <fieldset>
+                <legend>Add a new Story</legend>
+
+       <form method="POST" action="/addMember/{projects._id}">
+       <input type="hidden" name="_method" value="PUT">
+
+                                     <label for="memberId">Member: </label>
+                                    <input id="memberId" name="memberId" placeholder="Member"><br>
+
+                                 <input type="hidden" name="_csrf" value="{_csrf}">
+                                <input type="submit" value="Save">
+                                    </form>
+                                    </fieldset>
+                                    </div>
+
+
+{/body}

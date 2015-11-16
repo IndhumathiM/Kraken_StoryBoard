@@ -3,8 +3,8 @@
 
 var IndexModel = require('../models/index'),
     ProfileModel = require('../models/profile'),
-    User = require('../models/user'),
     auth = require('../lib/auth'),
+    user = require('../models/user'),
     Project = require('../models/projectModel');
 
 
@@ -23,16 +23,23 @@ module.exports = function (router) {
         res.render('profile', profilemodel);
     });
 
+
     /* Getting Home Page */
     router.get('/home',function(req,res){
-
-        Project.find(function (err,docs) {
-            if (err) {
-                res.json(err)   ;
-            }
-            else
-                res.render('layouts/home');
-        });
+        console.log("home "+ req.session.userName);
+               user.find({login:req.session.userName},function(err,docs) {
+                 if (err) res.json(err);
+                   else {
+                     Project.find({memberId: docs[0]._id}, function (err, proj) {
+                         if (err) {
+                             res.json(err);
+                         } else {
+                             console.log(proj);
+                             res.render('layouts/home', {projects: proj});
+                         }
+                     });
+                   }
+             });
     });
 
     /**
@@ -40,12 +47,10 @@ module.exports = function (router) {
      */
     router.get('/project', function (req, res) {
 
-
         Project.find(function (err, prods) {
             if (err) {
                 console.log(err);
             }
-
             var model =
             {
                 projects: prods
@@ -54,8 +59,6 @@ module.exports = function (router) {
         });
 
     });
-
-
 
     /* Added for signup */
 
@@ -75,7 +78,7 @@ module.exports = function (router) {
             return;
         }
 
-        var newUser = new User({name: name,login: login,password: password,role: role});
+        var newUser = new user({name: name,login: login,password: password,role: role});
 
         /*
          The call back receives two more arguments -> product/s that is/are added to the database
@@ -109,53 +112,41 @@ module.exports = function (router) {
      * Add a new project to the database.
      */
     router.post('/home', function (req, res) {
-        var projectName = req.body.projectName && req.body.projectName.trim();
-        var projectNo = req.body.projectNo && req.body.projectNo.trim();
-        var startDate = req.body.startDate && req.body.startDate.trim();
-        var endDate = req.body.endDate && req.body.endDate.trim();
-        var releases = req.body.releases && req.body.releases.trim();
-        var sprintDuration = req.body.sprintDuration && req.body.sprintDuration.trim();
-        /*  var sprintCount = Math.floor((Math.floor((new Date(endDate) - new Date(startDate)) / (24 * 3600 * 1000 * 7))) / sprintDuration); */
-        var teamno = req.body.teamno && req.body.teamno.trim();
-        var teamname = req.body.teamname && req.body.teamname.trim();
-        var members =[ req.body.member1 && req.body.member1.trim(),
-            req.body.member2 && req.body.member2.trim(),
-            req.body.member3 && req.body.member3.trim(),
-            req.body.member4 && req.body.member4.trim(),
-            req.body.member5 && req.body.member5.trim()];
+
+                var projectName = req.body.projectName && req.body.projectName.trim();
+                var projectNo = req.body.projectNo && req.body.projectNo.trim();
+                var startDate = req.body.startDate && req.body.startDate.trim();
+                var endDate = req.body.endDate && req.body.endDate.trim();
+                var releases = req.body.releases && req.body.releases.trim();
+                var sprintDuration = req.body.sprintDuration && req.body.sprintDuration.trim();
+                /*  var sprintCount = Math.floor((Math.floor((new Date(endDate) - new Date(startDate)) / (24 * 3600 * 1000 * 7))) / sprintDuration); */
+                var teamno = req.body.teamno && req.body.teamno.trim();
+                var teamname = req.body.teamname && req.body.teamname.trim();
+                              if (projectName === '') {
+                    res.redirect('/home#BadInput');
+                    return;
+                }
+
+                var newProject = new Project({
+                    projectName: projectName,
+                    projectNo: projectNo,
+                    startDate: startDate,
+                    endDate: endDate,
+                    releases: releases,
+                    sprintDuration: sprintDuration,
+                    teamno: teamno,
+                    teamname: teamname
+                });
+                newProject.save(function (error) {
+
+                                res.redirect('/home');
+
+                            })
+                        });
 
 
 
-
-
-        if (projectName === '') {
-            res.redirect('/home#BadInput');
-            return;
-        }
-
-        var newProject = new Project({projectName: projectName,projectNo: projectNo,startDate: startDate,endDate: endDate,releases: releases,sprintDuration: sprintDuration,teamno: teamno,teamname: teamname,members:members});
-
-        //Show it in console for educational purposes...
-        newProject.whatAmI();
-
-        /*
-         The call back receives two more arguments -> product/s that is/are added to the database
-         and number of rows that are affected because of save, which right now are ignored.
-         We only check for errors.
-         */
-        newProject.save(function (err) {
-            if (err) {
-                console.log('save error', err);
-            }
-
-            res.redirect('/home');
-        });
-    });
-
-
-
-
-    /**
+      /**
      * Delete a project.
      * @paaram: req.body.item_id Is the unique id of the product to remove.
      */
@@ -197,14 +188,6 @@ module.exports = function (router) {
                 sprintDuration:req.body.sprintDuration,
                 teamno:req.body.teamno,
                 teamname:req.body.teamname,
-                members:[ req.body.member1,
-                          req.body.member2,
-                          req.body.member3,
-                          req.body.member4,
-                          req.body.member5]
-
-
-
             },
             function(err,docs) {
                 if (err) res.json(err);
@@ -223,7 +206,7 @@ module.exports = function (router) {
     router.get('/project/:id', function (req, res) {
         Project.find({_id: req.params.id}, function (err,docs) {
             if (err) {
-                res.json(err)   ;
+                res.json(err);
             }
             else
                 res.render('project/projectdetails', {projects:docs[0]});
@@ -234,7 +217,8 @@ module.exports = function (router) {
      Getting Story Main page
      */
     router.get('/:id/story',function(req,res) {
-
+        //  var databaseCategory = db.users.findOne( { _id: req.params.id } );
+        //  db.categories.find( { left: { $gt: databaseCategory.left }, right: { $lt: databaseCategory.right } } );
         Project.find({_id: req.params.id}, function (err, docs) {
             if (err) {
                 res.json(err);
@@ -245,12 +229,48 @@ module.exports = function (router) {
         });
     });
 
+    router.get('/:id/addMember',function(req,res) {
+        Project.find({_id: req.params.id}, function (err, docs) {
+            if (err) {
+                res.json(err);
+            }
+            else
+                res.render('member/addMember', {projects:docs[0]});
 
+        });
+    });
+    router.post('/addMember/:id', function (req, res) {
+
+        var login = user.find({login: req.body.memberId})
+            .populate('memberId')
+            .exec(function(err,docs){
+                console.log("posts:"+docs[0]);
+                if(err){
+                    res.json(err);
+                }else  {
+                    console.log(docs[0]._id);
+                    Project.update({_id: req.params.id},
+                        {
+                            $addToSet:
+                        {
+                            memberId:docs[0]._id
+                            }
+                        },function(err){
+                            if(err){
+                                console.log(err);
+                            }else{
+                                console.log("Successfully added");
+                                res.redirect('/home');
+
+                            }
+                        })
+                }
+            });
+    });
     /**
      *Inserting stories into project
      */
     router.post('/story/:id', function (req, res) {
-
         Project.update({_id: req.params.id},
             {$push:
             { story: {

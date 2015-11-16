@@ -2,7 +2,9 @@
 {<title}
     Story Editor
 {/title}
-
+ <head>
+ <link rel="stylesheet" href="../../css/app.css"/>
+ </head>
 {<body}
     <h2>Story Editor</h2>
     <main role="main">
@@ -10,59 +12,41 @@
             <fieldset>
                 <legend>Add a new Story</legend>
 
-       <form method="POST" action="/story/{projects._id}">
+    <form method="POST" action="/story/{projects._id}">
        <input type="hidden" name="_method" value="PUT">
-        <table>
-            <tr>
-                <td>
-                    <label for="name">Name: </label>
-                    <input name="name" placeholder="Story Name">
-                    </td> </tr>
-                <tr> <td>
-                     <label for="creator">Creator: </label>
-                    <input name="creator" placeholder="Creator">
-                    </td></tr>
-                <tr> <td>
-                    <label for="creation date">Creation Date: </label>
-                    <input type="date" name="date" placeholder="Creation Date">
-                     </tr> </td>
-                <tr> <td>
-                    <label for="desc">Description: </label>
-                    <input name="desc" placeholder="Description">
-                    </tr> </td>
+    <div class="content">
+      <div class="left">
+        <label for="name">Name: </label><br>
+        <label for="creator">Creator: </label><br>
+        <label for="creation date">Creation Date: </label> <br>
+        <label for="desc">Description: </label><br>
+        <label for="sprintNo">Sprint No: </label><br>
+        <label for="Developer">Developer: </label><br>
+        <label for="Status">Status: </label>
+      </div>
 
-                 <tr> <td>
-                    <label for="sprintNo">Sprint No: </label>
-                   <input name="sprintNo" placeholder="SprintNo">
-                   </tr> </td>
+      <div class="right">
+        <input name="name" placeholder="Story Name"><br>
+        <input name="creator" placeholder="Creator"><br>
+        <input type="date" name="date" placeholder="Creation Date"><br>
+        <input name="desc" placeholder="Description"><br>
+        <input name="sprintNo" placeholder="SprintNo"><br>
+        <select name="teamMember">
+              <option value={projects.memberId}>{projects.memberId}</option>
+        </select> <br>
+        <select name="status">
+            <option value="Backlog">Backlog</option>
+                   <option value="Defined">Defined</option>
+                   <option value="In Progress">In Progress</option>
+                   <option value="Done">Done</option>
+                   <option value="Accepted">Accepted</option>
+        </select>
+      </div>
+    </div>
 
-                    <tr> <td>
-                    <label for="Developer">Developer: </label>
-                   <select name="teamMember">
-                   <option value={projects.members[0]}>{projects.members[0]}</option>
-                   <option value={projects.members[1]}>{projects.members[1]}</option>
-                   <option value={projects.members[2]}>{projects.members[2]}</option>
-                   <option value={projects.members[3]}>{projects.members[3]}</option>
-                   <option value={projects.members[4]}>{projects.members[4]}</option>
-                   </select>
-                    </tr> </td>
-
-                    <tr> <td>
-                     <label for="Status">Status: </label>
-                    <select name="status">
-                          <option value="Backlog">Backlog</option>
-                           <option value="Defined">Defined</option>
-                           <option value="In Progress">In Progress</option>
-                           <option value="Done">Done</option>
-                           <option value="Accepted">Accepted</option>
-                    </select>
-                    </tr> </td>
-
-                    <tr> <td>
                       <input type="hidden" name="_csrf" value="{_csrf}">
                     <input type="submit" value="Save">
-                    </tr> </td>
-                </table>
+
                 </form>
             </fieldset>
         </div>

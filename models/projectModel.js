@@ -1,51 +1,43 @@
 'use strict';
 
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    schema = mongoose.Schema;
+var user = require('../models/user');
+
 
 var projectModel = function () {
 
     //Define a super simple schema for our stories.
-    var projectSchema = mongoose.Schema({
-        projectName: String,
-        projectNo: String,
+    var projectSchema =  schema({
+        projectName: { type: String, index: { unique: true }},
+        projectNo:{ type: String, index: { unique: true }},
         startDate: String,
         endDate: String,
         releases:String,
         sprintDuration:String,
         sprintCount:String,
-            teamname: String,
-            teamno: String,
-            members:[ String],
-
-        story:
-            [{
-        name: String,
-        creator: String,
-        date: String,
-        desc:String,
-        teamMember:String,
-        sprintNo: String,
-        sprintStartDate: String,
-        sprintEndDate: String,
-        status: String
+        teamname: String,
+        teamno: String,
+        memberId :[{type: schema.Types.ObjectId, ref: 'user'}],
+        story:            [{
+            name: String,
+            creator: String,
+            date: String,
+            desc:String,
+            developer:String,
+            sprintNo: String,
+            sprintStartDate: String,
+            sprintEndDate: String,
+            status: String
         }]
 
     });
 
-    /**
-     * Verbose toString method
-     */
-    projectSchema.methods.whatAmI = function () {
-        var greeting = this.projectname ?
-        'Hello, I\'m a ' + this.projectname
-            : 'I don\'t have a name :(';
-        console.log(greeting);
-    };
     projectSchema.methods.noOfSprint = function () {
 
 
 
-       return   (Math.floor((Math.floor((new Date(this.endDate) - new Date(this.startDate)) / (24 * 3600 * 1000 * 7))) / this.sprintDuration));
+        return   (Math.floor((Math.floor((new Date(this.endDate) - new Date(this.startDate)) / (24 * 3600 * 1000 * 7))) / this.sprintDuration));
 
     };
     projectSchema.methods.storyStartDate = function () {
@@ -54,15 +46,15 @@ var projectModel = function () {
 
 
         /*  var sprintStartDate = new Date(this.startDate);
-          sprintStartDate.setDate( sprintStartDate.getDate() + this.sprintDuration * 7 * this.sprintNo);
-          return sprintStartDate; */
+         sprintStartDate.setDate( sprintStartDate.getDate() + this.sprintDuration * 7 * this.sprintNo);
+         return sprintStartDate; */
 
     };
-   /* projectSchema.methods.storyEndDate = function () {
+    /* projectSchema.methods.storyEndDate = function () {
 
-        return   (Math.floor((Math.floor((new Date(this.endDate) - new Date(this.startDate)) / (24 * 3600 * 1000 * 7))) / this.sprintDuration));
+     return   (Math.floor((Math.floor((new Date(this.endDate) - new Date(this.startDate)) / (24 * 3600 * 1000 * 7))) / this.sprintDuration));
 
-    }; */
+     }; */
     return mongoose.model('Project', projectSchema);
 
 };

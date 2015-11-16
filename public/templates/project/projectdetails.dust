@@ -3,12 +3,10 @@
     Project Details
 
 {/title}
-<style>
-  body
-  {
-  background-color: #b0c4de;
-  }
-</style>
+<head>
+<link rel="stylesheet" href="../css/app.css"/>
+
+</head>
 
 {<body}
 
@@ -27,12 +25,6 @@
 <li> Number of Sprints: {projects.noOfSprint}  </li>
 <li> Teamno: {projects.teamno}  </li>
 <li> Teamname: {projects.teamname}  </li>
-<li> Member1: {projects.members[0]}  </li>
-<li> Member2: {projects.members[1]}  </li>
-<li> Member3: {projects.members[2]}  </li>
-<li> Member4: {projects.members[3]}  </li>
-<li> Member5: {projects.members[4]}  </li>
-
 
 <li> id: {projects._id}  </li>
   <li>  <a href='/{projects._id}/stories'>Stories</a></li>

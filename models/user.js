@@ -3,7 +3,7 @@
  */
 'use strict';
 var mongoose = require('mongoose'),
-    bcrypt = require('bcrypt'),
+    bcrypt = require('bcryptjs'),
     crypto = require('../lib/crypto');
 
 var userModel = function () {
@@ -47,7 +47,7 @@ var userModel = function () {
         };
 
 
-        return mongoose.model('User', userSchema);
+        return mongoose.model('user', userSchema);
     };
 
 module.exports = new userModel();
