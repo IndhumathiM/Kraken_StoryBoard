@@ -51,6 +51,13 @@ var projectModel = function () {
          return sprintStartDate; */
 
     };
+    projectSchema.methods.sprintStartDate = function () {
+
+        /*sprintStartDate.setDate(date1.getDate+(this.sprintDuration*7));
+        return  sprintStartDate; */
+        return (this.startDate);
+
+    };
     /* projectSchema.methods.storyEndDate = function () {
 
      return   (Math.floor((Math.floor((new Date(this.endDate) - new Date(this.startDate)) / (24 * 3600 * 1000 * 7))) / this.sprintDuration));

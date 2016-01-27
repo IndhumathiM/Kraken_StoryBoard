@@ -143,7 +143,7 @@ module.exports = function (router) {
                 });
                 newProject.save(function (error) {
 
-                                res.redirect('/home');
+                                res.redirect('/project');
 
                             })
                         });
