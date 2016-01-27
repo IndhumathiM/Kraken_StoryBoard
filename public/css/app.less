@@ -12,10 +12,28 @@ width:70%;
   line-height: 150%;
 
 }
+#panel, #flip {
+  padding: 5px;
+  border: solid 1px #000000;
+  overflow: auto;
+}
+
+#panel {
+  padding: 50px;
+  display: none;
+}
+.button{
+  color: black;
+}
+html{
+  font-family: "Trebuchet MS", "Verdana", "sans-serif";
+}
 
 .nm-np {
   margin: 0;
   padding: 0;
+  font-size: 18px;
+  font-family:"helvetica neue", "arial", "sans";
 
 }
 
@@ -25,13 +43,19 @@ width:70%;
 
 ul.inline li {
   display: inline-block;
-  background-color: rgba(192,192,192,0.3);
+  //background-color: rgba(192,192,192,0.3);
 
 }
-
+.floating-box {
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  margin: 10px;
+  border: 3px solid #73AD21;
+}
 body {
   background-color: #b0c4de;
-  color: #F2F2F2;
+  //color: #F2F2F2;
   font-family: "helvetica neue", "arial", "sans";
 }
 
@@ -64,7 +88,11 @@ nav li {
 
 a {
   text-decoration: none;
-  color: #F2F2F2;
+  color: #0d3349;
+  font-size:15px;
+}
+h3 {
+  line-height: 0.25;
 }
 
 a:hover {
@@ -83,6 +111,7 @@ a:hover {
   padding: .75em;
   margin: .25em;
   .rounded(5px);
+  font-size: 10px;
 }
 
 .tiny {
@@ -94,7 +123,9 @@ a:hover {
   margin-bottom: 2em;
 
 }
-
+.list{
+padding:6px;
+}
 #tentacle{
   position: absolute;
   height:415px;

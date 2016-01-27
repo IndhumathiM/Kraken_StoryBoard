@@ -10,7 +10,7 @@
 
              <fieldset>
                  <legend>Edit Story Details</legend>
-                               {#projects.story}
+       {#projects.story}
 
        <form method="POST" action="/story/update/{projects._id}/{name}">
        <input type="hidden" name="_method" value="PUT">
@@ -31,20 +31,16 @@
               <option value=Done>Done </option>
               <option value=Accepted>Accepted</option>
        </select>
+         {/projects.story}
 
 <br>
-   <select name="teamMember">
-       <option value="{teamMember}" selected>{teamMember}</option>
-       <option value="{projects.members[0]}">{projects.members}</option>
-       <option value="{projects.members[1]}">{projects.members[1]}</option>
-       <option value={projects.members[2]}>{projects.members[2]}</option>
-       <option value={projects.members[3]}>{projects.members[3]}</option>
-       <option value={projects.members[4]}>{projects.members[4]}</option>
-
+   <select name="developer">
+        {#projects.memberName}
+        <option value={.}>{.}</option>
+    {/projects.memberName}
        </select>
          <input type="submit" value="Update">
          <input type="hidden" name="_csrf" value="{_csrf}">
-         {/projects.story}
         </form>
 
  </fieldset>

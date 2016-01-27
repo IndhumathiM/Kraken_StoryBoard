@@ -19,6 +19,7 @@ var projectModel = function () {
         teamname: String,
         teamno: String,
         memberId :[{type: schema.Types.ObjectId, ref: 'user'}],
+        memberName: [String],
         story:            [{
             name: String,
             creator: String,

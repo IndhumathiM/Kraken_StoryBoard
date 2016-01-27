@@ -5,9 +5,9 @@
  <head>
  <link rel="stylesheet" href="../../css/app.css"/>
  </head>
+
 {<body}
     <h2>Story Editor</h2>
-    <main role="main">
         <div class="mb2">
             <fieldset>
                 <legend>Add a new Story</legend>
@@ -31,11 +31,13 @@
         <input type="date" name="date" placeholder="Creation Date"><br>
         <input name="desc" placeholder="Description"><br>
         <input name="sprintNo" placeholder="SprintNo"><br>
-        <select name="teamMember">
-              <option value={projects.memberId}>{projects.memberId}</option>
-        </select> <br>
+        <select name="developer">
+        {#projects.memberName}
+          <option value={.}>{.}</option>
+        {/projects.memberName}
+        </select><br>
         <select name="status">
-            <option value="Backlog">Backlog</option>
+                   <option value="Backlog">Backlog</option>
                    <option value="Defined">Defined</option>
                    <option value="In Progress">In Progress</option>
                    <option value="Done">Done</option>
@@ -51,48 +53,35 @@
             </fieldset>
         </div>
 
-        <div class="products">
             {?projects}
                 <fieldset>
                     <legend>Story List</legend>
-                    <ul class="nm-np inline">
-                        {#projects.story}
+                            <div style="display: inline-block;margin:15px;font-size:13px;padding-top:10px;padding-left:3px;">
+                                 <form method="POST" action="/story/delete/{projects.id}/{name}">
+                                 <input type="hidden" name="_method" value="POST">
+                                 <div id="accordion">
+                                    {#projects.story}
+                                        <h2> {name}</h2>
+                                        <div>
+                                        <ul> Name: {name}</ul>
+                                        <ul> Creator: {creator}</ul>
+                                        <ul>  Creation Date: {date}</ul>
+                                        <ul> Desc: {desc}</ul>
+                                        <ul> SprintNo: {sprintNo}</ul>
+                                        <ul> Developer: {developer}</ul>
+                                        <ul> Status: {status}</ul>
+                                        <ul> sprintStartDate: {sprintStartDate}</ul>
+                                        <ul> sprintEndDate: {sprintEndDate}</ul>
+                                    <button style="float:right"><a href='/story/{projects._id}/delete/{name}'>Delete</a> </button>
+                                   <button style="float:right"><a href='/story/{projects._id}/edit/{name}'>Edit</a></button>
+                             </div>
+                           {/projects.story}
+                               </div>
+                               </form>
+                             </div>
 
-                            <li>
-                                <form method="POST" action="/story/delete/{projects.id}/{name}">
-
-                                           <input type="hidden" name="_method" value="POST">
-
-                                    <ul>
-                                    <li> Name: {name} </li>
-                                    <li> Creator: {creator}  </li>
-                                    <li> Creation Date: {date}  </li>
-                                    <li> Desc: {desc}  </li>
-                                    <li> SprintNo: {sprintNo}  </li>
-                                    <li> Developer: {teamMember}  </li>
-                                     <li> Status: {status}  </li>
-                                    <li> sprintStartDate: {sprintStartDate}  </li>
-                                    <li> sprintEndDate: {sprintEndDate}  </li>
-
-                                    </ul>
-
-
-
-                                    <input type="submit" value="DELETE">
-                                    <!--If we don't at the Cross-Site Request Forgey token, this POST will be rejected-->
-                                    <input type="hidden" name="_csrf" value="{_csrf}">
-                                    <input type="hidden" name="_method" value="DELETE">
-
-                                    <h3 class="nm-np"><a href='/story/{projects._id}/edit/{name}'>Edit</a></h3>
-
-                                </form>
-                            </li>
-                        {/projects.story}
-                    </ul>
-                </fieldset>
+                    </fieldset>
             {:else}
                 There are no stories :(
             {/projects}
-        </div>
-    </main>
 {/body}

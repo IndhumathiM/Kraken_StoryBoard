@@ -4,27 +4,34 @@
 
     <meta charset="utf-8"/>
     <title>{+title /}</title>
-    <link rel="stylesheet" href="css/app.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+              <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+              <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+          <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href= "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" type="text/javascript"></script>
+     <link rel="stylesheet" href="css/app.css"/>
 
 </head>
-<body class="nm-np">
+<body >
 <header class="grey">
-    <div class="wrapper">
-        <h1>Agile StoryBoard</h1>
-        <nav>
-            <ul class="nm-np inline">
-                <li><a href="/home">Home</a></li>
+    <div class="wrapper"><nav>
+        <h1>Agile StoryBoard<span class="glyphicon glyphicon-blackboard"></span></h1>
 
-                <li><a href="/profile">Profile</a></li>
+            <ul class="inline">
+                <li><a href="/home"><span class="glyphicon glyphicon-home">Home</span></a></li>
 
-                <li><a href="/project">Project</a></li>
-                <li><a href="/projectregistration">ProjectRegistration</a></li>
+                <li><a href="/profile"><span class="glyphicon glyphicon-file">Profile</span></a></li>
+
+                <li><a href="/project"><span class="glyphicon glyphicon-list-alt">Project</span></a></li>
+                <li><a href="/projectregistration"><span class="glyphicon glyphicon-th-list">ProjectRegistration</span></a></li>
 
                 <li>
                     {#user}
-                         <a href="/logout">Logout</a>
+                         <a href="/logout"><span class = "glyphicon glyphicon-log-out">Logout</span></a>
                     {:else}
-                         <a href="/login">Login</a>
+                         <a href="/login"><span class = "glyphicon glyphicon-log-in">Login</span></a>
                     {/user}
                 </li>
             </ul>
@@ -34,7 +41,37 @@
 
 <div class="wrapper">
     {+body /}
+    <script>
+$(document).ready(function(){
+    $("#flip").click(function(){
+        $("#panel").slideToggle("slow");
+    });
+    $("#accordion").accordion({
+     collapsible: true
+    });
 
+    $("#button1").click(function(){
+$("#dialog1").dialog("open");
+    });
+    $( "#dialog1" ).dialog({
+                   autoOpen: false,
+                   buttons: {
+
+                      No: function() {
+                      $(this).dialog("close");
+                      }
+
+
+                   },
+                   title: "Alert!",
+                   position: {
+                      my: "center center",
+                      at: "center center"
+                   }
+                });
+
+});
+</script>
 </div>
 </body>
 </html>

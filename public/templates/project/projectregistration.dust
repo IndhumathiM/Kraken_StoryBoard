@@ -7,8 +7,8 @@
 <main role="main">
 <div class="mb2">
     <fieldset>
-        <legend>Add a new Project</legend>
-        <form method="POST" action="/home">
+        <legend id="flip"> Add a New Project<span class="glyphicon glyphicon-plus"></span></legend>
+        <form method="POST" action="/home" id="panel" >
 <div class = "content">
     <div class = "left">
         <label for="projectName">ProjectName: </label><br>
@@ -34,6 +34,7 @@
     </div>
 </div>
         </form>
+
     </fieldset>
 </div>
 </main>

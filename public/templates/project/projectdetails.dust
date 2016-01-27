@@ -38,10 +38,9 @@
              <fieldset>
 
        <form method="POST" action="/{projects._id}/story/search/name">
-
                      <label for="name">StoryName: </label>
-                      <input name="storyName" placeholder="Story Name"><br>
-                      <input type="submit" value="Search">
+                      <input name="storyName" placeholder="Story Name">
+                      <button type="submit" class="glyphicon glyphicon-search"/>
                       <input type="hidden" name="_csrf" value="{_csrf}">
 
                        </form>
@@ -50,10 +49,9 @@
               <fieldset>
 
      <form method="POST" action="/{projects._id}/story/search/date">
-
                      <label for="name">Search story by releaseDate: </label>
-                      <input type="date" name="releaseDate" placeholder="Release Date"><br>
-                      <input type="submit" value="Search">
+                      <input type="date" name="releaseDate" placeholder="Release Date">
+                      <button type="submit" class="glyphicon glyphicon-search"/>
                       <input type="hidden" name="_csrf" value="{_csrf}">
 
                       </form>

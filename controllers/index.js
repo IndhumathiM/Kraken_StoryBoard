@@ -119,7 +119,11 @@ module.exports = function (router) {
                 var endDate = req.body.endDate && req.body.endDate.trim();
                 var releases = req.body.releases && req.body.releases.trim();
                 var sprintDuration = req.body.sprintDuration && req.body.sprintDuration.trim();
-                /*  var sprintCount = Math.floor((Math.floor((new Date(endDate) - new Date(startDate)) / (24 * 3600 * 1000 * 7))) / sprintDuration); */
+              /*   var date1 = new Date(this.startDate);
+                var date2 = new Date(this.endDate);
+                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                var noOfDays = diffDays; */
                 var teamno = req.body.teamno && req.body.teamno.trim();
                 var teamname = req.body.teamname && req.body.teamname.trim();
                               if (projectName === '') {
@@ -150,7 +154,7 @@ module.exports = function (router) {
      * Delete a project.
      * @paaram: req.body.item_id Is the unique id of the product to remove.
      */
-    router.delete('/project', function (req, res) {
+    router.get('/project/delete', function (req, res) {
         Project.remove({_id: req.body.item_id}, function (err) {
             if (err) {
                 console.log('Remove error: ', err);
@@ -248,22 +252,28 @@ module.exports = function (router) {
                 if(err){
                     res.json(err);
                 }else  {
-                    console.log(docs[0]._id);
-                    Project.update({_id: req.params.id},
-                        {
-                            $addToSet:
-                        {
-                            memberId:docs[0]._id
-                            }
-                        },function(err){
-                            if(err){
-                                console.log(err);
-                            }else{
-                                console.log("Successfully added");
-                                res.redirect('/home');
+                       console.log(docs[0]._id);
+                          // Project.find({_id: req.params.id},function(err,docs) {
+                            //   if (memberId === docs[0]._id) {
+                              //     res.redirect('/home');                               }
+                               //else {
+                                   Project.update({_id: req.params.id},
+                                       {
+                                           $addToSet: {
+                                               memberId: docs[0]._id,
+                                               memberName: docs[0].name
+                                           }
+                                       }, function (err) {
+                                           if (err) {
+                                               console.log(err);
+                                           } else {
+                                               console.log("Successfully added");
+                                               res.redirect('/home');
 
-                            }
-                        })
+                                           }
+                                       })
+                               //}
+                           //});
                 }
             });
     });
@@ -271,6 +281,7 @@ module.exports = function (router) {
      *Inserting stories into project
      */
     router.post('/story/:id', function (req, res) {
+        console.log("hello"+JSON.stringify(req.body));
         Project.update({_id: req.params.id},
             {$push:
             { story: {
@@ -279,10 +290,8 @@ module.exports = function (router) {
                 date: req.body.date,
                 desc: req.body.desc,
                 sprintNo: req.body.sprintNo,
-                teamMember: req.body.teamMember,
+                developer: req.body.developer,
                 status: req.body.status
-
-
             }}},
             function(err,docs) {
                 if (err) res.json(err);
@@ -305,8 +314,10 @@ module.exports = function (router) {
                 if (err) {
                     res.json(err)   ;
                 }
-                else
-                    res.render('story/editstory', {projects:docs[0]});
+                else {
+                    console.log("edit" + JSON.stringify(docs[0]));
+                    res.render('story/editstory', {projects: docs[0]});
+                }
             });
     });
 
@@ -314,17 +325,17 @@ module.exports = function (router) {
      Story updating
      */
     router.post('/story/update/:id/:name',function(req,res){
+        console.log("body"+JSON.stringify(req.body));
         Project.update({_id: req.params.id,'story.name':req.params.name},
             {$set:{
                 "story.$.name":req.body.name,
                 "story.$.creator":req.body.creator,
                 "story.$.date":req.body.date,
                 "story.$.desc":req.body.desc,
+                "story.$.developer":req.body.developer,
                 "story.$.sprintNo":req.body.sprintNo,
                 "story.$.teamMember":req.body.teamMember,
                 "story.$.status":req.body.status
-
-
             }},
             function(err,docs) {
                 if (err)
@@ -401,19 +412,12 @@ module.exports = function (router) {
     /**
      *Deleting stories from project
      */
-    router.get('/story/delete/:id/:name', function (req, res) {
-        Project.update({_id: req.params.id,'story.name':req.params.name},
+    router.post('/story/delete/:id/:name', function (req, res) {
+        Project.update({_id: req.params.id},
             {$pull:
             { story: {
-                name: req.body.name,
-                creator: req.body.creator,
-                date: req.body.date,
-                desc: req.body.desc,
-                sprintNo: req.body.sprintNo
-
-
-
-            }}},
+                name: req.body.name
+                            }}},
             function (err) {
                 if (err) {
                     console.log('Remove error: ', err);
@@ -440,8 +444,9 @@ module.exports = function (router) {
 
 //Getting project Registration page
     router.get('/projectregistration', function(req, res) {
+
         res.render('project/projectregistration');
-    });
+           });
 
 
 

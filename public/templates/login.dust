@@ -27,7 +27,7 @@
                             <input type="submit" value="Login"/>
                             <input type="hidden" name="_csrf" value="{_csrf}"/>
                         </td>
-                        <td> <a href="/signup">New User?</a> </td>
+                        <td> <a href="/signup"><span class="glyphicon glyphicon-user">NewUser?</span></a> </td>
                     </tr>
                 </table>
 
