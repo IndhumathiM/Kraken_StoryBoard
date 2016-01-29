@@ -23,7 +23,6 @@
 <li> Releases: {projects.releases}  </li>
 <li> Sprint Duration: {projects.sprintDuration}  </li>
 <li> Number of Sprints: {projects.noOfSprint}  </li>
-<li> Sprint Start Date: {projects.sprintStartDate}  </li>
 <li> Teamno: {projects.teamno}  </li>
 <li> Teamname: {projects.teamname}  </li>
 

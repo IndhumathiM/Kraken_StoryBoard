@@ -202,7 +202,17 @@ module.exports = function (router) {
                 }
             });
     });
+/* sprint details */
+    router.get('/project/:id/sprint',function(req,res){
 
+        Project.find({_id: req.params.id}, function (err,docs) {
+            if (err) {
+                res.json(err)   ;
+            }
+            else
+                res.render('project/sprintDetails', {projects:docs[0]});
+        });
+    });
     /**
      * Linking a project with its details
      */

@@ -52,11 +52,41 @@ var projectModel = function () {
 
     };
     projectSchema.methods.sprintStartDate = function () {
+         var msg="Start Date must be less than End Date";
+        var times=this.noOfSprint();
+        var strt = new Date(this.startDate);
+        strt.setDate(new Date(this.startDate).getDate()+1);
+        var end = new Date(this.endDate);
+        while (strt < end) {
+            var a=[];
 
-        /*sprintStartDate.setDate(date1.getDate+(this.sprintDuration*7));
-        return  sprintStartDate; */
-        return (this.startDate);
+            for (var i = 0; i < times; i++) {
+                var strt= new Date(this.startDate);
+                strt.setDate(strt.getDate()+((this.sprintDuration * 7*i)+1));
+                a.push(strt);
+            }
+                return a;
 
+        }
+        return msg;
+
+    };
+    projectSchema.methods.sprintEndDate = function () {
+        var msg="Start Date must be less than End Date";
+        var strt = new Date(this.startDate);
+        var end = new Date(this.endDate);
+        var a=[];
+        var times=this.noOfSprint();
+        while (strt < end) {
+            for(var i=1;i<=times;i++) {
+                var strt = new Date(this.startDate);
+                strt.setDate(strt.getDate() + (this.sprintDuration * 7*i));
+                a.push(strt);
+                    }
+            return a;
+
+        }
+        return msg;
     };
     /* projectSchema.methods.storyEndDate = function () {
 

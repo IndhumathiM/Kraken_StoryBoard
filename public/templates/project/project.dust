@@ -3,28 +3,26 @@
     {<title}Project Editor{/title}
  </head>
 {<body}
-<div class="products">
-{?projects}
-<fieldset>
-<legend>Project List</legend>
-    <ul class="nm-np inline">
-        {#projects}
-             <li>
-
-                      <h3><a href='/project/{.id}'>{.projectName}</a></h3>
-
-                       <button id="button1">DELETE</button>
+    <div class="products">
+        {?projects}
+    <fieldset>
+        <legend>Project List</legend>
+            <ul class="nm-np inline">
+                {#projects}
+                    <li>
+                          <h3><a href='/project/{.id}'>{.projectName}</a></h3>
+                           <button id="button1">DELETE</button>
                     <!--   <div id="dialog1">Are you confirm to delete the project?</div>--!>
+                          <h3><a href='/project/{.id}/sprint'>Sprint Details</a></h3>
 
                       <h3><a href='/project/{.id}/edit'>Edit</a></h3>
                       <h3><a href='{.id}/story'>Add Stories</a></h3>
                       <h3><a href='{.id}/addMember'>Add Member</a></h3>
-                  </form>
-             </li>
-       {/projects}
-   </ul>
-</fieldset>
+                   </li>
+              {/projects}
+         </ul>
+    </fieldset>
 {:else}
     There are no projects
-{/projects}
-{/body}
+   {/projects}
+  {/body}
