@@ -13,7 +13,7 @@
         <ul>
             <li> ProjectName: {projectName} </li>
             <li> StartDate: {startDate}  </li>
-            <li> EndDate: {endDate}  </li>
+
             <li> Releases: {releases}  </li>
             <li> Sprint Duration: {sprintDuration}  </li>
             <li> Number of Sprints: {noOfSprint}  </li>

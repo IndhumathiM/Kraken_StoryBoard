@@ -113,40 +113,83 @@ module.exports = function (router) {
      */
     router.post('/home', function (req, res) {
 
-                var projectName = req.body.projectName && req.body.projectName.trim();
-                var projectNo = req.body.projectNo && req.body.projectNo.trim();
-                var startDate = req.body.startDate && req.body.startDate.trim();
-                var endDate = req.body.endDate && req.body.endDate.trim();
-                var releases = req.body.releases && req.body.releases.trim();
-                var sprintDuration = req.body.sprintDuration && req.body.sprintDuration.trim();
-              /*   var date1 = new Date(this.startDate);
-                var date2 = new Date(this.endDate);
-                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                var noOfDays = diffDays; */
-                var teamno = req.body.teamno && req.body.teamno.trim();
-                var teamname = req.body.teamname && req.body.teamname.trim();
-                              if (projectName === '') {
-                    res.redirect('/home#BadInput');
-                    return;
+        var projectName = req.body.projectName && req.body.projectName.trim();
+        var projectNo = req.body.projectNo && req.body.projectNo.trim();
+        var startDate = req.body.startDate && req.body.startDate.trim();
+        var endDate = req.body.endDate && req.body.endDate.trim();
+        var releases = req.body.releases && req.body.releases.trim();
+        var sprintDuration = req.body.sprintDuration && req.body.sprintDuration.trim();
+        var noOfSprint = function () {
+            console.log("inside the funciton");
+            return (Math.floor((Math.floor((new Date(endDate) - new Date(startDate)) / (24 * 3600 * 1000 * 7))) / sprintDuration));
+
+        }
+        var sprintStartDate = function () {
+            var msg="Start Date must be less than End Date";
+            var times=noOfSprint();
+            var strt = new Date(startDate);
+            strt.setDate(new Date(startDate).getDate()+1);
+            var end = new Date(endDate);
+            while (strt < end) {
+                var a=[];
+
+                for (var i = 0; i < times; i++) {
+                    var strt= new Date(startDate);
+                    strt.setDate(strt.getDate()+((sprintDuration * 7*i)+1));
+                    a.push(strt);
                 }
+                return a;
 
-                var newProject = new Project({
-                    projectName: projectName,
-                    projectNo: projectNo,
-                    startDate: startDate,
-                    endDate: endDate,
-                    releases: releases,
-                    sprintDuration: sprintDuration,
-                    teamno: teamno,
-                    teamname: teamname
-                });
-                newProject.save(function (error) {
+            }
+            return msg;
 
-                                res.redirect('/project');
+        }
+        var sprintEndDate = function () {
+            var msg="Start Date must be less than End Date";
+            var strt = new Date(startDate);
+            var end = new Date(endDate);
+            var a=[];
+            var times=noOfSprint();
+            while (strt < end) {
+                for(var i=1;i<=times;i++) {
+                    var strt = new Date(startDate);
+                    strt.setDate(strt.getDate() + (sprintDuration * 7*i));
+                    a.push(strt);
+                }
+                return a;
 
-                            })
-                        });
+            }
+            return msg;
+        }
+        var teamno = req.body.teamno && req.body.teamno.trim();
+        var teamname = req.body.teamname && req.body.teamname.trim();
+        if (projectName === '') {
+            res.redirect('/home#BadInput');
+            return;
+        }
+        console.log("before call");
+
+        var newProject = new Project({
+            projectName: projectName,
+            projectNo: projectNo,
+            startDate: startDate,
+            endDate: endDate,
+            releases: releases,
+            sprintDuration: sprintDuration,
+            noOfSprint: noOfSprint(),
+            sprintStartDate:sprintStartDate(),
+            sprintEndDate:sprintEndDate(),
+            teamno: teamno,
+            teamname: teamname
+        });
+        newProject.save(function (err) {
+            if(err) {
+                console.log("Inside err" + err);
+            }
+                res.redirect('/project');
+
+        });
+    });
 
 
 

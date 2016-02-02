@@ -12,10 +12,7 @@
              <legend>Project Name: {projects.projectName}</legend>
               Number of Sprints: {projects.noOfSprint}
                 <ul class="nm-np inline" style="font-size:14px;">
-                {#projects.sprintStartDate}
                     <li> Sprint Start Date: {projects.sprintStartDate} </li>
-                                    {/projects.sprintStartDate}
-
                    <li>  Sprint End Date: {projects.sprintEndDate}  </li>
                 </ul>
           </fieldset>

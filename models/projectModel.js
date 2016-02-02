@@ -18,6 +18,9 @@ var projectModel = function () {
         sprintCount:String,
         teamname: String,
         teamno: String,
+       noOfSprint:String,
+        sprintStartDate:[String],
+        sprintEndDate:[String],
         memberId :[{type: schema.Types.ObjectId, ref: 'user'}],
         memberName: [String],
         story:            [{
@@ -34,24 +37,14 @@ var projectModel = function () {
 
     });
 
-    projectSchema.methods.noOfSprint = function () {
-
-
-
-        return   (Math.floor((Math.floor((new Date(this.endDate) - new Date(this.startDate)) / (24 * 3600 * 1000 * 7))) / this.sprintDuration));
-
-    };
     projectSchema.methods.storyStartDate = function () {
-
         return this.story.sprintNo *2;
-
-
         /*  var sprintStartDate = new Date(this.startDate);
          sprintStartDate.setDate( sprintStartDate.getDate() + this.sprintDuration * 7 * this.sprintNo);
          return sprintStartDate; */
-
     };
-    projectSchema.methods.sprintStartDate = function () {
+
+ /*   projectSchema.methods.sprintStartDate = function () {
          var msg="Start Date must be less than End Date";
         var times=this.noOfSprint();
         var strt = new Date(this.startDate);
@@ -87,7 +80,7 @@ var projectModel = function () {
 
         }
         return msg;
-    };
+    }; */
     /* projectSchema.methods.storyEndDate = function () {
 
      return   (Math.floor((Math.floor((new Date(this.endDate) - new Date(this.startDate)) / (24 * 3600 * 1000 * 7))) / this.sprintDuration));
