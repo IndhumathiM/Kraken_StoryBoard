@@ -7,11 +7,20 @@ module.exports = function (grunt) {
     require('grunt-config-dir')(grunt, {
         configDir: require('path').resolve('tasks')
     });
+grunt.config.init({
+   watch:
+   {
+       scripts:{
+           files:['controllers/*.js'],
+           tasks: ['build']
+       }
+       }
+});
 
     // Register group tasks
-    grunt.registerTask('build', [ 'jshint', 'less', 'i18n', 'copyto' ]);
+   grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.registerTask('build', [ 'jshint','less', 'i18n', 'copyto' ]);
     grunt.registerTask('test', [ 'jshint', 'mochacli' ]);
-
 }
 
 

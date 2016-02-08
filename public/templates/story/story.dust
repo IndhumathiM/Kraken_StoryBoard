@@ -20,7 +20,6 @@
         <label for="creator">Creator: </label><br>
         <label for="creation date">Creation Date: </label> <br>
         <label for="desc">Description: </label><br>
-        <label for="sprintNo">Sprint No: </label><br>
         <label for="Developer">Developer: </label><br>
         <label for="Status">Status: </label>
       </div>
@@ -30,7 +29,6 @@
         <input name="creator" placeholder="Creator"><br>
         <input type="date" name="date" placeholder="Creation Date"><br>
         <input name="desc" placeholder="Description"><br>
-        <input name="sprintNo" placeholder="SprintNo"><br>
         <select name="developer">
         {#projects.memberName}
           <option value={.}>{.}</option>
@@ -65,7 +63,6 @@
                                         <ul> Creator: {creator}</ul>
                                         <ul>  Creation Date: {date}</ul>
                                         <ul> Desc: {desc}</ul>
-                                        <ul> SprintNo: {sprintNo}</ul>
                                         <ul> Developer: {developer}</ul>
                                         <ul> Status: {status}</ul>
                                         <ul> sprintStartDate: {sprintStartDate}</ul>

@@ -21,7 +21,6 @@
        <input name="creator" placeholder="Creator", value="{creator}"><br>
        <input type="date" name="date" placeholder="Date", value="{date}"><br>
        <input name="desc" placeholder="Description", value="{desc}"><br>
-       <input name="sprintNo" placeholder="SprintNo", value="{sprintNo}"><br>
          <input name="developer" placeholder="Developer", value="{developer}"><br>
        <input name="status" placeholder="Status", value="{status}"><br>
        <input name="sprintStartDate" placeholder="StartDate", value="{sprintStartDate}"><br>

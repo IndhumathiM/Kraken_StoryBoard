@@ -25,7 +25,7 @@
     }
   ],
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "test": "mocha"
   },
   "license": "Apache 2.0",
@@ -48,20 +48,22 @@
     "mongoose": "~3.8.8",
     "passport": "^0.2.0",
     "passport-local": "^1.0.0",
-    "requirejs": "~2.1.11"
+    "requirejs": "~2.1.11",
+    "rsvp": "^3.2.0"
   },
   "devDependencies": {
-    "mocha": "^1.18.0",
-    "supertest": "^0.9.0",
-    "grunt-contrib-requirejs": "^0.4.3",
-    "grunt-dustjs": "^1.2.1",
-    "grunt-contrib-clean": "^0.5.0",
-    "grunt-config-dir": "^0.3.2",
-    "grunt-copy-to": "0.0.10",
-    "grunt-localizr": "^0.1.0",
-    "grunt-contrib-jshint": "^0.6.5",
     "grunt": "^0.4.4",
+    "grunt-config-dir": "^0.3.2",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-jshint": "^0.6.5",
     "grunt-contrib-less": "^0.9.0",
-    "grunt-mocha-cli": "^1.7.0"
+    "grunt-contrib-requirejs": "^0.4.3",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-copy-to": "0.0.10",
+    "grunt-dustjs": "^1.2.1",
+    "grunt-localizr": "^0.1.0",
+    "grunt-mocha-cli": "^1.7.0",
+    "mocha": "^1.18.0",
+    "supertest": "^0.9.0"
   }
 }

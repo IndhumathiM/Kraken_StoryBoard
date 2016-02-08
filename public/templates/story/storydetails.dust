@@ -17,7 +17,6 @@
 <li> creator: {creator}  </li>
 <li> creation date: {date}  </li>
 <li> desc: {desc}  </li>
-<li> sprintNo: {sprintNo}  </li>
 <li> TeamMember: {teamMember}  </li>
 <li> Status: {status}  </li>
 <li> sprintStartDate: {.storyStartDate} </li>

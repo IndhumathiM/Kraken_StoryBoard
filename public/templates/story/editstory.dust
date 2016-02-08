@@ -19,10 +19,6 @@
        <input name="creator" placeholder="Creator", value="{creator}"><br>
        <input type="date" name="date" placeholder="Date", value="{date}"><br>
        <input name="desc" placeholder="Description", value="{desc}"><br>
-       <input name="sprintNo" placeholder="SprintNo", value="{sprintNo}"><br>
-
-
-
        <select name="status" >
               <option value="{status}" selected>{status} </option>
               <option value=Backlog>Backlog </option>
