@@ -49,29 +49,8 @@ $(document).ready(function(){
     $("#accordion").accordion({
      collapsible: true
     });
-
-    $("#button1").click(function(){
-$("#dialog1").dialog("open");
-    });
-    $( "#dialog1" ).dialog({
-                   autoOpen: false,
-                   buttons: {
-
-                      No: function() {
-                      $(this).dialog("close");
-                      }
-
-
-                   },
-                   title: "Alert!",
-                   position: {
-                      my: "center center",
-                      at: "center center"
-                   }
-                });
-
-});
-
+$("#myModal").modal('hide');
+})
 </script>
 </div>
 </body>

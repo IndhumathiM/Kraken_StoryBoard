@@ -21,5 +21,18 @@
             </fieldset>
         </div>
 
-
+    {?projects}
+        <fieldset> <legend>Members List</legend>
+                    <ul class="nm-np inline">
+               <div>
+                 {#projects.members}
+                      <div style="font-size:15px";>
+                          <li>{memberName} - {memberEmail}
+                    <button style="margin:5px";> <a  href='/removeMember/{projects._id}/{memberId}'>Remove</a></button>
+                           </li>
+                      </div>
+                     {/projects.members}
+                 </div>
+        </fieldset>
+     {/projects}
 {/body}

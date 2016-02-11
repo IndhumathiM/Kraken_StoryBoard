@@ -1,11 +1,5 @@
 {
-  "name": "kraken-examples-with.passport",
-  "version": "0.1.0",
-  "description": "Example applications built with kraken",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/krakenjs/kraken-examples"
-  },
+
   "keywords": [
     "express",
     "kraken",
@@ -13,19 +7,8 @@
     "krakenjs",
     "examples"
   ],
-  "author": "Jeff Harrell <jeharrell@paypal.com>",
-  "contributors": [
-    {
-      "name": "Poornima Venkatakrishnan",
-      "email": "pvenkatakrishnan@paypal.com"
-    },
-    {
-      "name": "Matt Edelman",
-      "email": "medelman@paypal.com"
-    }
-  ],
-  "scripts": {
-    "start": "nodemon index.js",
+    "scripts": {
+    "start": "node index.js",
     "test": "mocha"
   },
   "license": "Apache 2.0",

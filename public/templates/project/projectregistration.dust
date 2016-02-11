@@ -6,7 +6,6 @@
 <h2>Project Editor</h2>
 <main role="main">
 <div class="mb2">
-    <fieldset>
         <legend id="flip"> Add a New Project<span class="glyphicon glyphicon-plus"></span></legend>
         <form method="POST" action="/home" id="panel" >
 <div class = "content">
@@ -35,7 +34,6 @@
 </div>
         </form>
 
-    </fieldset>
 </div>
 </main>
 {/body}

@@ -7,22 +7,19 @@ var IndexModel = require('../models/index'),
     user = require('../models/user'),
     Project = require('../models/projectModel');
 
-
 module.exports = function (router) {
-
     var indexmodel = new IndexModel();
     var profilemodel = new ProfileModel();
+    var promise = require('bluebird');
 
 
     router.get('/', function (req, res) {
         res.render('index', indexmodel);
     });
 
-
     router.get('/profile', function (req, res) {
-       res.render('profile', profilemodel);
+        res.render('profile', profilemodel);
     });
-
 
     /* Getting Home Page */
     router.get('/home', function (req, res) {
@@ -30,11 +27,12 @@ module.exports = function (router) {
         user.find({login: req.session.userName}, function (err, docs) {
             if (err) res.json(err);
             else {
-                Project.find({memberId: docs[0]._id}, function (err, proj) {
+                console.log("docs" + docs[0]._id);
+                Project.find({"members.memberId": docs[0]._id}, function (err, proj) {
                     if (err) {
                         res.json(err);
                     } else {
-                        console.log(proj);
+                        console.log("proj" + proj);
                         res.render('layouts/home', {projects: proj});
                     }
                 });
@@ -110,6 +108,7 @@ module.exports = function (router) {
         var endDate = req.body.endDate && req.body.endDate.trim();
         var releases = req.body.releases && req.body.releases.trim();
         var sprintDuration = req.body.sprintDuration && req.body.sprintDuration.trim();
+
         function sprintDetail() {
             console.log("inside the sprintDetail funciton");
             var msg = "Start Date must be less than End Date";
@@ -117,21 +116,27 @@ module.exports = function (router) {
             var strt = new Date(startDate);
             var end = new Date(endDate);
             var sprints = [];
-            for (var i = 0; i < times; i++)
-            {
+            for (var i = 0; i < times; i++) {
                 console.log("inside the forloop funciton");
                 var sprintDetails = {};
-                sprintDetails.sprintNo = i+1;
+                sprintDetails.sprintNo = i + 1;
                 var strt = new Date(startDate);
                 strt.setDate(strt.getDate() + ((sprintDuration * 7 * (i)) + 1));
-                sprintDetails.sprintStartDate=strt;
+                strt = strt.toUTCString();
+                strt = strt.split(" ").slice(0, 4).join(" ");
+                console.log("str" + strt);
+                sprintDetails.sprintStartDate = strt;
                 var end = new Date(startDate);
                 end.setDate(end.getDate() + (sprintDuration * 7 * (i + 1)));
-                sprintDetails.sprintEndDate=end;
+                end = end.toUTCString();
+                end = end.split(" ").slice(0, 4).join(" ");
+                console.log("end" + end);
+                sprintDetails.sprintEndDate = end;
                 sprints.push(sprintDetails);
             }
             return sprints;
         }
+
         var teamno = req.body.teamno && req.body.teamno.trim();
         var teamname = req.body.teamname && req.body.teamname.trim();
         if (projectName === '') {
@@ -139,10 +144,11 @@ module.exports = function (router) {
             return;
         }
         console.log("before call");
-         function noOfSprint() {
+        function noOfSprint() {
             console.log("inside the noOfSprint funciton");
             return (Math.floor((Math.floor((new Date(endDate) - new Date(startDate)) / (24 * 3600 * 1000 * 7))) / sprintDuration));
         }
+
         var newProject = new Project({
             projectName: projectName,
             projectNo: projectNo,
@@ -151,7 +157,7 @@ module.exports = function (router) {
             releases: releases,
             sprintDuration: sprintDuration,
             noOfSprint: noOfSprint(),
-           sprintDetails: sprintDetail(),
+            sprintDetails: sprintDetail(),
             teamno: teamno,
             teamname: teamname
 
@@ -170,8 +176,8 @@ module.exports = function (router) {
      * Delete a project.
      * @paaram: req.body.item_id Is the unique id of the product to remove.
      */
-    router.get('/project/delete', function (req, res) {
-        Project.remove({_id: req.body.item_id}, function (err) {
+    router.get('/project/:id/delete', function (req, res) {
+        Project.remove({_id: req.params.id}, function (err) {
             if (err) {
                 console.log('Remove error: ', err);
             }
@@ -218,37 +224,61 @@ module.exports = function (router) {
                 }
             });
     });
- /** Linking a project with its sprint details */
- router.get('/project/:id/sprint', function (req, res) {
-     Project.find({_id: req.params.id}, function (err, docs) {
-         if (err) {
-             res.json(err);
-         }
-         else
-             res.render('project/sprintDetails', {projects: docs[0]});
-     });
- });
-
- /*** Linking a project with its details*/
- router.get('/project/:id', function (req, res) {
-     Project.find({_id: req.params.id}, function (err, docs) {
-         if (err) {
-             res.json(err);
-         }
-         else
-             res.render('project/projectdetails', {projects: docs[0]});
-     });
- });
- /* Getting Story Main page */
-    router.get('/:id/story', function (req, res) {
-        //  var databaseCategory = db.users.findOne( { _id: req.params.id } );
-        //  db.categories.find( { left: { $gt: databaseCategory.left }, right: { $lt: databaseCategory.right } } );
+    /** Linking a project with its sprint*/
+    router.get('/project/:id/sprint', function (req, res) {
         Project.find({_id: req.params.id}, function (err, docs) {
             if (err) {
                 res.json(err);
             }
             else
+                res.render('project/sprint', {projects: docs[0]});
+        });
+    });
+    /** Linking a sprint with its sprintDetails*/
+
+    router.get('/project/:id/sprintDetails/:sprintNo', function (req, res) {
+        Project.find({_id: req.params.id, "sprintDetails.sprintNo": req.params.sprintNo}, {"sprintDetails.$": 1},
+            function (err, docs) {
+                if (err) {
+                    res.json(err);
+                }
+                else {
+                    console.log("sprintdetails" + docs[0]);
+                    res.render('project/sprintDetails', {projects: docs[0]});
+                }
+            });
+    });
+    /* router.get('/project/:id/sprint').then(function(proj)
+     {
+     return new Promise(Project.find({_id:req.params.id}));
+     }).then(function(docs) {
+     render('project/sprintDetails', {projects: docs[0]});
+     })
+     .catch(function(err){
+     res.json(err);
+     }); */
+
+    /*** Linking a project with its details*/
+    router.get('/project/:id', function (req, res) {
+        Project.find({_id: req.params.id}, function (err, docs) {
+            if (err) {
+                res.json(err);
+            }
+            else
+                res.render('project/projectdetails', {projects: docs[0]});
+        });
+    });
+    /* Getting Story Main page */
+    router.get('/:id/:sprintNo/addStory', function (req, res) {
+        Project.find({_id: req.params.id,"sprintDetails.sprintNo": req.params.sprintNo}, {"members.memberName":1,"sprintDetails.$": 1},
+            function (err, docs) {
+            if (err) {
+                res.json(err);
+            }
+            else {
+                console.log("sprintdetails" + docs[0]);
                 res.render('story/story', {projects: docs[0]});
+            }
 
         });
     });
@@ -264,97 +294,144 @@ module.exports = function (router) {
         });
     });
 
-    router.post('/addMember/:id', function (req, res) {
 
+    router.post('/addMember/:id', function (req, res) {
         var log = user.find({login: req.body.memberId})
-            .populate('memberId')
+            .populate('members.memberId')
             .exec(function (err, docs) {
                 console.log("posts:" + docs[0]);
                 if (err) {
                     res.json(err);
                 } else {
-                    console.log("docs"+docs[0]._id);
-                    // Project.find({_id: req.params.id},function(err,docs) {
-                    //   if (memberId === docs[0]._id) {
-                    //     res.redirect('/home');                               }
-                    //else {
-                    Project.update({_id: req.params.id},
+                    console.log("docs" + docs[0]._id);
+                     Project.update({_id: req.params.id},
                         {
                             $addToSet: {
-                                memberId: docs[0]._id,
-                                memberName: docs[0].name
-                            }
+                                "members": {
+                                    memberId:docs[0]._id,
+                                    memberName: docs[0].name,
+                                    memberEmail: docs[0].login
+                }
+                   }
                         }, function (err) {
                             if (err) {
                                 console.log(err);
                             } else {
                                 console.log("Successfully added");
-                                res.redirect('/home');
+                                Project.find({_id: req.params.id}, function (err, docs) {
+                                    if (err) {
+                                        res.json(err);
+                                    }
+                                    else
+                                        res.render('member/addMember', {projects: docs[0]});
 
+                                });
                             }
                         })
-                                   }
+                }
             });
     });
-
-    router.get('/project/:id/:sprintNo/addStory', function (req, res) {
-        console.log("id" + req.params.id);
-        console.log("sprintNo" + req.params.sprintNo);
-        Project.find({_id: req.params.id, 'sprintDetails.sprintNo': req.params.sprintNo},{"sprintDetails.$": 1},
+    router.get('/removeMember/:id/:memberId', function (req, res) {
+        Project.update({_id: req.params.id, "members.memberId": req.params.memberId}, {
+                $pull: {
+                    members: {
+                        memberId: req.params.memberId
+                    }
+                }
+            },
             function (err, docs) {
-            if (err) {
-                res.json(err);
-            }
-            else {
-                console.log("docs" + JSON.stringify(docs[0]));
-                res.render('project/sprintStory', {projects: docs[0]});
-            }
-        });
-    });
-    /* post story into sprint details    * */
-    router.post('/projects/:id/:sprintNo/addStory', function (req, res) {
-        console.log("post-sprintdetails");
-        Project.find({_id: req.params.id, 'story.name': req.body.storyName},{"story.$": 1},function(err,docs){
-            if(err)
-                res.redirect('/project');
-            else{
-                console.log("sprint"+docs[0]);
-                console.log("sprintid"+docs[0].story._id);
-                console.log("sprintname"+docs[0].story.name);
-
-                Project.update({_id: req.params.id,'sprintDetails.sprintNo':req.params.sprintNo},
-                    {
-                        $addToSet: {
-                            "sprintDetails.$.storyName": req.body.storyName
-                        }
-                    },
-                    function (err) {
+                if (err) {
+                    res.json(err);
+                }
+                else
+                    Project.find({_id: req.params.id}, function (err, docs) {
                         if (err) {
-                            console.log("err" + err);
-                        } else {
-                            console.log("Successfully added");
-                            res.redirect('/project');
+                            res.json(err);
                         }
-                    })
-            }
+                        else
+                            res.render('member/addMember', {projects: docs[0]});
+
+                    });
             });
-        });
-     /**
-     *Inserting stories into project
+    });
+
+    //getting show story
+    router.get('/project/:id/:sprintNo/showStory', function (req, res) {
+        console.log("show story" + req.params.id);
+        console.log("sprintNo" + req.params.sprintNo);
+        Project.find({_id: req.params.id, 'sprintDetails.sprintNo': req.params.sprintNo}, {"sprintDetails.$": 1},
+            function (err, docs) {
+                if (err) {
+                    res.json(err);
+                }
+                else {
+                    console.log("docs" + JSON.stringify(docs[0]));
+                    res.render('project/showStory', {projects: docs[0]});
+                }
+            });
+    });
+    //remove story
+    router.get('/project/:id/:sprintNo/remove/:storyName', function (req, res) {
+        console.log("remove story" + req.params.id);
+        console.log("sprintNo" + req.params.storyName);
+        Project.update({_id: req.params.id, 'sprintDetails.sprintNo': req.params.sprintNo},
+            {
+                $pull: {
+                    "sprintDetails.$.storyName": req.params.storyName
+                }
+            },
+            function (err, docs) {
+                if (err) {
+                    res.json(err);
+                }
+
+                else {
+                    console.log("else part");
+                    res.redirect('/project');
+
+                    /*  Project.find({_id: req.params.id, 'sprintDetails.sprintNo': req.params.sprintNo}, {"sprintDetails.$": 1},
+                     function(docs) {
+                     res.render('project/showStory', {projects: docs[0]});
+                     });*/
+                }
+            });
+    });
+    /* post story into sprint details
+     router.post('/projects/:id/:sprintNo/addStory', function (req, res) {
+     console.log("post-sprintdetails");
+     console.log(req.body.storyName);
+     Project.update({_id: req.params.id, 'sprintDetails.sprintNo': req.params.sprintNo},
+     {
+     $addToSet: {
+     "sprintDetails.$.storyName": req.body.name
+     }
+     }
+     },
+     function (err) {
+     if (err) {
+     console.log("err" + err);
+     } else {
+     console.log("Successfully added");
+     res.redirect('/project');
+     }
+     });
+     }); **/
+    /**
+     *Inserting stories into sprintDetails
      */
-    router.post('/story/:id', function (req, res) {
-        console.log("hello" + JSON.stringify(req.body));
-        Project.update({_id: req.params.id},
+    router.post('/story/:id/:sprintNo', function (req, res) {
+        console.log("hello" + JSON.stringify(req.body.name));
+        Project.update({_id: req.params.id, "sprintDetails.sprintNo": req.params.sprintNo},
             {
                 $push: {
-                    story: {
-                        name: req.body.name,
-                        creator: req.body.creator,
-                        date: req.body.date,
-                        desc: req.body.desc,
-                        sprintNo: req.body.sprintNo,
-                        developer: req.body.developer,
-                        status: req.body.status
+                    "sprintDetails.$.story": {
+                        "name": req.body.name,
+                        "creator": req.body.creator,
+                        "date": req.body.date,
+                        "desc": req.body.desc,
+                        "sprintNo": req.body.sprintNo,
+                        "developer": req.body.developer,
+                        "status": req.body.status
                     }
                 }
             },
@@ -362,7 +439,7 @@ module.exports = function (router) {
                 if (err) res.json(err);
 
                 else {
-                    console.log("story"+docs);
+                    console.log("story" + docs);
                     res.redirect('/project');
                 }
             });
@@ -409,7 +486,7 @@ module.exports = function (router) {
                     res.json(err);
 
                 else {
-                    console.log("story"+docs);
+                    console.log("story" + docs);
                     res.redirect('/project');
                 }
             });
@@ -432,14 +509,12 @@ module.exports = function (router) {
 
     /* Search story by name */
     router.post('/:id/story/search/name', function (req, res) {
-
         Project.find({_id: req.params.id, 'story.name': req.body.storyName}, {_id: 0, "story.$": 1},
             function (err, docs) {
                 if (err) {
                     res.json(err);
                 }
                 else
-
                     res.render('project/storybydate', {projects: docs[0]});
             });
     });

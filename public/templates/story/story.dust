@@ -11,8 +11,8 @@
         <div class="mb2">
             <fieldset>
                 <legend>Add a new Story</legend>
-
-    <form method="POST" action="/story/{projects._id}">
+                                      {#projects.sprintDetails}
+    <form method="POST" action="/story/{projects._id}/{sprintNo}">
        <input type="hidden" name="_method" value="PUT">
     <div class="content">
       <div class="left">
@@ -23,16 +23,18 @@
         <label for="Developer">Developer: </label><br>
         <label for="Status">Status: </label>
       </div>
-
+      {/projects.sprintDetails}
       <div class="right">
         <input name="name" placeholder="Story Name"><br>
         <input name="creator" placeholder="Creator"><br>
         <input type="date" name="date" placeholder="Creation Date"><br>
         <input name="desc" placeholder="Description"><br>
         <select name="developer">
-        {#projects.memberName}
-          <option value={.}>{.}</option>
-        {/projects.memberName}
+        {#projects}
+        {#members}
+          <option value={.memberName}>{.memberName}</option>
+                  {/members}
+        {/projects}
         </select><br>
         <select name="status">
                    <option value="Backlog">Backlog</option>
@@ -48,15 +50,17 @@
                     <input type="submit" value="Save">
 
                 </form>
+
             </fieldset>
         </div>
 
-            {?projects}
+            {?projects.sprintDetails}
                 <fieldset>
                     <legend>Story List</legend>
                             <div style="display: inline-block;margin:15px;font-size:13px;padding-top:10px;padding-left:3px;">
                                   <div id="accordion">
-                                    {#projects.story}
+                                    {#projects.sprintDetails}
+                                    {#story}
                                         <h2> {name}</h2>
                                         <div>
                                         <ul> Name: {name}</ul>
@@ -65,17 +69,16 @@
                                         <ul> Desc: {desc}</ul>
                                         <ul> Developer: {developer}</ul>
                                         <ul> Status: {status}</ul>
-                                        <ul> sprintStartDate: {sprintStartDate}</ul>
-                                        <ul> sprintEndDate: {sprintEndDate}</ul>
-                                    <button style="float:right"><a href='/story/{projects._id}/delete/{name}'>Delete</a> </button>
-                                   <button style="float:right"><a href='/story/{projects._id}/edit/{name}'>Edit</a></button>
+                            <button style="float:right"><a href='/story/{projects._id}/delete/{name}'>Delete</a> </button>
+                            <button style="float:right"><a href='/story/{projects._id}/edit/{name}'>Edit</a></button>
                              </div>
-                           {/projects.story}
+                             {/story}
+                           {/projects.sprintDetails}
                                </div>
                              </div>
 
                     </fieldset>
             {:else}
                 There are no stories :(
-            {/projects}
+            {/projects.sprintDetails}
 {/body}
