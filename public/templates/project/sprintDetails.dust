@@ -10,6 +10,7 @@
 {<body}
    <div class="products">
        <h2>Sprint Details</h2>
+
           <fieldset>
                 <ul class="nm-np inline" style="font-size:14px;overflow:auto">
                       {#projects.sprintDetails}
@@ -20,5 +21,66 @@
                      {/projects.sprintDetails}
                 </ul>
           </fieldset>
+                        <fieldset>
+                          <form method="POST" action="/{projects._id}/story/search">
+                                <input type="text" name="storyName" id="storyName" placeholder="Search by StoryName">
+                                <button type="submit" class="glyphicon glyphicon-search"/>
+                                <input type="hidden" name="_csrf" value="{_csrf}">
+                                </form>
+                                </fieldset>
+
+                              <form method="POST" action="/{projects._id}/story/sort">
+                                <input type="text" name="sort" placeholder="Sort By StoryName">
+                                <button type="submit" class="glyphicon glyphicon-sort-by-alphabet"/>
+                                <input type="hidden" name="_csrf" value="{_csrf}">
+                                </form>
+
  </div>
-  {/body}
+
+ {?projects.sprintDetails}
+                 <fieldset>
+                     <legend>Story List</legend>
+                             <div style="display: inline-block;margin:15px;font-size:13px;padding-top:10px;padding-left:3px;">
+                                   <div id="accordion">
+                                     {#projects.sprintDetails}
+                                     {#story}
+                                         <h2> {name}</h2>
+                                         <div>
+                                         <ul> Name: {name}</ul>
+                                         <ul> Creator: {creator}</ul>
+                                         <ul>  Creation Date: {date}</ul>
+                                         <ul> Desc: {desc}</ul>
+                                         <ul> Developer: {developer}</ul>
+                                         <ul> Status: {status}</ul>
+                             <button data-toggle = "modal" data-target = "#deleteStory" style="float:right">Delete </button>
+                       <!-- Modal -->
+                                     <div class = "modal fade" id = "deleteStory" tabindex = "-1" role = "dialog"
+                                     aria-labelledby = "myModalLabel" aria-hidden = "true">
+                                       <div class = "modal-dialog">
+                                          <div class = "modal-content">
+                                           <div class = "modal-header">
+                                                <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true"> &times;</button>
+                                                <h4 class = "modal-title" id = "myModalLabel">Delete </h4>
+                                            </div>
+                                             <div class = "modal-body">Are you sure to delete this Story?
+                                              </div>
+                                             <div class = "modal-footer">
+                                                <button type = "button" class = "btn btn-primary"><a href='/story/{projects._id}/{sprintNo}/delete/{name}'>Confirm</a></button>
+                                                <button type = "button" class = "btn btn-default" data-dismiss = "modal">Cancel</button>
+                                             </div>
+                                          </div><!-- /.modal-content -->
+                                       </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                             <button style="float:right"><a href='/project/{projects._id}/{sprintNo}/edit/{name}'>Edit</a></button>
+                              </div>
+                              {/story}
+                            {/projects.sprintDetails}
+                                </div>
+                              </div>
+
+                     </fieldset>
+             {:else}
+                 There are no stories :(
+             {/projects.sprintDetails}
+
+       {/body}

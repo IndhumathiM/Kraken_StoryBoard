@@ -11,7 +11,7 @@
     <legend>{projects.projectName}</legend>
       {#projects}
         <ul>
-            <li> ProjectName: {projectName} </li>
+                          <li><a href='/project/{.id}'>{.projectName}</a></li>
            {! <li> StartDate: {startDate}  </li>
 
             <li> Releases: {releases}  </li>

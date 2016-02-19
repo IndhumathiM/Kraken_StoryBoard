@@ -22,7 +22,7 @@
             sprintStartDate: String,
             sprintEndDate: String,
             story: [{
-                name: String,
+                name: { type: String, index: { unique: true }},
                 creator: String,
                 date: String,
                 desc: String,

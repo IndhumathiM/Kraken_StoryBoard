@@ -13,7 +13,8 @@
 
                 <legend>{projects.projectName}</legend>
 
-      {#projects.story}
+      {#projects.sprintDetails}
+      {#story}
 
 <ul>
 <li> name: {name} </li>
@@ -24,13 +25,12 @@
 <li> sprintEndDate: {sprintEndDate}  </li>
 
 </ul>
-  {/projects.story}
-
-
+  {/story}
+        {/projects.sprintDetails}
   </fieldset>
    {:else}
                   There are no stories :(
-                              {/projects}
+          {/projects}
 
         </div>
             </main>

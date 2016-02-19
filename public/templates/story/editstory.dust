@@ -10,9 +10,9 @@
 
              <fieldset>
                  <legend>Edit Story Details</legend>
-       {#projects.story}
-
-       <form method="POST" action="/story/update/{projects._id}/{name}">
+       {#projects.sprintDetails}
+                                    {#story}
+       <form method="POST" action="/project/{projects._id}/{sprintNo}/update/{name}">
        <input type="hidden" name="_method" value="PUT">
 
        <input name="name" placeholder="Story Name", value="{name}"><br>
@@ -27,7 +27,8 @@
               <option value=Done>Done </option>
               <option value=Accepted>Accepted</option>
        </select>
-         {/projects.story}
+       {/story}
+         {/projects.sprintDetails}
 
 <br>
    <select name="developer">

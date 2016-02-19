@@ -9,53 +9,44 @@
 </head>
 
 {<body}
-
     <h2>Project Details</h2>
+
         <div class="grey">
             <fieldset>
-                <legend>{projects.projectName}</legend>
-
+                <legend>{projects.projectName} </legend>
 <ul>
-
-<li> ProjectNo: {projects.projectNo} </li>
-<li> StartDate: {projects.startDate}  </li>
-<li> EndDate: {projects.endDate}  </li>
-<li> Releases: {projects.releases}  </li>
-<li> Sprint Duration: {projects.sprintDuration}  </li>
-<li> Number of Sprints: {projects.noOfSprint}  </li>
-<li> Teamno: {projects.teamno}  </li>
-<li> Teamname: {projects.teamname}  </li>
-
-<li> id: {projects._id}  </li>
-  <li>  <a href='/{projects._id}/stories'>Stories</a></li>
-
+    <li> ProjectNo: {projects.projectNo} </li>
+    <li> StartDate: {projects.startDate}  </li>
+    <li> EndDate: {projects.endDate}  </li>
+    <li> Releases: {projects.releases}  </li>
+    <li> Sprint Duration: {projects.sprintDuration}  </li>
+    <li> Number of Sprints: {projects.noOfSprint}  </li>
+    <li> Teamno: {projects.teamno}  </li>
+    <li> Teamname: {projects.teamname}  </li>
 </ul>
-
   </fieldset>
         </div>
-            </main>
-
              <fieldset>
-
-       <form method="POST" action="/{projects._id}/story/search/name">
-                     <label for="name">StoryName: </label>
-                      <input name="storyName" placeholder="Story Name">
-                      <button type="submit" class="glyphicon glyphicon-search"/>
+                 <form method="POST" action="/{projects._id}/story/filter">
+                      <input name="sprintNo" id="sprintNo" placeholder="Sprint No">
+                      <button type="submit" class="glyphicon glyphicon-filter"/>
                       <input type="hidden" name="_csrf" value="{_csrf}">
-
-                       </form>
-                       </fieldset>
-                     </div>
+                   </form>
+                  </fieldset>
               <fieldset>
-
-     <form method="POST" action="/{projects._id}/story/search/date">
-                     <label for="name">Search story by releaseDate: </label>
-                      <input type="date" name="releaseDate" placeholder="Release Date">
+                <form method="POST" action="/{projects._id}/story/search">
+                      <input type="text" name="storyName" id="storyName" placeholder="Search by StoryName">
                       <button type="submit" class="glyphicon glyphicon-search"/>
                       <input type="hidden" name="_csrf" value="{_csrf}">
-
                       </form>
                       </fieldset>
+
+                    <form method="POST" action="/{projects._id}/story/sort">
+                      <input type="text" name="sort" placeholder="Sort By StoryName">
+                      <button type="submit" class="glyphicon glyphicon-sort-by-alphabet"/>
+                      <input type="hidden" name="_csrf" value="{_csrf}">
+                      </form>
                   </div>
+
 
 {/body}

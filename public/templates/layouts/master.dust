@@ -3,6 +3,7 @@
 <head>
 
     <meta charset="utf-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{+title /}</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -14,12 +15,27 @@
      <link rel="stylesheet" href="css/app.css"/>
 
 </head>
+ <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
 <body >
 <header class="grey">
-    <div class="wrapper"><nav>
+    <div class="wrapper">
         <h1>Agile StoryBoard<span class="glyphicon glyphicon-blackboard"></span></h1>
-
-            <ul class="inline">
+        </header>
+<nav class="navbar navbar-default";>
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
                 <li><a href="/home"><span class="glyphicon glyphicon-home">Home</span></a></li>
 
                 <li><a href="/profile"><span class="glyphicon glyphicon-file">Profile</span></a></li>
@@ -34,13 +50,14 @@
                          <a href="/login"><span class = "glyphicon glyphicon-log-in">Login</span></a>
                     {/user}
                 </li>
-            </ul>
+                </ul>
+            </div>
+            </div>
         </nav>
     </div>
-</header>
-
 <div class="wrapper">
     {+body /}
+    </div>
     <script>
 $(document).ready(function(){
     $("#flip").click(function(){
@@ -50,9 +67,9 @@ $(document).ready(function(){
      collapsible: true
     });
 $("#myModal").modal('hide');
-})
+
+        });
 </script>
-</div>
 </body>
 </html>
 

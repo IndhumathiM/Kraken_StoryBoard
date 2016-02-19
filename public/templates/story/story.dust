@@ -19,22 +19,19 @@
         <label for="name">Name: </label><br>
         <label for="creator">Creator: </label><br>
         <label for="creation date">Creation Date: </label> <br>
-        <label for="desc">Description: </label><br>
+        <label for="desc">Description: </label><br><br>
         <label for="Developer">Developer: </label><br>
         <label for="Status">Status: </label>
       </div>
-      {/projects.sprintDetails}
       <div class="right">
         <input name="name" placeholder="Story Name"><br>
         <input name="creator" placeholder="Creator"><br>
         <input type="date" name="date" placeholder="Creation Date"><br>
-        <input name="desc" placeholder="Description"><br>
+        <textarea rows="2" columns="50"name="desc" placeholder="Description"></textarea><br>
         <select name="developer">
-        {#projects}
-        {#members}
-          <option value={.memberName}>{.memberName}</option>
-                  {/members}
-        {/projects}
+        {#projects.members}
+          <option value={memberName}>{memberName}</option>
+         {/projects.members}
         </select><br>
         <select name="status">
                    <option value="Backlog">Backlog</option>
@@ -53,32 +50,6 @@
 
             </fieldset>
         </div>
+                  {/projects.sprintDetails}
 
-            {?projects.sprintDetails}
-                <fieldset>
-                    <legend>Story List</legend>
-                            <div style="display: inline-block;margin:15px;font-size:13px;padding-top:10px;padding-left:3px;">
-                                  <div id="accordion">
-                                    {#projects.sprintDetails}
-                                    {#story}
-                                        <h2> {name}</h2>
-                                        <div>
-                                        <ul> Name: {name}</ul>
-                                        <ul> Creator: {creator}</ul>
-                                        <ul>  Creation Date: {date}</ul>
-                                        <ul> Desc: {desc}</ul>
-                                        <ul> Developer: {developer}</ul>
-                                        <ul> Status: {status}</ul>
-                            <button style="float:right"><a href='/story/{projects._id}/delete/{name}'>Delete</a> </button>
-                            <button style="float:right"><a href='/story/{projects._id}/edit/{name}'>Edit</a></button>
-                             </div>
-                             {/story}
-                           {/projects.sprintDetails}
-                               </div>
-                             </div>
-
-                    </fieldset>
-            {:else}
-                There are no stories :(
-            {/projects.sprintDetails}
 {/body}
