@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html >
+<head>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.1/underscore-min.js" ></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" ></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js" ></script>
+   <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.validation/0.7.1/backbone-validation-min.js"></script>
+       <link rel="stylesheet" href= "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" type="text/javascript"></script>
+</head>
+<body>
+<form class="form-horizontal" role="form">
+     <h3>Sign Up!</h3>
+
+    <div class="form-group">
+        <label for="username" class="col-lg-2 control-label">Username</label>
+        <div class="col-lg-10">
+            <input type="text" class="form-control" id="username" name="username" />
+            <span class="help-block hidden"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="email" class="col-lg-2 control-label">Email</label>
+        <div class="col-lg-10">
+            <input type="email" class="form-control" id="email" name="email" />
+            <span class="help-block hidden"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password" class="col-lg-2 control-label">Password</label>
+        <div class="col-lg-10">
+            <input type="password" class="form-control" id="password" name="password" />
+            <span class="help-block hidden"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="repeatPassword" class="col-lg-2 control-label">Repeat Password</label>
+        <div class="col-lg-10">
+            <input type="password" class="form-control" id="repeatPassword" name="repeatPassword" />
+            <span class="help-block hidden"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="country" class="col-lg-2 control-label">Country</label>
+        <div class="col-lg-10">
+            <select class="form-control" id="country" name="country">
+              <option>Norway</option>
+              <option>Sweeden</option>
+              <option>Denmark</option>
+              <option>Finland</option>
+              <option>Iceland</option>
+            </select>
+            <span class="help-block hidden"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-2 control-label">Gender</label>
+        <div class="col-lg-offset-2 col-lg-10">
+            <label class="radio-inline control-label">
+                <input type="radio" id="genderMale" name="gender" value="male" /> Male
+            </label>
+            <label class="radio-inline control-label">
+                <input type="radio" id="genderFemale" name="gender" value="female" /> Female
+            </label>
+            <span class="help-block hidden"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="age" class="col-lg-2 control-label">Age</label>
+        <div class="col-lg-10">
+            <input type="number" class="form-control" id="age" name="age" />
+            <span class="help-block hidden"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-offset-2 col-lg-10">
+            <div class="checkbox">
+                <label class="control-label">
+                    <input type="checkbox" value="true" id="terms" name="terms" />I agree all your <a href="#">Terms of Services</a>
+
+                </label>
+                <span class="help-block hidden"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-offset-2 col-lg-10">
+            <button type="button" id="signUpButton" class="btn btn-success">Sign Up</button>
+        </div>
+    </div>
+</form>
+<script>
+_.extend(Backbone.Validation.callbacks, {
+    valid: function (view, attr, selector) {
+        var $el = view.$('[name=' + attr + ']'),
+            $group = $el.closest('.form-group');
+
+        $group.removeClass('has-error');
+        $group.find('.help-block').html('').addClass('hidden');
+    },
+    invalid: function (view, attr, error, selector) {
+        var $el = view.$('[name=' + attr + ']'),
+            $group = $el.closest('.form-group');
+
+        $group.addClass('has-error');
+        $group.find('.help-block').html(error).removeClass('hidden');
+    }
+});
+
+var SignUpModel = Backbone.Model.extend({
+    defaults: {
+        terms: false,
+        gender: ''
+    },
+    validation: {
+        username: {
+            required: true
+        },
+        email: {
+            required: true,
+            pattern: 'email'
+        },
+        password: {
+            minLength: 8
+        },
+        repeatPassword: {
+            equalTo: 'password',
+            msg: 'The passwords does not match'
+        },
+        country: {
+          oneOf: ['Norway', 'Sweeden']
+        },
+        gender: {
+            required: true
+        },
+        age: {
+            required: false,
+            range: [18, 100]
+        },
+        terms: {
+            acceptance: true
+        }
+    },
+    initialize: function () {
+        console.log("model-initial");
+        }
+});
+
+var SignUpForm = Backbone.View.extend({
+    events: {
+        'click #signUpButton': function (e) {
+            e.preventDefault();
+            this.signUp();
+        }
+    },
+
+    initialize: function () {
+    console.log("view-initial");
+        Backbone.Validation.bind(this);
+    },
+
+    signUp: function () {
+        var data = this.$el.serializeObject();
+
+        this.model.set(data);
+
+        if(this.model.isValid(true)){
+            alert('Great Success!');
+        }
+    },
+
+    remove: function() {
+        Backbone.Validation.unbind(this);
+        return Backbone.View.prototype.remove.apply(this, arguments);
+    }
+});
+
+$(function () {
+    var view = new SignUpForm({
+        el: 'form',
+        model: new SignUpModel()
+    });
+});
+
+$.fn.serializeObject = function () {
+    "use strict";
+    var a = {}, b = function (b, c) {
+        var d = a[c.name];
+        "undefined" != typeof d && d !== null ? $.isArray(d) ? d.push(c.value) : a[c.name] = [d, c.value] : a[c.name] = c.value
+    };
+    return $.each(this.serializeArray(), b), a
+};
+</script>
+</body>

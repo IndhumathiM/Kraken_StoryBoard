@@ -16,6 +16,9 @@ module.exports = function (router) {
     router.get('/', function (req, res) {
         res.render('index', indexmodel);
     });
+    router.get('/homeView', function (req, res) {
+        res.render('homeView');
+    });
 
     router.get('/profile', function (req, res) {
         res.render('profile', profilemodel);
@@ -393,12 +396,12 @@ module.exports = function (router) {
      *Inserting stories into sprintDetails
      */
     router.post('/story/:id/:sprintNo', function (req, res) {
-        console.log("hello" + JSON.stringify(req.body.name));
+        console.log("add story" + JSON.stringify(req.body.name));
+
         Project.update({_id: req.params.id, "sprintDetails.sprintNo": req.params.sprintNo},
             {
                 $push: {
                     "sprintDetails.$.story": {
-                        $each: [{
                             "name": req.body.name,
                             "creator": req.body.creator,
                             "date": req.body.date,
@@ -406,17 +409,15 @@ module.exports = function (router) {
                             "sprintNo": req.body.sprintNo,
                             "developer": req.body.developer,
                             "status": req.body.status
-                        }],$sort:{name:1}
                     }
                     }
-                }
-            ,
+                } ,
             function (err, docs) {
                 if (err) res.json(err);
-
                 else {
+                    res.redirect('/project');
                     console.log("story" + docs);
-                    Project.find({_id: req.params.id, "sprintDetails.sprintNo": req.params.sprintNo}, {
+                  /*  Project.find({_id: req.params.id, "sprintDetails.sprintNo": req.params.sprintNo}, {
                             "members": 1,
                             "sprintDetails.$": 1
                         },
@@ -429,7 +430,7 @@ module.exports = function (router) {
                                 res.render('story/story', {projects: docs[0]});
                             }
 
-                        });
+                        });  */
                 }
             });
     });
