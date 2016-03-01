@@ -21,20 +21,23 @@
             sprintNo: String,
             sprintStartDate: String,
             sprintEndDate: String,
-            story: [{
-                name: { type: String, index: { unique: true }},
-                creator: String,
-                date: String,
-                desc: String,
-                developer: String,
-                status: String
-            }]
+            story: [{type: schema.Types.ObjectId, ref: 'project'}]
         }],
        members:[{
            memberId: {type: schema.Types.ObjectId, ref: 'user'},
            memberName: String,
            memberEmail: String
-       }]
+       }],
+        story: [{
+            name: { type: String, index: { unique: true }},
+            creator: String,
+            date: String,
+            desc: String,
+            developer: String,
+            status: String,
+            sprintNo:String
+        }]
+
      });
     projectSchema.methods.storyStartDate = function () {
         return this.story.sprintNo *2;

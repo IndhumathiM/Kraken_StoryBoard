@@ -1,0 +1,32 @@
+{>"layouts/master" /}
+{<title}
+    Story Details
+{/title}
+{<body}
+    <div class="products">
+    <fieldset>
+        <legend>Story List</legend>
+            <ul class="nm-np inline">
+
+                <legend>{projects.projectName}</legend>
+
+      {#projects.story}
+
+<li>
+<p> name: {name}</p>
+ <p>creator: {creator}</p>
+<p>creation date: {date}</p>
+<p> desc: {desc}</p>
+<p>sprintNo: {sprintNo}</p>
+<p>TeamMember: {developer}  </p>
+<p> Status: {status} </p>
+   <button><a href='/{projects._id}/edit/{name}'>Edit Story</button></h3>
+    <button style="margin:5px"><a href='/{projects._id}/delete/{name}'>Delete Story</button></h3><br>
+    <button style="margin:5px"><a href='/{projects._id}/addToSprint/{name}'>Add Story to the sprint</button></h3>
+
+</li>
+  {/projects.story}
+</ul>
+  </fieldset>
+        </div>
+{/body}

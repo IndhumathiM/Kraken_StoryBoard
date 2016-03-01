@@ -10,11 +10,21 @@
 
              <fieldset>
                  <legend>Edit Story Details</legend>
-       {#projects.sprintDetails}
-                                    {#story}
-       <form method="POST" action="/project/{projects._id}/{sprintNo}/update/{name}">
+       {#projects.story}
+       <form method="POST" action="/story/update/{projects._id}/{name}">
        <input type="hidden" name="_method" value="PUT">
+    <div class="content">
+      <div class="left">
+        <label for="name">Name: </label><br>
+        <label for="creator">Creator: </label><br>
+        <label for="creation date">Creation Date: </label> <br>
+        <label for="desc">Description: </label><br>
+        <label for="Status">Status: </label><br>
+        <label for="Developer">Developer: </label>
 
+      </div>
+
+      <div class="right">
        <input name="name" placeholder="Story Name", value="{name}"><br>
        <input name="creator" placeholder="Creator", value="{creator}"><br>
        <input type="date" name="date" placeholder="Date", value="{date}"><br>
@@ -26,17 +36,18 @@
               <option value=InProgress>In Progress</option>
               <option value=Done>Done </option>
               <option value=Accepted>Accepted</option>
-       </select>
-       {/story}
-         {/projects.sprintDetails}
+       </select> </div>
 
 <br>
    <select name="developer">
-        {#projects.memberName}
-        <option value={.}>{.}</option>
-    {/projects.memberName}
+   <option value="{developer}" selected>{developer} </option>
+            {/projects.story}
+    {#projects.members}
+        <option value={memberName}>{memberName}</option>
+     {/projects.members}
        </select>
-         <input type="submit" value="Update">
+        <br>
+         <input style="margin:10px;" type="submit" value="Update">
          <input type="hidden" name="_csrf" value="{_csrf}">
         </form>
 

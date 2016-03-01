@@ -271,23 +271,6 @@ module.exports = function (router) {
                 res.render('project/projectdetails', {projects: docs[0]});
         });
     });
-    /* Getting Story Main page */
-    router.get('/:id/:sprintNo/addStory', function (req, res) {
-        Project.find({_id: req.params.id, "sprintDetails.sprintNo": req.params.sprintNo}, {
-                "members": 1,
-                "sprintDetails.$": 1
-            },
-            function (err, docs) {
-                if (err) {
-                    res.json(err);
-                }
-                else {
-                    console.log("Add story sprintdetails" + docs[0]);
-                    res.render('story/story', {projects: docs[0]});
-                }
-
-            });
-    });
 
     router.get('/:id/addMember', function (req, res) {
         Project.find({_id: req.params.id}, function (err, docs) {
@@ -392,48 +375,6 @@ module.exports = function (router) {
             });
     });
 
-    /**
-     *Inserting stories into sprintDetails
-     */
-    router.post('/story/:id/:sprintNo', function (req, res) {
-        console.log("add story" + JSON.stringify(req.body.name));
-
-        Project.update({_id: req.params.id, "sprintDetails.sprintNo": req.params.sprintNo},
-            {
-                $push: {
-                    "sprintDetails.$.story": {
-                            "name": req.body.name,
-                            "creator": req.body.creator,
-                            "date": req.body.date,
-                            "desc": req.body.desc,
-                            "sprintNo": req.body.sprintNo,
-                            "developer": req.body.developer,
-                            "status": req.body.status
-                    }
-                    }
-                } ,
-            function (err, docs) {
-                if (err) res.json(err);
-                else {
-                    res.redirect('/project');
-                    console.log("story" + docs);
-                  /*  Project.find({_id: req.params.id, "sprintDetails.sprintNo": req.params.sprintNo}, {
-                            "members": 1,
-                            "sprintDetails.$": 1
-                        },
-                        function (err, docs) {
-                            if (err) {
-                                res.json(err);
-                            }
-                            else {
-                                console.log("sprintdetails" + docs[0]);
-                                res.render('story/story', {projects: docs[0]});
-                            }
-
-                        });  */
-                }
-            });
-    });
 
 
     /*
@@ -453,34 +394,6 @@ module.exports = function (router) {
             });
     });
 
-    /*
-     Story updating
-
-     router.get('/story/:id/:sprintNo/update/:name', function (req, res) {
-     console.log("name"+JSON.stringify(req.params.name));
-     Project.update({_id: req.params.id,"sprintDetails.sprintNo":req.params.sprintNo},
-     {
-     $addToSet: {
-     "sprintDetails.$.story": {
-     name: req.params.name,
-     creator: req.params.creator.
-     date: req.params.date,
-     desc: req.params.desc,
-     developer: req.params.developer,
-     status: req.params.status
-
-     }
-     }
-     },
-     function (err, docs) {
-     if (err) res.json(err);
-
-     else {
-     res.redirect('/project');
-
-     }
-     });
-     }); */
     /*
      Stories under project
      */
@@ -524,7 +437,7 @@ module.exports = function (router) {
                 }
                 else {
                     console.log("story by sprintNo" + docs[0]);
-                    res.render('project/storybydate', {projects: docs[0]});
+                    res.render('story/story', {projects: docs[0]});
                 }
             });
     });
@@ -561,29 +474,6 @@ module.exports = function (router) {
             });
     });
 
-    /**
-     *Deleting stories from project
-     */
-    router.get('/story/:id/:sprintNo/delete/:name', function (req, res) {
-        console.log("name" + JSON.stringify(req.params.name));
-        Project.update({_id: req.params.id, "sprintDetails.sprintNo": req.params.sprintNo},
-            {
-                $pull: {
-                    "sprintDetails.$.story": {
-                        name: req.params.name
-                    }
-                }
-            },
-            function (err, docs) {
-                if (err) res.json(err);
-
-                else {
-                    res.redirect('/project');
-
-                }
-            });
-    });
-
 
     /*
      Team under project
@@ -605,5 +495,195 @@ module.exports = function (router) {
 
         res.render('project/projectregistration');
     });
+    //Getting story add page
+    router.get('/:id/addStory', function (req, res) {
+console.log("add story"+req.params.id);
+        Project.find({_id: req.params.id}, {
+                    "members": 1
+                },
+                function (err, docs) {
+                    if (err) {
+                        res.json(err);
+                    }
+                    else {
+                        console.log("Add story sprintdetails" + docs[0]);
+                        res.render('story/addStory', {projects: docs[0]});
+                    }
 
-};
+                });
+        });
+
+    /**
+     *Inserting stories into project
+     */
+    router.post('/:id/addStory', function (req, res) {
+        console.log("add story" + JSON.stringify(req.body.developer));
+
+        Project.update({_id: req.params.id},
+            {
+                $push: {
+                    "story": {
+                        "name": req.body.name,
+                        "creator": req.body.creator,
+                        "date": req.body.date,
+                        "desc": req.body.desc,
+                        "sprintNo": req.body.sprintNo,
+                        "developer": req.body.developer,
+                        "status": req.body.status
+                    }
+                }
+            } ,
+            function (err, docs) {
+                if (err) res.json(err);
+                else {
+                    res.redirect('/project');
+                    console.log("story" + docs);
+                    /*  Project.find({_id: req.params.id, "sprintDetails.sprintNo": req.params.sprintNo}, {
+                     "members": 1,
+                     "sprintDetails.$": 1
+                     },
+                     function (err, docs) {
+                     if (err) {
+                     res.json(err);
+                     }
+                     else {
+                     console.log("sprintdetails" + docs[0]);
+                     res.render('story/story', {projects: docs[0]});
+                     }
+
+                     });  */
+                }
+            });
+    });
+    /*
+     Stories under project
+     */
+    router.get('/:id/stories',function(req,res){
+        Project.find({_id: req.params.id},
+            function (err,docs) {
+                if (err) {
+                    res.json(err);
+                }
+                else
+
+                    res.render('story/storydetails',{projects:docs[0]});
+            });
+    });
+    /*
+     getting a story edit page
+     */
+
+    router.get('/:id/edit/:name',function(req,res){
+        Project.find({_id: req.params.id,'story.name':req.params.name},{"story.$":1,"members":1},
+            function (err,docs) {
+                if (err) {
+                    res.json(err)   ;
+                }
+                else
+                    res.render('story/editstory', {projects:docs[0]});
+            });
+    });
+    /*
+     Story updating
+     */
+    router.post('/story/update/:id/:name',function(req,res){
+        console.log("body"+JSON.stringify(req.body));
+        Project.update({_id: req.params.id,'story.name':req.params.name},
+            {$set:{
+                "story.$.name":req.body.name,
+                "story.$.creator":req.body.creator,
+                "story.$.date":req.body.date,
+                "story.$.desc":req.body.desc,
+                "story.$.developer":req.body.developer,
+                "story.$.status":req.body.status
+            }},
+            function(err,docs) {
+                if (err)
+                    res.json(err);
+
+                else {
+                    console.log(docs);
+                    res.redirect('/project');
+                }
+            });
+    });
+    /**
+     *Deleting stories from project
+     */
+    router.get('/:id/delete/:name', function (req, res) {
+        console.log("name"+req.params.name);
+        Project.update({_id: req.params.id},
+            {$pull:
+            { story: {
+                name: req.params.name
+            }}},
+            function (err) {
+                if (err) {
+                    console.log('Remove error: ', err);
+                }
+                else{
+                Project.find({_id: req.params.id},
+                    function (err,docs) {
+                        if (err) {
+                            res.json(err);
+                        }
+                        else
+
+                            res.render('story/storydetails',{projects:docs[0]});
+                    }); }            });
+    });
+    /* Getting page to add story into sprint*/
+    router.get('/:id/:sprintNo/addStory', function (req, res) {
+
+        Project.find({_id: req.params.id, "sprintDetails.sprintNo": req.params.sprintNo}, {
+                "members": 1,
+                "sprintDetails.$": 1
+            },
+            function (err, docs) {
+                if (err) {
+                    res.json(err);
+                }
+                else {
+                    console.log("Add story sprintdetails" + docs[0]);
+                    res.render('story/story', {projects: docs[0]});
+                }
+
+            });
+    });
+/* Adding Sprint to story */
+    router.get('/:id/addToSprint/:name', function (req, res) {
+        Project.find({_id: req.params.id,'story.name':req.params.name},{"story.$":1,"sprintDetails":1},
+            function(err,docs) {
+          if (err) {
+              res.json(err);
+          }
+          else {
+              console.log("Add story sprintdetails" + docs[0]);
+              res.render('story/story', {projects: docs[0]});
+          }
+      })
+
+    });
+    /* posting Sprint to story */
+    router.post('/:id/add/:name', function (req, res) {
+        console.log(req.body.sprintNo);
+        console.log(req.params.id);
+        console.log(req.params.name);
+
+        Project.update({_id: req.params.id,"story.name":req.params.name},
+            {$set: {
+                "story.$.sprintNo": req.body.sprintNo
+            }},
+            function(err,docs) {
+                if (err) {
+                    res.json(err);
+                }
+                else {
+                    res.redirect('/project');
+                }
+            })
+
+    });
+
+
+        };

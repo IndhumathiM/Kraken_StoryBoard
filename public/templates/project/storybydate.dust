@@ -7,15 +7,12 @@
     <h2>Story Details</h2>
     <main role="main">
         <div class="mb2">
-                    {?projects}
-
+           {?projects}
             <fieldset>
-
                 <legend>{projects.projectName}</legend>
-
       {#projects.sprintDetails}
       {#story}
-
+{@eq key=name value="indhu"}
 <ul>
 <li> name: {name} </li>
 <li> creator: {creator}  </li>
@@ -23,8 +20,10 @@
 <li> desc: {desc}  </li>
 <li> sprintStartDate: {sprintStartDate}  </li>
 <li> sprintEndDate: {sprintEndDate}  </li>
-
 </ul>
+{:else}
+No stories
+{/eq}
   {/story}
         {/projects.sprintDetails}
   </fieldset>

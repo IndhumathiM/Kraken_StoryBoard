@@ -25,28 +25,5 @@
     <li> Teamname: {projects.teamname}  </li>
 </ul>
   </fieldset>
-        </div>
-             <fieldset>
-                 <form method="POST" action="/{projects._id}/story/filter">
-                      <input name="sprintNo" id="sprintNo" placeholder="Sprint No">
-                      <button type="submit" class="glyphicon glyphicon-filter"/>
-                      <input type="hidden" name="_csrf" value="{_csrf}">
-                   </form>
-                  </fieldset>
-              <fieldset>
-                <form method="POST" action="/{projects._id}/story/search">
-                      <input type="text" name="storyName" id="storyName" placeholder="Search by StoryName">
-                      <button type="submit" class="glyphicon glyphicon-search"/>
-                      <input type="hidden" name="_csrf" value="{_csrf}">
-                      </form>
-                      </fieldset>
-
-                    <form method="POST" action="/{projects._id}/story/sort">
-                      <input type="text" name="sort" placeholder="Sort By StoryName">
-                      <button type="submit" class="glyphicon glyphicon-sort-by-alphabet"/>
-                      <input type="hidden" name="_csrf" value="{_csrf}">
-                      </form>
-                  </div>
-
 
 {/body}

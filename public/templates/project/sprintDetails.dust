@@ -3,43 +3,36 @@
     Sprint Details
 {/title}
 <head>
- <link rel="stylesheet" href="../../css/app.css"/>
-  <script src="../../story/story.dust"/>
-
+ <link rel="stylesheet" href="../../../css/app.css"/>
  </head>
 {<body}
    <div class="products">
-       <h2>Sprint Details</h2>
-
+              <h2 >Sprint Details</h2>
           <fieldset>
-                <ul class="nm-np inline" style="font-size:14px;overflow:auto">
+                <ul class="nm-np " style="font-size:14px;width:50%overflow:auto">
                       {#projects.sprintDetails}
+
                     <li> Sprint No: {sprintNo} <br>
-                         Sprint StartDate: {sprintStartDate} <br>
+                         Sprint StartDate: {sprintStartDate} {s}{s}<button style="float:right;width:30%"><a href="/{projects._id}/{sprintNo}/addStory">Add Story for this sprint</a></button><br>
                          Sprint EndDate: {sprintEndDate} <br>
-                         <button><a href="/{projects._id}/{sprintNo}/addStory">Add Story for this sprint</a></button> </li>
+                          </li>
                      {/projects.sprintDetails}
                 </ul>
           </fieldset>
-                        <fieldset>
-                          <form method="POST" action="/{projects._id}/story/search">
-                                <input type="text" name="storyName" id="storyName" placeholder="Search by StoryName">
-                                <button type="submit" class="glyphicon glyphicon-search"/>
-                                <input type="hidden" name="_csrf" value="{_csrf}">
-                                </form>
-                                </fieldset>
-
-                              <form method="POST" action="/{projects._id}/story/sort">
-                                <input type="text" name="sort" placeholder="Sort By StoryName">
-                                <button type="submit" class="glyphicon glyphicon-sort-by-alphabet"/>
-                                <input type="hidden" name="_csrf" value="{_csrf}">
-                                </form>
 
  </div>
-
+<br>
  {?projects.sprintDetails}
-                 <fieldset>
-                     <legend>Story List</legend>
+         <fieldset>
+             <legend>Story List
+             <form style="float:right;font-size:15px;" method="POST" action="/{projects._id}/story/search">
+                <input type="text" name="storyName" id="storyName" placeholder="Search by StoryName">
+                  <button id="search" type="submit"  class="glyphicon glyphicon-search"/>
+                <input type="hidden" name="_csrf" value="{_csrf}">
+                  </form>
+               </legend>
+             </fieldset>
+
                              <div style="display: inline-block;margin:15px;font-size:13px;padding-top:10px;padding-left:3px;">
                                    <div id="accordion">
                                      {#projects.sprintDetails}
@@ -54,16 +47,14 @@
                                          <ul> Status: {status}</ul>
                              <button data-toggle = "modal" data-target = "#deleteStory" style="float:right">Delete </button>
                        <!-- Modal -->
-                                     <div class = "modal fade" id = "deleteStory" tabindex = "-1" role = "dialog"
-                                     aria-labelledby = "myModalLabel" aria-hidden = "true">
+                            <div class = "modal fade" id = "deleteStory" tabindex = "-1" role = "dialog" aria-labelledby = "myModalLabel" aria-hidden = "true">
                                        <div class = "modal-dialog">
                                           <div class = "modal-content">
                                            <div class = "modal-header">
                                                 <button type = "button" class = "close" data-dismiss = "modal" aria-hidden = "true"> &times;</button>
                                                 <h4 class = "modal-title" id = "myModalLabel">Delete </h4>
                                             </div>
-                                             <div class = "modal-body">Are you sure to delete this Story?
-                                              </div>
+                                             <div class = "modal-body">Are you sure to delete this Story?</div>
                                              <div class = "modal-footer">
                                                 <button type = "button" class = "btn btn-primary"><a href='/story/{projects._id}/{sprintNo}/delete/{name}'>Confirm</a></button>
                                                 <button type = "button" class = "btn btn-default" data-dismiss = "modal">Cancel</button>
@@ -82,5 +73,6 @@
              {:else}
                  There are no stories :(
              {/projects.sprintDetails}
+
 
        {/body}

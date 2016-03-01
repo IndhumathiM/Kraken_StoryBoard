@@ -7,154 +7,21 @@
  </head>
 
 {<body}
-        {#projects.sprintDetails}
-        <form class="form-horizontal" role="form" method="POST">
-         <input type="hidden" name="_method" value="PUT">
-            <div class="form-group">
-                   <h3>Add a new Story</h3><br>
-                <label for="name" class="col-lg-2 control-label">Name</label>
-                <div class="col-lg-10">
-                <input type="text" class="form-control"  name="name" />
-                 <span class="help-block hidden"></span>
-                </div>
-             </div>
+{#projects.story}
+       <form method="POST" action="/{projects._id}/add/{name}">
+       <input type="hidden" name="_method" value="PUT">
+                   {/projects.story}
+ SprintNo:
+{#projects}
+       <select name="sprintNo">
+               {#sprintDetails}
+               <option value={sprintNo}>{sprintNo}</option>
+               {/sprintDetails}
+               {/projects}
+        </select>
+ <input style="margin:10px;" type="submit" value="Add">
+         <input type="hidden" name="_csrf" value="{_csrf}">
+        </form>
 
-<div class="form-group">
-        <label for="creator" class="col-lg-2 control-label">Creator</label>
-        <div class="col-lg-10">
-            <input type="text" class="form-control"  name="creator" />
-            <span class="help-block hidden"></span>
-        </div>
-    </div>
-    <div class="form-group">
-            <label for="creation date" class="col-lg-2 control-label">Creation Date</label>
-            <div class="col-lg-10">
-                <input type="date" class="form-control"  name="date" />
-                <span class="help-block hidden"></span>
-            </div>
-        </div>
-        <div class="form-group">
-                <label for="desc" class="col-lg-2 control-label">Description</label>
-                <div class="col-lg-10">
-                    <textarea rows="2" columns="50" class="form-control"  name="desc" ></textarea>
-                    <span class="help-block hidden"></span>
-                </div>
-            </div>
-            <div class="form-group">
-           <label for="developer" class="col-lg-2 control-label">Developer</label>
-            <div class="col-lg-10">
-                <select class="form-control" name="developer">
-                 {#projects.members}
-                  <option value={memberName}>{memberName}</option>
-                     {/projects.members}
-                      </select>
-                  <span class="help-block hidden"></span>
-                 </div>
-             </div>
-             <div class="form-group">
-                    <label for="status" class="col-lg-2 control-label">Status</label>
-                    <div class="col-lg-10">
-                        <select class="form-control" name="status">
-                                             <option value="Backlog">Backlog</option>
-                                             <option value="Defined">Defined</option>
-                                             <option value="In Progress">In Progress</option>
-                                             <option value="Done">Done</option>
-                                             <option value="Accepted">Accepted</option>
-                                  </select>
-                        <span class="help-block hidden"></span>
-                    </div>
-                </div>
-        <div class="form-group">
-        <div class="col-lg-offset-2 col-lg-10">
-        <input type="hidden" name="_csrf" value="{_csrf}">
-           <input class="btn btn-success" id="signUpButton" type="submit" value="Save">
-        </div>
-    </div>
-</form>
-<script>
-_.extend(Backbone.Validation.callbacks, {
-    valid: function (view, attr, selector) {
-        var $el = view.$('[name=' + attr + ']'),
-            $group = $el.closest('.form-group');
-
-        $group.removeClass('has-error');
-        $group.find('.help-block').html('').addClass('hidden');
-    },
-    invalid: function (view, attr, error, selector) {
-        var $el = view.$('[name=' + attr + ']'),
-            $group = $el.closest('.form-group');
-
-        $group.addClass('has-error');
-        $group.find('.help-block').html(error).removeClass('hidden');
-    }
-});
-var StoryModel = Backbone.Model.extend({
-     url: '/story/{projects._id}/{sprintNo}',
-    defaults: {
-        status: 'Backlog'
-    },
-    validation: {
-        name: {
-            required: true,
-            msg:'Please enter the storyname'
-        }
-    },
-    initialize: function () {
-        console.log("Storymodel is initialized");
-                }
-
-});
-
-var StoryView = Backbone.View.extend({
-    events: {
-        'click #signUpButton': function (e) {
-            e.preventDefault();
-            this.signUp();
-        }
-    },
-
-    initialize: function () {
-    console.log("Storyview is initialized");
-        Backbone.Validation.bind(this);
-            _.bindAll(this, "render");
-            this.model.bind('change',this.render);
-            },
-          render: function(){
-            this.$el.html("<b><h3>Story Added</h3><b>");
-            return this;
-          },
-
-    signUp: function () {
-        var data = this.$el.serializeObject();
-        this.model.set(data);
-        if(this.model.isValid(true)){
-            console.log('Great Success!'+JSON.stringify(this.model));
-            this.model.save({
-              url : "/story/{projects._id}/{sprintNo}",
-                       });
-           }
-           },
-    remove: function() {
-        Backbone.Validation.unbind(this);
-        return Backbone.View.prototype.remove.apply(this, arguments);
-    }
-});
-
-$(function () {
-    var view = new StoryView({
-        el: 'form',
-        model: new StoryModel()
-    });
-});
-
-$.fn.serializeObject = function () {
-    "use strict";
-    var a = {}, b = function (b, c) {
-        var d = a[c.name];
-        "undefined" != typeof d && d !== null ? $.isArray(d) ? d.push(c.value) : a[c.name] = [d, c.value] : a[c.name] = c.value;
-    };
-    return $.each(this.serializeArray(), b), a;
-};
-</script>
-{/projects.sprintDetails}
 {/body}
+

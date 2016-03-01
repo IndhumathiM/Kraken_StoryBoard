@@ -12,9 +12,12 @@
                     <li>
                           <h3><a href='/project/{.id}'>{.projectName}</a></h3>
                           <h3><a href='/project/{.id}/sprint'>Sprint Details</a></h3>
+                            <h3> <a href='/{.id}/stories'>Stories</a></h3>
 
                       <h3><a href='/project/{.id}/edit'>Edit</a></h3>
                       <h3><a href='{.id}/addMember'>Add Member</a></h3>
+                       <h3><a href='{.id}/addStory'>Add Story</a></h3>
+
                       <button class = "btn btn-primary btn-lg" data-toggle = "modal" data-target = "#myModal">
                          Delete
                       </button>
