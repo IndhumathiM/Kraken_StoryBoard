@@ -234,32 +234,9 @@ module.exports = function (router) {
                 res.json(err);
             }
             else
-                res.render('project/sprint', {projects: docs[0]});
+                res.render('project/sprintDetails', {projects: docs[0]});
         });
     });
-    /** Linking a sprint with its sprintDetails*/
-
-    router.get('/project/:id/sprintDetails/:sprintNo', function (req, res) {
-        Project.find({_id: req.params.id, "sprintDetails.sprintNo": req.params.sprintNo}, {"sprintDetails.$": 1},
-            function (err, docs) {
-                if (err) {
-                    res.json(err);
-                }
-                else {
-                    console.log("sprintdetails" + docs[0]);
-                    res.render('project/sprintDetails', {projects: docs[0]});
-                }
-            });
-    });
-    /* router.get('/project/:id/sprint').then(function(proj)
-     {
-     return new Promise(Project.find({_id:req.params.id}));
-     }).then(function(docs) {
-     render('project/sprintDetails', {projects: docs[0]});
-     })
-     .catch(function(err){
-     res.json(err);
-     }); */
 
     /*** Linking a project with its details*/
     router.get('/project/:id', function (req, res) {
@@ -360,38 +337,30 @@ module.exports = function (router) {
     });
 
     //getting show story
-    router.get('/project/:id/:sprintNo/showStory', function (req, res) {
-        console.log("show story" + req.params.id);
+    router.get('/:name/:sprintNo/showStory', function (req, res) {
+        console.log("show story" + req.params.name);
         console.log("sprintNo" + req.params.sprintNo);
-        Project.find({_id: req.params.id, 'sprintDetails.sprintNo': req.params.sprintNo}, {"sprintDetails.$": 1},
+        Project.aggregate({
+                $match: {
+                    "projectName": req.params.name,
+                    story: {$elemMatch: {'sprintNo': req.params.sprintNo}}
+                }
+            },
+            {$unwind: "$story"}, {$match: {"story.sprintNo": req.params.sprintNo}}, {
+                $group: {_id: "$_id", story: {$addToSet: "$story"}}
+            },
             function (err, docs) {
                 if (err) {
                     res.json(err);
                 }
                 else {
-                    console.log("docs" + JSON.stringify(docs[0]));
-                    res.render('project/showStory', {projects: docs[0]});
+                    console.log("story by sprintNo" + docs[0]);
+                    res.render('project/storybydate', {projects: docs[0]});
                 }
             });
     });
 
 
-    /*
-     getting a story edit page
-     */
-
-    router.get('/project/:id/:sprintNo/edit/:name', function (req, res) {
-        Project.find({_id: req.params.id, 'sprintDetails.sprintNo': req.params.sprintNo},
-            function (err, docs) {
-                if (err) {
-                    res.json(err);
-                }
-                else {
-                    console.log("edit" + docs[0]);
-                    res.render('story/editstory', {projects: docs[0]});
-                }
-            });
-    });
 
     /*
      Stories under project
@@ -448,22 +417,6 @@ module.exports = function (router) {
                 }
             });
     });
-
-    /*
-     getting a story edit page
-     */
-
-    router.get('/story/:id/delete/:name', function (req, res) {
-        Project.find({_id: req.params.id, 'story.name': req.params.name}, {"story.$": 1},
-            function (err, docs) {
-                if (err) {
-                    res.json(err);
-                }
-                else
-                    res.render('story/delstory', {projects: docs[0]});
-            });
-    });
-
 
     /*
      Team under project
