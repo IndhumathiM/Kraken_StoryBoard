@@ -6,10 +6,32 @@
     <div class="products">
     <fieldset>
         <legend>Story List</legend>
+
             <ul class="nm-np inline">
 
-                <legend>{projects.projectName}</legend>
+                <legend style="float:left">{projects.projectName}
+                 <div style="float:left;font-size:18px">
+                                 <form method="POST" action="/{projects.projectName}/story/sort">
+                                  <button type="submit" class="glyphicon glyphicon-sort-by-alphabet"/>
+                                  <input type="hidden" name="_csrf" value="{_csrf}">
+                                    </form>
+                                    </div>
 
+                 <div style="float:right;font-size:18px">
+
+                <form method="POST" action="/{projects.projectName}/story/filter">
+                <input name="sprintNo" id="sprintNo" placeholder="Sprint No">
+                 <button type="submit" class="glyphicon glyphicon-filter"/>
+                <input type="hidden" name="_csrf" value="{_csrf}">
+                 </form> </div>
+                 <div style="float:right;font-size:18px">
+                 <form method="POST" action="/{projects._id}/story/search">
+                    <input type="text" name="storyName" id="storyName" placeholder="Search by StoryName">
+                  <button type="submit" class="glyphicon glyphicon-search"/>
+                    <input type="hidden" name="_csrf" value="{_csrf}">
+                        </form>
+                 </div>
+                     </legend>
       {#projects.story}
 
 <li>

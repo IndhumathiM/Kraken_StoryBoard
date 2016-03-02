@@ -13,7 +13,7 @@
                       {#projects.sprintDetails}
 
                     <li> Sprint No: {sprintNo} <br>
-                         Sprint StartDate: {sprintStartDate} {s}{s}<button style="float:right;width:30%"><a href="/{projects._id}/{sprintNo}/addStory">Add Story for this sprint</a></button><br>
+                         Sprint StartDate: {sprintStartDate} {s}{s}<button style="float:right;width:30%"><a href="/{projects._id}/{sprintNo}/addStory">Show Stories</a></button><br>
                          Sprint EndDate: {sprintEndDate} <br>
                           </li>
                      {/projects.sprintDetails}

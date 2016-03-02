@@ -20,7 +20,8 @@
         <label for="creation date">Creation Date: </label> <br>
         <label for="desc">Description: </label><br>
         <label for="Status">Status: </label><br>
-        <label for="Developer">Developer: </label>
+        <label for="Developer">Developer: </label><br>
+        <label for="sprintNo">SprintNo: </label>
 
       </div>
 
@@ -46,6 +47,16 @@
         <option value={memberName}>{memberName}</option>
      {/projects.members}
        </select>
+       <br>
+          <select name="sprintNo">
+                      {#projects.story}
+          <option value="{sprintNo}" selected>{sprintNo} </option>
+                   {/projects.story}
+           {#projects.sprintDetails}
+               <option value={sprintNo}>{sprintNo}</option>
+            {/projects.sprintDetails}
+              </select>
+
         <br>
          <input style="margin:10px;" type="submit" value="Update">
          <input type="hidden" name="_csrf" value="{_csrf}">

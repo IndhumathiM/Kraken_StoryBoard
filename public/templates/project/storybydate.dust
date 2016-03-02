@@ -4,28 +4,26 @@
 {/title}
 
 {<body}
+    <div class="products">
+
     <h2>Story Details</h2>
     <main role="main">
         <div class="mb2">
            {?projects}
             <fieldset>
                 <legend>{projects.projectName}</legend>
-      {#projects.sprintDetails}
+      {#projects}
       {#story}
-{@eq key=name value="indhu"}
-<ul>
-<li> name: {name} </li>
-<li> creator: {creator}  </li>
-<li> date: {date}  </li>
-<li> desc: {desc}  </li>
-<li> sprintStartDate: {sprintStartDate}  </li>
-<li> sprintEndDate: {sprintEndDate}  </li>
+            <ul class="nm-np inline">
+<li> Name: {name} <br>
+ Creator: {creator}  <br>
+ Date: {date}  <br>
+ Desc: {desc}  <br>
+ SprintStartDate: {sprintStartDate}  <br>
+ SprintEndDate: {sprintEndDate}  </li>
 </ul>
-{:else}
-No stories
-{/eq}
   {/story}
-        {/projects.sprintDetails}
+        {/projects}
   </fieldset>
    {:else}
                   There are no stories :(
@@ -33,5 +31,5 @@ No stories
 
         </div>
             </main>
-
+</div>
 {/body}
