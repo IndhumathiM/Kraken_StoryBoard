@@ -13,16 +13,13 @@
 
         <div class="grey">
             <fieldset>
-                <legend>{projects.projectName} </legend>
+                <legend>{projects.projectName} <button type="button" style="float:right;" class="btn btn-info btn-sm"><a href="/{projects._id}/{projects.projectName}/showStatus"> Show Progress </a></button></legend>
 <ul>
     <li> ProjectNo: {projects.projectNo} </li>
     <li> StartDate: {projects.startDate}  </li>
     <li> EndDate: {projects.endDate}  </li>
-    <li> Releases: {projects.releases}  </li>
     <li> Sprint Duration: {projects.sprintDuration}  </li>
     <li> Number of Sprints: {projects.noOfSprint}  </li>
-    <li> Teamno: {projects.teamno}  </li>
-    <li> Teamname: {projects.teamname}  </li>
 </ul>
   </fieldset>
 

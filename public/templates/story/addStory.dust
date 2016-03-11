@@ -10,6 +10,7 @@
         {#projects}
         <form class="form-horizontal" role="form" method="POST">
          <input type="hidden" name="_method" value="PUT">
+
             <div class="form-group">
                    <h3>Add a new Story</h3><br>
                 <label for="name" class="col-lg-2 control-label">Name</label>

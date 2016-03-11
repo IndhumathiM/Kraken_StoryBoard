@@ -63,10 +63,8 @@
             collapsible: true
                 });
          $("#myModal").modal('hide');
-
-
-
-        });
+         $(".overlay").hide();
+       });
 
 </script>
 </body>

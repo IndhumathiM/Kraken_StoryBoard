@@ -22,7 +22,7 @@
         </div>
 
     {?projects}
-        <fieldset> <legend>Members List</legend>
+        <fieldset> <legend>Team Members </legend>
                     <ul class="nm-np inline">
                <div>
                  {#projects.members}

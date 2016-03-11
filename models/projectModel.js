@@ -7,16 +7,13 @@
 
     var projectModel = function () {
     var projectSchema =  schema({
-        projectName: { type: String, index: { unique: true }},
-        projectNo:{ type: String, index: { unique: true }},
+        projectName: { type: String},
+        projectNo:{ type: String},
         startDate: String,
         endDate: String,
-        releases:String,
         sprintDuration:String,
         sprintCount:String,
-        teamname: String,
-        teamno: String,
-        noOfSprint:String,
+         noOfSprint:String,
         sprintDetails:[{
             sprintNo: String,
             sprintStartDate: String,
@@ -29,16 +26,19 @@
            memberEmail: String
        }],
         story: [{
-            name: { type: String, index: { unique: true }},
+            name: { type: String},
             creator: String,
             date: String,
             desc: String,
             developer: String,
             status: String,
             sprintNo:String
-        }]
+        }],
+        completedStatus:String,
+        progressStatus:String
 
-     });
+
+    });
     projectSchema.methods.storyStartDate = function () {
         return this.story.sprintNo *2;
     };

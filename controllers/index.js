@@ -105,32 +105,39 @@ module.exports = function (router) {
      */
     router.post('/home', function (req, res) {
 
+        console.log("backbone post");
         var projectName = req.body.projectName && req.body.projectName.trim();
         var projectNo = req.body.projectNo && req.body.projectNo.trim();
         var startDate = req.body.startDate && req.body.startDate.trim();
         var endDate = req.body.endDate && req.body.endDate.trim();
-        var releases = req.body.releases && req.body.releases.trim();
         var sprintDuration = req.body.sprintDuration && req.body.sprintDuration.trim();
 
         function sprintDetail() {
             console.log("inside the sprintDetail funciton");
             var msg = "Start Date must be less than End Date";
             var times = noOfSprint();
-            var strt = new Date(startDate);
-            var end = new Date(endDate);
             var sprints = [];
             for (var i = 0; i < times; i++) {
                 console.log("inside the forloop funciton");
                 var sprintDetails = {};
                 sprintDetails.sprintNo = i + 1;
                 var strt = new Date(startDate);
-                strt.setDate(strt.getDate() + ((sprintDuration * 7 * (i)) + 1));
+                if(i==0){
+                    strt.setDate(strt.getDate());
+
+                }else {
+                    strt.setDate(strt.getDate() + ((sprintDuration * 7) * i ));
+                }
                 strt = strt.toUTCString();
                 strt = strt.split(" ").slice(0, 4).join(" ");
                 console.log("str" + strt);
                 sprintDetails.sprintStartDate = strt;
                 var end = new Date(startDate);
-                end.setDate(end.getDate() + (sprintDuration * 7 * (i + 1)));
+                if(i==0){
+                    end.setDate(end.getDate() + ((sprintDuration * 7)-1));
+                }else {
+                    end.setDate(end.getDate() + ((sprintDuration * 7 * (i+1))-1));
+                }
                 end = end.toUTCString();
                 end = end.split(" ").slice(0, 4).join(" ");
                 console.log("end" + end);
@@ -140,12 +147,6 @@ module.exports = function (router) {
             return sprints;
         }
 
-        var teamno = req.body.teamno && req.body.teamno.trim();
-        var teamname = req.body.teamname && req.body.teamname.trim();
-        if (projectName === '') {
-            res.redirect('/home#BadInput');
-            return;
-        }
         console.log("before call");
         function noOfSprint() {
             console.log("inside the noOfSprint funciton");
@@ -157,12 +158,9 @@ module.exports = function (router) {
             projectNo: projectNo,
             startDate: startDate,
             endDate: endDate,
-            releases: releases,
             sprintDuration: sprintDuration,
             noOfSprint: noOfSprint(),
             sprintDetails: sprintDetail(),
-            teamno: teamno,
-            teamname: teamname
 
         });
         newProject.save(function (err) {
@@ -213,10 +211,7 @@ module.exports = function (router) {
                 projectNo: req.body.projectNo,
                 startDate: req.body.startDate,
                 endDate: req.body.endDate,
-                releases: req.body.releases,
                 sprintDuration: req.body.sprintDuration,
-                teamno: req.body.teamno,
-                teamname: req.body.teamname,
             },
             function (err, docs) {
                 if (err) res.json(err);
@@ -245,6 +240,7 @@ module.exports = function (router) {
                 res.json(err);
             }
             else
+
                 res.render('project/projectdetails', {projects: docs[0]});
         });
     });
@@ -262,6 +258,7 @@ module.exports = function (router) {
 
 
     router.post('/addMember/:id', function (req, res) {
+        console.log("id"+req.params.id);
         var log = user.find({login: req.body.memberId})
             .populate('members.memberId')
             .exec(function (err, docs) {
@@ -279,7 +276,6 @@ module.exports = function (router) {
                                     }
                                     else
                                         res.render('member/addMember', {projects: docs[0]});
-
                                 });
                             } else {
                                 Project.update({_id: req.params.id},
@@ -347,7 +343,7 @@ module.exports = function (router) {
                 }
             },
             {$unwind: "$story"}, {$match: {"story.sprintNo": req.params.sprintNo}}, {
-                $group: {_id: "$_id", story: {$addToSet: "$story"}}
+                $group: {_id: "$_id","count":{$sum:1}, story: {$addToSet: "$story"}}
             },
             function (err, docs) {
                 if (err) {
@@ -655,4 +651,52 @@ module.exports = function (router) {
             });
 
     });
+    router.get('/:id/:name/showStatus', function (req, res) {
+                    Project.aggregate({$match: {"projectName": req.params.name}},
+                        {$unwind: "$story"}, {$group: {_id: "$_id", "count": {$sum: 1}, story: {$addToSet: "$story"}}},
+                         function (err, docs) {
+                          if (err)  res.json(err);
+                           else {
+                              console.log("story count" + docs[0].count);
+                              // if(docs[0].count!= 0){
+                              var storiesCount = docs[0].count;
+                              var percentageCompletion = 0;
+                              var acceptedStories=0;
+                              var percentageProgress=0;
+                  Project.aggregate([{$unwind: "$story"}, {$match: {$and: [{"projectName": req.params.name}, {"story.status": "Accepted"}]}},
+                  {
+                  $group: {_id: "$_id","count": {$sum: 1}}}],
+                  function(err,proj) {
+                                  if (err)  res.json(err);
+                                  else {
+                                     console.log("accepted story count" + proj[0].count);
+                                  var acceptedStories=proj[0].count;
+                                      percentageCompletion = Math.round((acceptedStories/storiesCount)*100);
+                                      percentageProgress=100-percentageCompletion;
+                                      console.log("percentageCompletion"+percentageCompletion);
+                                      console.log("percentageCompletion"+percentageProgress);
+
+                                      Project.update({_id: req.params.id},{$set:
+                                          {"completedStatus":percentageCompletion,
+                                          "progressStatus":percentageProgress}},
+                                          function (err) {
+                                              if (err) res.json(err);
+                                              else {
+                                                  Project.find({_id: req.params.id},
+                                                      function(err,doc){
+                                                          if(err) res.json(err);
+                                                          else {
+                                                              console.log("ans"+doc[0]);
+                                                              res.render('project/progressBar', {projects:doc[0]});
+                                                          }
+                                                      });
+                                              }//else
+                                          }); //update query */
+
+                                  }//inner else loop
+                              });//accepted stories query
+                          }//outer else loop
+                           });
+                         });
+
 };

@@ -13,12 +13,11 @@
                           <h3><a href='/project/{.id}'>{.projectName}</a></h3>
                           <h3><a href='/project/{.id}/sprint'>Sprint Details</a></h3>
                             <h3> <a href='/{.id}/stories'>Stories</a></h3>
-
                       <h3><a href='/project/{.id}/edit'>Edit</a></h3>
-                      <h3><a href='{.id}/addMember'>Add Member</a></h3>
+                       <a href='{.id}/addMember'>Team Members</a></h3>
                        <h3><a href='{.id}/addStory'>Add Story</a></h3>
 
-                      <button class = "btn btn-primary btn-lg" data-toggle = "modal" data-target = "#myModal">
+                      <button class = "btn btn-primary btn-lg"><a href='/project/{.id}/delete'>
                          Delete
                       </button>
 
@@ -37,8 +36,7 @@
                                 </div>
                                <div class = "modal-footer">
 
-                                  <button type = "button" class = "btn btn-primary"><a href='/project/{.id}/delete'>Confirm</a></button>
-                                  <button type = "button" class = "btn btn-default" data-dismiss = "modal">Cancel</button>
+                                  <button type = "button" class = "btn btn-default" data-dismiss = "modal">OK</button>
                                </div>
 
                             </div><!-- /.modal-content -->

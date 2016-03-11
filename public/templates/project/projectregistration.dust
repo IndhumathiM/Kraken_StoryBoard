@@ -4,36 +4,162 @@
 {/title}
 {<body}
 <h2>Project Editor</h2>
-<main role="main">
-<div class="mb2">
         <legend id="flip"> Add a New Project<span class="glyphicon glyphicon-plus"></span></legend>
-        <form method="POST" action="/home" id="panel" >
-<div class = "content">
-    <div class = "left">
-        <label for="projectName">ProjectName: </label><br>
-        <label for="projectNo">ProjectNo: </label><br>
-        <label for="startDate">StartDate: </label><br>
-        <label for="endDate">EndDate: </label><br>
-        <label for="releases">Releases: </label><br>
-        <label for="sprintDuration">Sprint Duration: </label><br>
-        <label for="teamno">TeamNo: </label><br>
-        <label for="teamname">TeamName: </label><br>
-        <input type="hidden" name="_csrf" value="{_csrf}">
-        <input type="submit" value="Save">
-    </div>
-    <div class = "right">
-        <input name="projectName" id="name" placeholder="Project Name"><br>
-        <input name="projectNo" placeholder="Project No"><br>
-        <input type="date" name="startDate" placeholder="StartDate"><br>
-        <input type="date" name="endDate" placeholder="EndDate"><br>
-        <input name="releases" placeholder="Releases"><br>
-        <input name="sprintDuration" placeholder="weeks"><br>
-        <input name="teamno" placeholder="Teamno"><br>
-        <input name="teamname" placeholder="TeamName"><br>
-    </div>
-</div>
-        </form>
+                <form class="form-horizontal" id="panel" role="form" method="POST">
+                 <input type="hidden" name="_method" value="PUT">
 
-</div>
-</main>
-{/body}
+                    <div class="form-group">
+                       <h3>Add a new Project</h3><br>
+                        <label for="name" class="col-lg-2 control-label">Project Name</label>
+                        <div class="col-lg-10">
+                        <input type="text" class="form-control" name="projectName" id="name" placeholder="Project Name"><br>
+                         <span class="help-block hidden"></span>
+                        </div>
+                     </div>
+
+                    <div class="form-group">
+                              <label for="name" class="col-lg-2 control-label">Project No</label>
+                              <div class="col-lg-10">
+                             <input type="text" class="form-control" name="projectNo" placeholder="Project No"><br>
+                              <span class="help-block hidden"></span>
+                              </div>
+                           </div>
+
+                    <div class="form-group">
+                              <label for="name" class="col-lg-2 control-label">Start Date</label>
+                              <div class="col-lg-10">
+                              <input class="form-control" type="date" name="startDate" placeholder="StartDate"><br>
+                               <span class="help-block hidden"></span>
+                              </div>
+                           </div>
+
+                    <div class="form-group">
+                              <label for="name" class="col-lg-2 control-label">End Date</label>
+                              <div class="col-lg-10">
+                              <input  class="form-control" type="date" name="endDate" placeholder="EndDate"><br>
+                               <span class="help-block hidden"></span>
+                              </div>
+                           </div>
+
+                    <div class="form-group">
+                              <label for="name" class="col-lg-2 control-label">Sprint Duration</label>
+                              <div class="col-lg-10">
+                               <input class="form-control" name="sprintDuration" placeholder="weeks"><br>
+                               <span class="help-block hidden"></span>
+                              </div>
+                           </div>
+   <div class="form-group">
+          <div class="col-lg-offset-2 col-lg-10">
+          <input type="hidden" name="_csrf" value="{_csrf}">
+             <input class="btn btn-success" id="saveButton" type="submit" value="Save">
+          </div>
+      </div>
+  </form>
+  <script>
+  _.extend(Backbone.Validation.callbacks, {
+      valid: function (view, attr, selector) {
+          var $el = view.$('[name=' + attr + ']'),
+              $group = $el.closest('.form-group');
+
+          $group.removeClass('has-error');
+          $group.find('.help-block').html('').addClass('hidden');
+      },
+      invalid: function (view, attr, error, selector) {
+          var $el = view.$('[name=' + attr + ']'),
+              $group = $el.closest('.form-group');
+
+          $group.addClass('has-error');
+          $group.find('.help-block').html(error).removeClass('hidden');
+      }
+  });
+  var ProjectModel = Backbone.Model.extend({
+           url: '/home',
+      validation: {
+          projectName: {
+              required: true,
+              msg:'Please enter the ProjectName'
+          },
+          projectNo:
+          {
+            required:true,
+            msg:'Please enter the ProjectNo'
+
+          },
+          startDate:
+                {
+                required:true,
+                msg:'Please enter the StartDate'
+
+                   },
+
+          endDate:
+                    {
+                      required:true,
+                      msg:'Please enter the EndDate'
+
+                    },
+          sprintDuration:
+                {
+                    required:true,
+                    msg:'Please enter the SprintDuration'
+
+              }
+      },
+      initialize: function () {
+          console.log("Projectmodel is initialized");
+                  }
+
+  });
+
+  var ProjectView = Backbone.View.extend({
+      events: {
+          'click #saveButton': function (e) {
+              e.preventDefault();
+              this.save();
+          }
+      },
+
+      initialize: function () {
+      console.log("Projectview is initialized");
+          Backbone.Validation.bind(this);
+              _.bindAll(this, "render");
+              this.model.bind('change',this.render);
+              },
+            render: function(){
+              this.$el.html("<b><h3>Project Added</h3><b>");
+              return this;
+            },
+
+      save: function () {
+          var data = this.$el.serializeObject();
+          this.model.set(data);
+          if(this.model.isValid(true)){
+              console.log('Great Success!'+JSON.stringify(this.model));
+              this.model.save({
+                url : "/home",
+                         });
+             }
+             },
+      remove: function() {
+          Backbone.Validation.unbind(this);
+          return Backbone.View.prototype.remove.apply(this, arguments);
+      }
+  });
+
+  $(function () {
+      var view = new ProjectView({
+          el: 'form',
+          model: new ProjectModel()
+      });
+  });
+
+  $.fn.serializeObject = function () {
+      "use strict";
+      var a = {}, b = function (b, c) {
+          var d = a[c.name];
+          "undefined" != typeof d && d !== null ? $.isArray(d) ? d.push(c.value) : a[c.name] = [d, c.value] : a[c.name] = c.value;
+      };
+      return $.each(this.serializeArray(), b), a;
+  };
+  </script>
+  {/body}
