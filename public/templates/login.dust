@@ -1,18 +1,16 @@
 {>"layouts/master" /}
-
-{<body}
-    <div>
+    {<body}
+      <div>
         <form id="loginForm" method="post">
             <fieldset>
                 <h2>Login</h2>
-                {?messages}
+                  {?messages}
                     <ul>
-                        {#messages}
-                            <li>{.}</li>
+                       {#messages}
+                          <li>{.}</li>
                         {/messages}
-
                     </ul>
-                {/messages}
+                   {/messages}
                 <table>
                     <tr>
                         <td><label for="username">Login : </label></td>
@@ -30,8 +28,7 @@
                         <td> <a href="/signup"><span class="glyphicon glyphicon-user">NewUser?</span></a> </td>
                     </tr>
                 </table>
-
             </fieldset>
         </form>
-    </div>
-{/body}
+      </div>
+    {/body}

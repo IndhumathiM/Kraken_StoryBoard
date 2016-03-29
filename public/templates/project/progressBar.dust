@@ -1,28 +1,23 @@
 {>"layouts/master" /}
-{<title}
+  {<title}
     Project Details
-{/title}
-<head>
-<link rel="stylesheet" href="../css/app.css"/>
-</head>
-{<body}
-{#projects}
-<div class="container">
-  <h2>Progress of Project {projectName}</h2><br/>
-  <h4> Completed Stories :</h4>
-  <div class="progress">
-    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="{completedStatus}" aria-valuemin="0" aria-valuemax="100" style="width:{completedStatus}%">
-      {completedStatus}%
+  {/title}
+  <head>
+  <link rel="stylesheet" href="../css/app.css"/>
+  </head>
+  {<body}
+    {#projects}
+      <div class="container">
+        <h2>Progress of Project {projectName}</h2><br/>
+        <h4> Completed Stories :</h4>
+        <div class="progress">
+        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="{completedStatus}" aria-valuemin="0" aria-valuemax="100" style="width:{completedStatus}%">{completedStatus}%</div>
+        </div>
+        <br/>
+        <h4> Stories in Progress:</h4>
+        <div class="progress">
+        <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="{progressStatus}" aria-valuemin="0" aria-valuemax="100" style="width:{progressStatus}%">{progressStatus}%</div>
+        </div>
     </div>
-  </div><br/>
-  <h4> Stories in Progress:</h4>
-    <div class="progress">
-      <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="{progressStatus}" aria-valuemin="0" aria-valuemax="100" style="width:{progressStatus}%">
-        {progressStatus}%
-      </div>
-    </div>
-
-</div>
-{/projects}
-
-{/body}
+    {/projects}
+  {/body}

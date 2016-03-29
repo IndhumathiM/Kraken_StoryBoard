@@ -1,38 +1,35 @@
 {>"layouts/master" /}
-{<title}
-    Story Editor
-{/title}
+    {<title}
+        Story Editor
+    {/title}
  <head>
- <link rel="stylesheet" href="../../css/app.css"/>
+    <link rel="stylesheet" href="../../css/app.css"/>
  </head>
  {<body}
-        <div class="mb2">
-            <fieldset>
-                <legend>Add a new Member</legend>
-
+      <div class="mb2">
+         <fieldset>
+             <legend>Add a new Member</legend>
                  <form method="POST" action="/addMember/{projects._id}">
                  <input type="hidden" name="_method" value="PUT">
-
                  <label for="memberId">Member: </label>
                  <input id="memberId" type="email" name="memberId" placeholder="Member MailId"><br>
                   <input type="hidden" name="_csrf" value="{_csrf}">
                   <input type="submit" value="Save">
                   </form>
-            </fieldset>
-        </div>
-
-    {?projects}
+         </fieldset>
+      </div>
+   {?projects}
         <fieldset> <legend>Team Members </legend>
-                    <ul class="nm-np inline">
-               <div>
-                 {#projects.members}
-                      <div style="font-size:15px";>
-                          <li>{memberName} - {memberEmail}
+         <ul class="nm-np inline">
+           <div>
+               {#projects.members}
+                    <div style="font-size:15px";>
+                        <li>{memberName} - {memberEmail}
                     <button style="margin:5px";> <a  href='/removeMember/{projects._id}/{memberId}'>Remove</a></button>
-                           </li>
+                         </li>
                       </div>
-                     {/projects.members}
-                 </div>
-        </fieldset>
-     {/projects}
+               {/projects.members}
+           </div>
+       </fieldset>
+    {/projects}
 {/body}

@@ -1,5 +1,4 @@
 {
-
   "keywords": [
     "express",
     "kraken",
@@ -7,15 +6,11 @@
     "krakenjs",
     "examples"
   ],
-    "scripts": {
+  "scripts": {
     "start": "node index.js",
     "test": "mocha"
   },
   "license": "Apache 2.0",
-  "bugs": {
-    "url": "https://github.com/krakenjs/kraken-examples/issues"
-  },
-  "homepage": "https://github.com/krakenjs/kraken-examples",
   "dependencies": {
     "adaro": "~0.1.5",
     "bcryptjs": "^2.3.0",
@@ -32,7 +27,7 @@
     "passport": "^0.2.0",
     "passport-local": "^1.0.0",
     "requirejs": "~2.1.11",
-    "rsvp": "^3.2.0"
+    "rsvp": "^3.2.1"
   },
   "devDependencies": {
     "grunt": "^0.4.4",

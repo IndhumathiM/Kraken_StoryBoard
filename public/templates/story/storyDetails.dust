@@ -1,54 +1,49 @@
 {>"layouts/master" /}
-{<title}
-    Story Details
-{/title}
-{<body}
-    <div class="products">
-    <fieldset>
-        <legend>Story List</legend>
-
-            <ul class="nm-np inline">
-
-                <legend style="float:left">{projects.projectName}
-                 <div style="float:left;font-size:18px">
-                                 <form method="POST" action="/{projects.projectName}/story/sort">
-                                  <button type="submit" class="glyphicon glyphicon-sort-by-alphabet"/>
+    {<title}
+        Story Details
+    {/title}
+    {<body}
+        <div class="products">
+            <fieldset>
+                <legend>Story List</legend>
+                   <ul class="nm-np inline">
+                    <legend style="float:left">{projects.projectName}
+                     <div style="float:left;font-size:18px">
+                           <form method="POST" action="/{projects.projectName}/story/sort">
+                                 <button type="submit" class="glyphicon glyphicon-sort-by-alphabet"/>
                                   <input type="hidden" name="_csrf" value="{_csrf}">
-                                    </form>
-                                    </div>
-
+                            </form>
+                      </div>
+                     <div style="float:right;font-size:18px">
+                        <form method="POST" action="/{projects.projectName}/story/filter">
+                             <input name="sprintNo" id="sprintNo" placeholder="Sprint No">
+                            <button type="submit" class="glyphicon glyphicon-filter"/>
+                            <input type="hidden" name="_csrf" value="{_csrf}">
+                        </form>
+                     </div>
                  <div style="float:right;font-size:18px">
-
-                <form method="POST" action="/{projects.projectName}/story/filter">
-                <input name="sprintNo" id="sprintNo" placeholder="Sprint No">
-                 <button type="submit" class="glyphicon glyphicon-filter"/>
-                <input type="hidden" name="_csrf" value="{_csrf}">
-                 </form> </div>
-                 <div style="float:right;font-size:18px">
-                 <form method="POST" action="/{projects._id}/story/search">
-                    <input type="text" name="storyName" id="storyName" placeholder="Search by StoryName">
-                  <button type="submit" class="glyphicon glyphicon-search"/>
-                    <input type="hidden" name="_csrf" value="{_csrf}">
+                        <form method="POST" action="/{projects._id}/story/search">
+                        <input type="text" name="storyName" id="storyName" placeholder="Search by StoryName">
+                        <button type="submit" class="glyphicon glyphicon-search"/>
+                        <input type="hidden" name="_csrf" value="{_csrf}">
                         </form>
                  </div>
-                     </legend>
-      {#projects.story}
-
-<li>
-<p> name: {name}</p>
- <p>creator: {creator}</p>
-<p>creation date: {date}</p>
-<p> desc: {desc}</p>
-<p>sprintNo: {sprintNo}</p>
-<p>TeamMember: {developer}  </p>
-<p> Status: {status} </p>
-   <button><a href='/{projects._id}/edit/{name}'>Edit Story</button></h3>
-    <button style="margin:5px"><a href='/{projects._id}/delete/{name}'>Delete Story</button></h3><br>
-    <button style="margin:5px"><a href='/{projects._id}/addToSprint/{name}'>Add Story to the sprint</button></h3>
-
-</li>
-  {/projects.story}
-</ul>
-  </fieldset>
-        </div>
-{/body}
+               </legend>
+            {#projects.story}
+                <li>
+                    <p> name: {name}/p>
+                    <p>creator: {creator}</p>
+                    <p>creation date: {date}</p>
+                    <p> desc: {desc}</p>
+                    <p>sprintNo: {sprintNo}</p>
+                    <p>TeamMember: {developer}  </p>
+                    <p> Status: {status} </p>
+                    <button><a href='/{projects._id}/edit/{name}'>Edit Story</button></h3>
+                    <button style="margin:5px"><a href='/{projects._id}/delete/{name}'>Delete Story</button></h3><br>
+                    <button style="margin:5px"><a href='/{projects._id}/addToSprint/{name}'>Add Story to the sprint</button></h3>
+                </li>
+            {/projects.story}
+          </ul>
+        </fieldset>
+      </div>
+    {/body}

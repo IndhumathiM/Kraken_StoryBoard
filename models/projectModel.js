@@ -1,47 +1,40 @@
-    'use strict';
+'use strict';
 
-    var mongoose = require('mongoose'),
+var mongoose = require('mongoose'),
     schema = mongoose.Schema;
-    var user = require('../models/user');
-
-
-    var projectModel = function () {
-    var projectSchema =  schema({
-        projectName: { type: String},
-        projectNo:{ type: String},
+var user = require('../models/user');
+var projectModel = function () {
+    var projectSchema = schema({
+        projectName: {type: String},
+        projectNo: {type: String},
         startDate: String,
         endDate: String,
-        sprintDuration:String,
-        sprintCount:String,
-         noOfSprint:String,
-        sprintDetails:[{
+        sprintDuration: String,
+        sprintCount: String,
+        noOfSprint: String,
+        sprintDetails: [{
             sprintNo: String,
             sprintStartDate: String,
             sprintEndDate: String,
             story: [{type: schema.Types.ObjectId, ref: 'project'}]
         }],
-       members:[{
-           memberId: {type: schema.Types.ObjectId, ref: 'user'},
-           memberName: String,
-           memberEmail: String
-       }],
+        members: [{
+            memberId: {type: schema.Types.ObjectId, ref: 'user'},
+            memberName: String,
+            memberEmail: String
+        }],
         story: [{
-            name: { type: String},
+            name: {type: String},
             creator: String,
             date: String,
             desc: String,
             developer: String,
             status: String,
-            sprintNo:String
+            sprintNo: String
         }],
-        completedStatus:String,
-        progressStatus:String
-
-
+        completedStatus: String,
+        progressStatus: String
     });
-    projectSchema.methods.storyStartDate = function () {
-        return this.story.sprintNo *2;
-    };
-    return mongoose.model('Project', projectSchema);
-    };
-  module.exports = new projectModel();
+       return mongoose.model('Project', projectSchema);
+};
+module.exports = new projectModel();

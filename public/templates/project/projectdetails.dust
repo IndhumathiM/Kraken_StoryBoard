@@ -1,26 +1,21 @@
 {>"layouts/master" /}
-{<title}
-    Project Details
-
-{/title}
-<head>
-<link rel="stylesheet" href="../css/app.css"/>
-
-</head>
-
-{<body}
+    {<title}
+        Project Details
+    {/title}
+  <head>
+    <link rel="stylesheet" href="../css/app.css"/>
+   </head>
+   {<body}
     <h2>Project Details</h2>
-
-        <div class="grey">
-            <fieldset>
-                <legend>{projects.projectName} <button type="button" style="float:right;" class="btn btn-info btn-sm"><a href="/{projects._id}/{projects.projectName}/showStatus"> Show Progress </a></button></legend>
-<ul>
-    <li> ProjectNo: {projects.projectNo} </li>
-    <li> StartDate: {projects.startDate}  </li>
-    <li> EndDate: {projects.endDate}  </li>
-    <li> Sprint Duration: {projects.sprintDuration}  </li>
-    <li> Number of Sprints: {projects.noOfSprint}  </li>
-</ul>
-  </fieldset>
-
-{/body}
+       <div class="grey">
+         <fieldset>
+            <legend>{projects.projectName} <button type="button" style="float:right;" class="btn btn-info btn-sm"><a href="/{projects._id}/{projects.projectName}/showStatus"> Show Progress </a></button></legend>
+               <ul>
+                  <li> ProjectNo: {projects.projectNo} </li>
+                  <li> StartDate: {projects.startDate}  </li>
+                  <li> EndDate: {projects.endDate}  </li>
+                  <li> Sprint Duration: {projects.sprintDuration}  </li>
+                  <li> Number of Sprints: {projects.noOfSprint}  </li>
+               </ul>
+        </fieldset>
+    {/body}

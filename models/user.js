@@ -5,22 +5,18 @@
 var mongoose = require('mongoose'),
     bcrypt = require('bcryptjs'),
     crypto = require('../lib/crypto');
-
 var userModel = function () {
-
         var userSchema = mongoose.Schema({
             name: String,
             login: { type: String, unique: true },  //Ensure logins are unique.
             password: String, //We'll store bCrypt hashed passwords.  Just say no to plaintext!
             role: String
         });
-
         /**
          * Helper function that hooks into the 'save' method, and replaces plaintext passwords with a hashed version.
          */
         userSchema.pre('save', function (next) {
             var user = this;
-
             //If the password has not been modified in this save operation, leave it alone (So we don't double hash it)
             if (!user.isModified('password')) {
                 next();

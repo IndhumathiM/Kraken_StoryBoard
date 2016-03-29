@@ -1,25 +1,23 @@
 {>"layouts/master" /}
-{<title}
-    Sprint Details
-{/title}
-<head>
- <link rel="stylesheet" href="../../../css/app.css"/>
- </head>
-{<body}
-   <div class="products">
-              <h2 >Sprint Details</h2>
-          <fieldset>
-                <ul class="nm-np " style="font-size:14px;width:50%overflow:auto">
-                      {#projects.sprintDetails}
-
-                    <li> Sprint No:{sprintNo} <br>
+    {<title}
+        Sprint Details
+    {/title}
+    <head>
+        <link rel="stylesheet" href="../../../css/app.css"/>
+    </head>
+    {<body}
+        <div class="products">
+          <h2 >Sprint Details</h2>
+              <fieldset>
+                  <ul class="nm-np " style="font-size:14px;width:50%overflow:auto">
+                    {#projects.sprintDetails}
+                        <li> Sprint No:{sprintNo} <br>
                          Sprint StartDate: {sprintStartDate}
                          <button style="float:right;width:30%"><a href="/{projects.projectName}/{sprintNo}/showStory">Show Stories</a></button><br>
                          Sprint EndDate: {sprintEndDate} <br>
-                          </li>
-                     {/projects.sprintDetails}
-                </ul>
-          </fieldset>
-
- </div>
-       {/body}
+                        </li>
+                    {/projects.sprintDetails}
+                  </ul>
+               </fieldset>
+         </div>
+     {/body}

@@ -1,27 +1,25 @@
 {>"layouts/master" /}
-{<title}
-    Story Editor
-{/title}
- <head>
- <link rel="stylesheet" href="../../css/app.css"/>
- </head>
-
-{<body}
-{#projects.story}
-       <form method="POST" action="/{projects._id}/add/{name}">
-       <input type="hidden" name="_method" value="PUT">
-                   {/projects.story}
- SprintNo:
-{#projects}
-       <select name="sprintNo">
-               {#sprintDetails}
-               <option value={sprintNo}>{sprintNo}</option>
-               {/sprintDetails}
-               {/projects}
-        </select>
- <input style="margin:10px;" type="submit" value="Add">
-         <input type="hidden" name="_csrf" value="{_csrf}">
-        </form>
-
-{/body}
+   {<title}
+       Story Editor
+    {/title}
+    <head>
+        <link rel="stylesheet" href="../../css/app.css"/>
+    </head>
+    {<body}
+        {#projects.story}
+            <form method="POST" action="/{projects._id}/add/{name}">
+                <input type="hidden" name="_method" value="PUT">
+                  {/projects.story}
+                    SprintNo:
+                  {#projects}
+                     <select name="sprintNo">
+                        {#sprintDetails}
+                            <option value={sprintNo}>{sprintNo}</option>
+                        {/sprintDetails}
+                    </select>
+                   {/projects}
+                   <input style="margin:10px;" type="submit" value="Add">
+                   <input type="hidden" name="_csrf" value="{_csrf}">
+            </form>
+    {/body}
 

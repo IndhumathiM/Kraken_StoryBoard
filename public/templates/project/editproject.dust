@@ -5,32 +5,26 @@
  <head>
  <link rel="stylesheet" href="../../css/app.css"/>
  </head>
-
  {<body}
      <h2>Project Editor</h2>
      <main role="main">
          <div class="mb2">
              <fieldset>
-                 <legend>Edit Project Details</legend>
-
-       <form method="POST" action="/project/{projects._id}">
-       <input type="hidden" name="_method" value="PUT">
-
-       <input name="projectName" placeholder="Project Name", value="{projects.projectName}"><br>
-       <input name="projectNo" placeholder="ProjectNo", value="{projects.projectNo}"><br>
-       <input type="date" name="startDate" placeholder="StartDate", value="{projects.startDate}"><br>
-       <input type="date" name="endDate" placeholder="EndDate", value="{projects.endDate}"><br>
-       <input name="releases" placeholder="Releases", value="{projects.releases}"><br>
-        <input name="sprintDuration" placeholder="Duration", value="{projects.sprintDuration}"><br>
-       <input name="teamno" placeholder="TeamNo", value="{projects.teamno}"><br>
-       <input name="teamname" placeholder="TeamName", value="{projects.teamname}"><br>
-
-         <input type="submit" value="Update">
-         <input type="hidden" name="_csrf" value="{_csrf}">
-
-        </form>
- </fieldset>
+               <legend>Edit Project Details</legend>
+                <form method="POST" action="/project/{projects._id}">
+                   <input type="hidden" name="_method" value="PUT">
+                   <input name="projectName" placeholder="Project Name", value="{projects.projectName}"><br>
+                   <input name="projectNo" placeholder="ProjectNo", value="{projects.projectNo}"><br>
+                   <input type="date" name="startDate" placeholder="StartDate", value="{projects.startDate}"><br>
+                   <input type="date" name="endDate" placeholder="EndDate", value="{projects.endDate}"><br>
+                   <input name="releases" placeholder="Releases", value="{projects.releases}"><br>
+                   <input name="sprintDuration" placeholder="Duration", value="{projects.sprintDuration}"><br>
+                   <input name="teamno" placeholder="TeamNo", value="{projects.teamno}"><br>
+                   <input name="teamname" placeholder="TeamName", value="{projects.teamname}"><br>
+                   <input type="submit" value="Update">
+                   <input type="hidden" name="_csrf" value="{_csrf}">
+                </form>
+            </fieldset>
         </div>
-            </main>
-
-{/body}
+    </main>
+  {/body}

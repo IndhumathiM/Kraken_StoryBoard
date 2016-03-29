@@ -1,69 +1,62 @@
- {>"layouts/master" /}
+{>"layouts/master" /}
  {<title}
      Story Editor
  {/title}
-
  {<body}
      <h2>Story Editor</h2>
-     <main role="main">
-         <div class="mb2">
-
-             <fieldset>
-                 <legend>Edit Story Details</legend>
-       {#projects.story}
-       <form method="POST" action="/story/update/{projects._id}/{name}">
-       <input type="hidden" name="_method" value="PUT">
-    <div class="content">
-      <div class="left">
-        <label for="name">Name: </label><br>
-        <label for="creator">Creator: </label><br>
-        <label for="creation date">Creation Date: </label> <br>
-        <label for="desc">Description: </label><br>
-        <label for="Status">Status: </label><br>
-        <label for="Developer">Developer: </label><br>
-        <label for="sprintNo">SprintNo: </label>
-
-      </div>
-
-      <div class="right">
-       <input name="name" placeholder="Story Name", value="{name}"><br>
-       <input name="creator" placeholder="Creator", value="{creator}"><br>
-       <input type="date" name="date" placeholder="Date", value="{date}"><br>
-       <input name="desc" placeholder="Description", value="{desc}"><br>
-       <select name="status" >
-              <option value="{status}" selected>{status} </option>
-              <option value=Backlog>Backlog </option>
-              <option value=Defined>Defined</option>
-              <option value=InProgress>In Progress</option>
-              <option value=Done>Done </option>
-              <option value=Accepted>Accepted</option>
-       </select> </div>
-
-<br>
-   <select name="developer">
-   <option value="{developer}" selected>{developer} </option>
-            {/projects.story}
-    {#projects.members}
-        <option value={memberName}>{memberName}</option>
-     {/projects.members}
-       </select>
-       <br>
-          <select name="sprintNo">
-                      {#projects.story}
-          <option value="{sprintNo}" selected>{sprintNo} </option>
-                   {/projects.story}
-           {#projects.sprintDetails}
-               <option value={sprintNo}>{sprintNo}</option>
-            {/projects.sprintDetails}
-              </select>
-
-        <br>
-         <input style="margin:10px;" type="submit" value="Update">
-         <input type="hidden" name="_csrf" value="{_csrf}">
-        </form>
-
- </fieldset>
-        </div>
+         <main role="main">
+             <div class="mb2">
+                 <fieldset>
+                     <legend>Edit Story Details</legend>
+                        {#projects.story}
+                            <form method="POST" action="/story/update/{projects._id}/{name}">
+                                <input type="hidden" name="_method" value="PUT">
+                                    <div class="content">
+                                        <div class="left">
+                                            <label for="name">Name: </label><br>
+                                            <label for="creator">Creator: </label><br>
+                                            <label for="creation date">Creation Date: </label> <br>
+                                            <label for="desc">Description: </label><br>
+                                            <label for="Status">Status: </label><br>
+                                            <label for="Developer">Developer: </label><br>
+                                            <label for="sprintNo">SprintNo: </label>
+                                        </div>
+                                      <div class="right">
+                                            <input name="name" placeholder="Story Name", value="{name}"><br>
+                                            <input name="creator" placeholder="Creator", value="{creator}"><br>
+                                            <input type="date" name="date" placeholder="Date", value="{date}"><br>
+                                            <input name="desc" placeholder="Description", value="{desc}"><br>
+                                            <select name="status" >
+                                                <option value="{status}" selected>{status} </option>
+                                                <option value=Backlog>Backlog </option>
+                                                <option value=Defined>Defined</option>
+                                                <option value=InProgress>In Progress</option>
+                                                <option value=Done>Done </option>
+                                                <option value=Accepted>Accepted</option>
+                                             </select>
+                                         </div>
+                                            <br>
+                                <select name="developer">
+                                    <option value="{developer}" selected>{developer} </option>
+                                        {/projects.story}
+                                        {#projects.members}
+                                        <option value={memberName}>{memberName}</option>
+                                        {/projects.members}
+                                  </select>
+                                             <br>
+                                <select name="sprintNo">
+                                    {#projects.story}
+                                        <option value="{sprintNo}" selected>{sprintNo} </option>
+                                    {/projects.story}
+                                    {#projects.sprintDetails}
+                                        <option value={sprintNo}>{sprintNo}</option>
+                                    {/projects.sprintDetails}
+                                </select>
+                                            <br>
+                                <input style="margin:10px;" type="submit" value="Update">
+                                <input type="hidden" name="_csrf" value="{_csrf}">
+                    </form>
+                 </fieldset>
+               </div>
             </main>
-
-{/body}
+    {/body}

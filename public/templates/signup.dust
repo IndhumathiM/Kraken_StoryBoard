@@ -1,39 +1,37 @@
 {>"layouts/master" /}
-
-{<body}
-
-
-    <div>
-            <fieldset>
-         <h2>SignUp Form</h2>
-         <form method="POST" action="/signup">
-            <table>
-               <tr>
+    {<body}
+      <div>
+        <fieldset>
+          <h2>SignUp Form</h2>
+            <form method="POST" action="/signup">
+              <table>
+                <tr>
                   <td>  <label for="name">Name: </label></td>
                   <td> <input name="name" placeholder="Name"></td>
-               </tr>
-               <tr>
+                </tr>
+                 <tr>
                   <td>  <label for="login">UserName: </label></td>
                   <td>  <input name="login" placeholder="EmailId" type="email"></td>
-               </tr>
-               <tr>
+                 </tr>
+                 <tr>
                    <td> <label for="password">Password: </label> </td>
                    <td> <input id="password" name="password" type="password"/></td>
-               </tr>
-                <tr>
-                   <td> <label for="role">Role: </label> </td>
-                          <td>    <select name="role">
-                                       <option value=developer>Developer</option>
-                                              <option value=owner>Owner</option>
-
-                                    </select>
-                           </td>    </tr>
-                <tr>
-                    <td>  <input type="submit" value="SignUp"/> </td>
-                        <input type="hidden" name="_csrf" value="{_csrf}"/>
                  </tr>
-
-</form>
-            </fieldset>
-    </div>
-{/body}
+                 <tr>
+                   <td> <label for="role">Role: </label> </td>
+                   <td>
+                     <select name="role">
+                      <option value=developer>Developer</option>
+                       <option value=owner>Owner</option>
+                       </select>
+                     </td>
+                  </tr>
+                  <tr>
+                    <td>
+                     <input type="submit" value="SignUp"/> </td>
+                     <input type="hidden" name="_csrf" value="{_csrf}"/>
+                 </tr>
+            </form>
+           </fieldset>
+          </div>
+        {/body}

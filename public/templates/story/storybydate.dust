@@ -1,0 +1,30 @@
+{>"layouts/master" /}
+   {<title}
+     Story Details
+   {/title}
+    {<body}
+        <div class="products">
+            <main role="main">
+                <div class="mb2">
+                   {?projects}
+                        <fieldset>
+                            <h2>Story Details<span style="margin:5px;" class="badge">{projects.count}</span></h2>
+                                <div id="accordion">
+                                    {#projects.story}
+                                        <h2> Name: {name} </h2>
+                                            <div>
+                                                Name: {name} <br>
+                                                Creator: {creator}  <br>
+                                                Date: {date}  <br>
+                                                Desc: {desc}  <br>
+                                              </div>
+                                      {/projects.story}
+                                    </div>
+                        </fieldset>
+                           {:else}
+                        There are no stories :(
+                {/projects}
+               </div>
+             </main>
+        </div>
+    {/body}

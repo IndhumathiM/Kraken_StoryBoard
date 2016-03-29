@@ -1,25 +1,19 @@
-'use strict';
-
-
 var IndexModel = require('../models/index'),
     ProfileModel = require('../models/profile'),
     auth = require('../lib/auth'),
     user = require('../models/user'),
-    Project = require('../models/projectModel');
+    Project = require('../models/projectModel')
 
 module.exports = function (router) {
     var indexmodel = new IndexModel();
     var profilemodel = new ProfileModel();
-    var promise = require('bluebird');
 
-
+    /* Getting Index Page */
     router.get('/', function (req, res) {
         res.render('index', indexmodel);
     });
-    router.get('/homeView', function (req, res) {
-        res.render('homeView');
-    });
 
+    /* Getting User Profile Page */
     router.get('/profile', function (req, res) {
         res.render('profile', profilemodel);
     });
@@ -43,11 +37,8 @@ module.exports = function (router) {
         });
     });
 
-    /**
-     * Retrieve a list of all products for editing.
-     */
+    /** Retrieve a list of all Projects   */
     router.get('/project', function (req, res) {
-
         Project.find(function (err, prods) {
             if (err) {
                 console.log(err);
@@ -61,122 +52,115 @@ module.exports = function (router) {
 
     });
 
-    /* Added for signup */
-
+    /* Render  signup page */
     router.get('/signup', function (req, res) {
         res.render('signup');
     });
 
+    /* Post for signup */
     router.post('/signup', function (req, res) {
-
         var name = req.body.name && req.body.name.trim();
         var login = req.body.login && req.body.login.trim();
         var password = req.body.password && req.body.password.trim();
         var role = req.body.role && req.body.role.trim();
-
         if (name === '') {
             res.redirect('/user#BadInput');
             return;
         }
-
         var newUser = new user({name: name, login: login, password: password, role: role});
         newUser.save(function (err) {
             if (err) {
                 console.log('save error', err);
                 res.json("Username is not unique");
-
             } else {
-
                 res.redirect('/login');
             }
         });
     });
 
-
-    /**
-     * Allow the users to log out
-     */
+    /** Allow the users to log out     */
     router.get('/logout', function (req, res) {
         req.logout();
         res.redirect('/login');
     });
-    /**
-     * Add a new project to the database.
-     */
+
+    /*Getting project Registration page */
+    router.get('/projectregistration', function (req, res) {
+        res.render('project/projectregistration');
+    });
+
+    /** * Add a new project to the database    */
     router.post('/home', function (req, res) {
-
-        console.log("backbone post");
-        var projectName = req.body.projectName && req.body.projectName.trim();
-        var projectNo = req.body.projectNo && req.body.projectNo.trim();
-        var startDate = req.body.startDate && req.body.startDate.trim();
-        var endDate = req.body.endDate && req.body.endDate.trim();
-        var sprintDuration = req.body.sprintDuration && req.body.sprintDuration.trim();
-
-        function sprintDetail() {
-            console.log("inside the sprintDetail funciton");
-            var msg = "Start Date must be less than End Date";
-            var times = noOfSprint();
-            var sprints = [];
-            for (var i = 0; i < times; i++) {
-                console.log("inside the forloop funciton");
-                var sprintDetails = {};
-                sprintDetails.sprintNo = i + 1;
-                var strt = new Date(startDate);
-                if(i==0){
-                    strt.setDate(strt.getDate());
-
-                }else {
-                    strt.setDate(strt.getDate() + ((sprintDuration * 7) * i ));
-                }
-                strt = strt.toUTCString();
-                strt = strt.split(" ").slice(0, 4).join(" ");
-                console.log("str" + strt);
-                sprintDetails.sprintStartDate = strt;
-                var end = new Date(startDate);
-                if(i==0){
-                    end.setDate(end.getDate() + ((sprintDuration * 7)-1));
-                }else {
-                    end.setDate(end.getDate() + ((sprintDuration * 7 * (i+1))-1));
-                }
-                end = end.toUTCString();
-                end = end.split(" ").slice(0, 4).join(" ");
-                console.log("end" + end);
-                sprintDetails.sprintEndDate = end;
-                sprints.push(sprintDetails);
+        Project.find({'projectName': req.body.projectName}, function (err, docs) {
+            if (docs.length) {
+                console.log("Already projectName is present");
+                res.redirect('/project');
             }
-            return sprints;
-        }
-
-        console.log("before call");
-        function noOfSprint() {
-            console.log("inside the noOfSprint funciton");
-            return (Math.floor((Math.floor((new Date(endDate) - new Date(startDate)) / (24 * 3600 * 1000 * 7))) / sprintDuration));
-        }
-
-        var newProject = new Project({
-            projectName: projectName,
-            projectNo: projectNo,
-            startDate: startDate,
-            endDate: endDate,
-            sprintDuration: sprintDuration,
-            noOfSprint: noOfSprint(),
-            sprintDetails: sprintDetail(),
-
-        });
-        newProject.save(function (err) {
-            if (err) {
-                console.log("Inside err" + err);
+            else {
+                console.log("backbone post");
+                var projectName = req.body.projectName && req.body.projectName.trim();
+                var projectNo = req.body.projectNo && req.body.projectNo.trim();
+                var startDate = req.body.startDate && req.body.startDate.trim();
+                var endDate = req.body.endDate && req.body.endDate.trim();
+                var sprintDuration = req.body.sprintDuration && req.body.sprintDuration.trim();
+                function sprintDetail() {
+                    console.log("inside the sprintDetail funciton");
+                    var msg = "Start Date must be less than End Date";
+                    var times = noOfSprint();
+                    var sprints = [];
+                    for (var i = 0; i < times; i++) {
+                        console.log("inside the forloop funciton");
+                        var sprintDetails = {};
+                        sprintDetails.sprintNo = i + 1;
+                        var strt = new Date(startDate);
+                        if (i == 0) {
+                            strt.setDate(strt.getDate());
+                        } else {
+                            strt.setDate(strt.getDate() + ((sprintDuration * 7) * i ));
+                        }
+                        strt = strt.toUTCString();
+                        strt = strt.split(" ").slice(0, 4).join(" ");
+                        console.log("str" + strt);
+                        sprintDetails.sprintStartDate = strt;
+                        var end = new Date(startDate);
+                        if (i == 0) {
+                            end.setDate(end.getDate() + ((sprintDuration * 7) - 1));
+                        } else {
+                            end.setDate(end.getDate() + ((sprintDuration * 7 * (i + 1)) - 1));
+                        }
+                        end = end.toUTCString();
+                        end = end.split(" ").slice(0, 4).join(" ");
+                        console.log("end" + end);
+                        sprintDetails.sprintEndDate = end;
+                        sprints.push(sprintDetails);
+                    }
+                    return sprints;
+                }
+                console.log("before call");
+                function noOfSprint() {
+                    console.log("inside the noOfSprint funciton");
+                    return (Math.floor((Math.floor((new Date(endDate) - new Date(startDate)) / (24 * 3600 * 1000 * 7))) / sprintDuration));
+                }
+                var newProject = new Project({
+                    projectName: projectName,
+                    projectNo: projectNo,
+                    startDate: startDate,
+                    endDate: endDate,
+                    sprintDuration: sprintDuration,
+                    noOfSprint: noOfSprint(),
+                    sprintDetails: sprintDetail(),
+                });
+                newProject.save(function (err) {
+                    if (err) {
+                        console.log("Inside err" + err);
+                    }
+                    res.redirect('/project');
+                });
             }
-            res.redirect('/project');
-
         });
     });
 
-
-    /**
-     * Delete a project.
-     * @paaram: req.body.item_id Is the unique id of the product to remove.
-     */
+    /*** Delete a project    * @paaram: req.params.id is the unique id of the project to remove     */
     router.get('/project/:id/delete', function (req, res) {
         Project.remove({_id: req.params.id}, function (err) {
             if (err) {
@@ -186,14 +170,8 @@ module.exports = function (router) {
         });
     });
 
-
-    /**
-     * getting  a editproject page
-     */
-
-
+    /** getting  a editproject page for project */
     router.get('/project/:id/edit', function (req, res) {
-
         Project.find({_id: req.params.id}, function (err, docs) {
             if (err) {
                 res.json(err);
@@ -202,9 +180,8 @@ module.exports = function (router) {
                 res.render('project/editproject', {projects: docs[0]});
         });
     });
-    /*
-     editing project details
-     */
+
+    /* posting the updated project details  into database   */
     router.post('/project/:id', function (req, res) {
         Project.update({_id: req.params.id}, {
                 projectName: req.body.projectName,
@@ -215,14 +192,14 @@ module.exports = function (router) {
             },
             function (err, docs) {
                 if (err) res.json(err);
-
                 else {
                     console.log(docs);
                     res.redirect('/project');
                 }
             });
     });
-    /** Linking a project with its sprint*/
+
+    /** Linking a project with its sprint Details*/
     router.get('/project/:id/sprint', function (req, res) {
         Project.find({_id: req.params.id}, function (err, docs) {
             if (err) {
@@ -240,25 +217,41 @@ module.exports = function (router) {
                 res.json(err);
             }
             else
-
                 res.render('project/projectdetails', {projects: docs[0]});
         });
     });
 
-    router.get('/:id/addMember', function (req, res) {
-        Project.find({_id: req.params.id}, function (err, docs) {
-            if (err) {
-                res.json(err);
-            }
-            else
-                res.render('member/addMember', {projects: docs[0]});
-
-        });
+    /*Rendering story registration page */
+    router.get('/:id/addStory', function (req, res) {
+        console.log("add story" + req.params.id);
+        Project.find({_id: req.params.id}, {
+                "members": 1
+            },
+            function (err, docs) {
+                if (err) {
+                    res.json(err);
+                }
+                else {
+                    console.log("Add story sprintdetails" + docs[0]);
+                    res.render('story/addStory', {projects: docs[0]});
+                }
+            });
     });
 
+    /*** Retrieving Add Memeber page for a project*/
+   router.get('/:id/addMember', function (req, res) {
+       Project.find({_id: req.params.id}, function (err, docs) {
+           if (err) {
+               res.json(err);
+           }
+           else
+               res.render('member/addMember', {projects: docs[0]});
+       });
+   });
 
+    /*** updating memebers to the database*/
     router.post('/addMember/:id', function (req, res) {
-        console.log("id"+req.params.id);
+        console.log("id" + req.params.id);
         var log = user.find({login: req.body.memberId})
             .populate('members.memberId')
             .exec(function (err, docs) {
@@ -298,7 +291,6 @@ module.exports = function (router) {
                                                 }
                                                 else
                                                     res.render('member/addMember', {projects: docs[0]});
-
                                             });
                                         }
                                     })
@@ -308,6 +300,8 @@ module.exports = function (router) {
                 }
             });
     });
+
+    /*** To delete members from the project*/
     router.get('/removeMember/:id/:memberId', function (req, res) {
         Project.update({_id: req.params.id, "members.memberId": req.params.memberId}, {
                 $pull: {
@@ -327,12 +321,11 @@ module.exports = function (router) {
                         }
                         else
                             res.render('member/addMember', {projects: docs[0]});
-
                     });
             });
     });
 
-    //getting show story
+    /*** Retrieving list of storied from DB based on SprintNo*/
     router.get('/:name/:sprintNo/showStory', function (req, res) {
         console.log("show story" + req.params.name);
         console.log("sprintNo" + req.params.sprintNo);
@@ -343,7 +336,7 @@ module.exports = function (router) {
                 }
             },
             {$unwind: "$story"}, {$match: {"story.sprintNo": req.params.sprintNo}}, {
-                $group: {_id: "$_id","count":{$sum:1}, story: {$addToSet: "$story"}}
+                $group: {_id: "$_id", "count": {$sum: 1}, story: {$addToSet: "$story"}}
             },
             function (err, docs) {
                 if (err) {
@@ -351,16 +344,12 @@ module.exports = function (router) {
                 }
                 else {
                     console.log("story by sprintNo" + docs[0]);
-                    res.render('project/storybydate', {projects: docs[0]});
+                    res.render('story/storybydate', {projects: docs[0]});
                 }
             });
     });
 
-
-
-    /*
-     Stories under project
-     */
+    /*     Listing all the Stories under project     */
     router.get('/:id/stories', function (req, res) {
         Project.find({_id: req.params.id},
             function (err, docs) {
@@ -368,12 +357,11 @@ module.exports = function (router) {
                     res.json(err);
                 }
                 else
-
                     res.render('story/storydetails', {projects: docs[0]});
             });
     });
 
-    /* filter story  */
+    /* Filter stories based on sprintNo of the project  */
     router.post('/:name/story/filter', function (req, res) {
         console.log("id" + req.params.name);
         console.log("sprintNo" + req.body.sprintNo);
@@ -392,13 +380,12 @@ module.exports = function (router) {
                 }
                 else {
                     console.log("story by sprintNo" + docs[0]);
-                    res.render('project/storybydate', {projects: docs[0]});
+                    res.render('story/storybydate', {projects: docs[0]});
                 }
             });
     });
 
-
-    /* search story  */
+    /* search story based on storyname */
     router.post('/:id/story/search', function (req, res) {
         console.log("id" + req.params.id);
         console.log("sprintNo" + req.body.storyName);
@@ -409,87 +396,53 @@ module.exports = function (router) {
                 }
                 else {
                     console.log("story by sprintNo" + docs[0]);
-                    res.render('project/storybydate', {projects: docs[0]});
+                    res.render('story/storybydate', {projects: docs[0]});
                 }
             });
     });
 
-    /*
-     Team under project
-     */
-    router.get('/:id/team', function (req, res) {
-        Project.find({_id: req.params.id},
-            function (err, docs) {
-                if (err) {
-                    res.json(err);
-                }
-                else
-
-                    res.render('team/team', {projects: docs[0]});
-            });
-    });
-
-//Getting project Registration page
-    router.get('/projectregistration', function (req, res) {
-
-        res.render('project/projectregistration');
-    });
-    //Getting story add page
-    router.get('/:id/addStory', function (req, res) {
-        console.log("add story" + req.params.id);
-        Project.find({_id: req.params.id}, {
-                "members": 1
-            },
-            function (err, docs) {
-                if (err) {
-                    res.json(err);
-                }
-                else {
-                    console.log("Add story sprintdetails" + docs[0]);
-                    res.render('story/addStory', {projects: docs[0]});
-                }
-
-            });
-    });
-
-    /**
-     *Inserting stories into project
-     */
+    /**     *Inserting stories into project     */
     router.post('/:id/addStory', function (req, res) {
-        console.log("add id" + JSON.stringify(req.params.id));
-        Project.update({_id: req.params.id},
-            {
-                $push: {
-                    "story": {
-                        "name": req.body.name,
-                        "creator": req.body.creator,
-                        "date": req.body.date,
-                        "desc": req.body.desc,
-                        "sprintNo": req.body.sprintNo,
-                        "developer": req.body.developer,
-                        "status": req.body.status
-                    }
-                }
-            },
-            function (err, docs) {
-                if (err) res.json(err);
-                else {
-                    Project.find({_id: req.params.id},
-                        function (err, docs) {
-                            if (err) {
-                                res.json(err);
+        Project.find({_id: req.params.id, 'story.name': req.body.name}, function (err, docs) {
+            if (docs.length) {
+                res.redirect('/project');
+            }
+            else {
+                console.log("add id" + JSON.stringify(req.params.id));
+                Project.update({_id: req.params.id},
+                    {
+                        $push: {
+                            "story": {
+                                "name": req.body.name,
+                                "creator": req.body.creator,
+                                "date": req.body.date,
+                                "desc": req.body.desc,
+                                "sprintNo": req.body.sprintNo,
+                                "developer": req.body.developer,
+                                "status": req.body.status
                             }
-                            else {
-                                console.log("all stories" + docs[0]);
-                                res.render('story/storydetails', {projects: docs[0]});
-                            }
-                        });
-                }
-            });
+                        }
+                    },
+                    function (err, docs) {
+                        if (err) res.json(err);
+                        else {
+                            Project.find({_id: req.params.id},
+                                function (err, docs) {
+                                    if (err) {
+                                        res.json(err);
+                                    }
+                                    else {
+                                        console.log("all stories" + docs[0]);
+                                        res.render('story/storydetails', {projects: docs[0]});
+                                    }
+                                });
+                        }
+                    });
+            }
+        });
     });
-    /*
-     Stories under project
-     */
+
+    /*    Listing all stories under project based on projectid    */
     router.get('/:id/stories', function (req, res) {
         Project.find({_id: req.params.id},
             function (err, docs) {
@@ -502,10 +455,8 @@ module.exports = function (router) {
                 }
             });
     });
-    /*
-     getting a story edit page
-     */
 
+    /*     getting a story edit page     */
     router.get('/:id/edit/:name', function (req, res) {
         Project.find({_id: req.params.id, 'story.name': req.params.name}, {
                 "story.$": 1,
@@ -520,9 +471,8 @@ module.exports = function (router) {
                     res.render('story/editstory', {projects: docs[0]});
             });
     });
-    /*
-     Story updating
-     */
+
+    /*     Story updating     */
     router.post('/story/update/:id/:name', function (req, res) {
         console.log("body" + JSON.stringify(req.body));
         Project.update({_id: req.params.id, 'story.name': req.params.name},
@@ -535,22 +485,19 @@ module.exports = function (router) {
                     "story.$.developer": req.body.developer,
                     "story.$.status": req.body.status,
                     "story.$.sprintNo": req.body.sprintNo,
-
                 }
             },
             function (err, docs) {
                 if (err)
                     res.json(err);
-
                 else {
                     console.log(docs);
                     res.redirect('/project');
                 }
             });
     });
-    /**
-     *Deleting stories from project
-     */
+
+    /**     *Deleting stories from project     */
     router.get('/:id/delete/:name', function (req, res) {
         console.log("name" + req.params.name);
         Project.update({_id: req.params.id},
@@ -572,15 +519,14 @@ module.exports = function (router) {
                                 res.json(err);
                             }
                             else
-
                                 res.render('story/storydetails', {projects: docs[0]});
                         });
                 }
             });
     });
-    /* Getting page to add story into sprint*/
-    router.get('/:id/:sprintNo/addStory', function (req, res) {
 
+    /* Listing all stories under the sprint*/
+    router.get('/:id/:sprintNo/addStory', function (req, res) {
         Project.find({_id: req.params.id, "sprintDetails.sprintNo": req.params.sprintNo}, {
                 "members": 1,
                 "sprintDetails.$": 1
@@ -593,10 +539,10 @@ module.exports = function (router) {
                     console.log("Add story sprintdetails" + docs[0]);
                     res.render('story/story', {projects: docs[0]});
                 }
-
             });
     });
-    /* Adding Sprint to story */
+
+    /* Listing story with its Sprintdetails */
     router.get('/:id/addToSprint/:name', function (req, res) {
         Project.find({_id: req.params.id, 'story.name': req.params.name}, {"story.$": 1, "sprintDetails": 1},
             function (err, docs) {
@@ -608,14 +554,13 @@ module.exports = function (router) {
                     res.render('story/story', {projects: docs[0]});
                 }
             })
-
     });
-    /* posting Sprint to story */
+
+    /* Allocating a story for the Sprint*/
     router.post('/:id/add/:name', function (req, res) {
         console.log(req.body.sprintNo);
         console.log(req.params.id);
         console.log(req.params.name);
-
         Project.update({_id: req.params.id, "story.name": req.params.name},
             {
                 $set: {
@@ -630,13 +575,11 @@ module.exports = function (router) {
                     res.redirect('/project');
                 }
             })
-
     });
-    /* sort story by name */
 
+    /* sort story by name in asc order*/
     router.post('/:name/story/sort', function (req, res) {
-
-        Project.aggregate({$match: {"projectName":req.params.name}},
+        Project.aggregate({$match: {"projectName": req.params.name}},
             {$unwind: "$story"}, {$sort: {"story.name": -1}}, {
                 $group: {_id: "$_id", story: {$addToSet: "$story"}}
             },
@@ -646,57 +589,155 @@ module.exports = function (router) {
                 }
                 else {
                     console.log("story by sprintNo" + docs[0]);
-                    res.render('project/storybydate', {projects: docs[0]});
+                    res.render('story/storybydate', {projects: docs[0]});
                 }
             });
 
     });
-    router.get('/:id/:name/showStatus', function (req, res) {
-                    Project.aggregate({$match: {"projectName": req.params.name}},
-                        {$unwind: "$story"}, {$group: {_id: "$_id", "count": {$sum: 1}, story: {$addToSet: "$story"}}},
-                         function (err, docs) {
-                          if (err)  res.json(err);
-                           else {
-                              console.log("story count" + docs[0].count);
-                              // if(docs[0].count!= 0){
-                              var storiesCount = docs[0].count;
-                              var percentageCompletion = 0;
-                              var acceptedStories=0;
-                              var percentageProgress=0;
-                  Project.aggregate([{$unwind: "$story"}, {$match: {$and: [{"projectName": req.params.name}, {"story.status": "Accepted"}]}},
-                  {
-                  $group: {_id: "$_id","count": {$sum: 1}}}],
-                  function(err,proj) {
-                                  if (err)  res.json(err);
-                                  else {
-                                     console.log("accepted story count" + proj[0].count);
-                                  var acceptedStories=proj[0].count;
-                                      percentageCompletion = Math.round((acceptedStories/storiesCount)*100);
-                                      percentageProgress=100-percentageCompletion;
-                                      console.log("percentageCompletion"+percentageCompletion);
-                                      console.log("percentageCompletion"+percentageProgress);
 
-                                      Project.update({_id: req.params.id},{$set:
-                                          {"completedStatus":percentageCompletion,
-                                          "progressStatus":percentageProgress}},
-                                          function (err) {
-                                              if (err) res.json(err);
-                                              else {
-                                                  Project.find({_id: req.params.id},
-                                                      function(err,doc){
-                                                          if(err) res.json(err);
-                                                          else {
-                                                              console.log("ans"+doc[0]);
-                                                              res.render('project/progressBar', {projects:doc[0]});
-                                                          }
-                                                      });
-                                              }//else
-                                          }); //update query */
+    /*router.get('/:id/:name/showStatus', function (req, res) {
+        function logSuccess(story) {
+            return new Promise.spread(function (fulfill, reject) {
+                var storiesCount = story;
+                var acceptedStories = 0;
+                var percentageCompletion = 0;
+                var percentageProgress = 0;
+                Project.aggregate([{$unwind: "$story"}, {$match: {$and: [{"projectName": req.params.name}, {"story.status": "Accepted"}]}},
+                        {
+                            $group: {_id: "$_id", "count": {$sum: 1}}
+                        }],
+                    function (err, proj) {
+                        if (err) {
 
-                                  }//inner else loop
-                              });//accepted stories query
-                          }//outer else loop
-                           });
-                         });
+                            res.json(err);
+                        }
+                        else {
+                            if (proj.length) {
+                                console.log("accepted story count" + proj[0].count);
+                                acceptedStories = proj[0].count;
+                            } else {
+                                acceptedStories = 0;
+                            }
+                            percentageCompletion = Math.round((acceptedStories / storiesCount) * 100);
+                            percentageProgress = 100 - percentageCompletion;
+                            console.log("percentageCompletion" + percentageCompletion);
+                            console.log("percentageprogress" + percentageProgress);
+                            fulfill(percentageCompletion, percentageProgress);
+                            console.log("update");
+                            console.log("percentageCompletion" + percentageCompletion);
+                            console.log("percentageProgress" + percentageProgress);
+
+                            Project.update({_id: req.params.id}, {
+                                    $set: {
+                                        "completedStatus": percentageCompletion,
+                                        "progressStatus": percentageProgress
+                                    }
+                                },
+                                function (err) {
+                                    if (err) res.json(err);
+                                    else {
+                                        Project.find({_id: req.params.id},
+                                            function (err, doc) {
+                                                if (err) res.json(err);
+                                                else {
+                                                    console.log("ans" + doc[0]);
+                                                    res.render('project/progressBar', {projects: doc[0]});
+                                                }
+                                            });
+                                    }
+                                });
+                        }
+                    });
+            });
+        };
+
+        function logFailure(story) {
+            console.log("Story error" + story);
+        }
+
+        var n = 0;
+
+        var promise = new Promise(function (fulfill, reject) {
+            Project.aggregate({$match: {"projectName": req.params.name}},
+                {$unwind: "$story"}, {
+                    $group: {
+                        _id: "$_id",
+                        "count": {$sum: 1},
+                        story: {$addToSet: "$story"}
+                    }
+                },
+                function (err, docs) {
+                    if (err) res.json(err);
+                    else {
+                        n = docs[0].count;
+                        console.log("n" + n);
+                        if (n !== 0) {
+                            fulfill(n);
+                        } else {
+                            reject(n);
+                        }
+                    }
+                });
+
+        });
+        promise.then(logSuccess, null)
+            .catch(logFailure);
+
+    });  */
+     router.get('/:id/:name/showStatus', function (req, res) {
+     Project.aggregate({$match: {"projectName": req.params.name}},
+     {$unwind: "$story"}, {$group: {_id: "$_id", "count": {$sum: 1}, story: {$addToSet: "$story"}}},
+     function (err, docs) {
+     if (err)  res.json(err);
+     else {
+     console.log("story count" + docs[0].count);
+     // if(docs[0].count!= 0){
+     var storiesCount = docs[0].count;
+     var percentageCompletion = 0;
+     var acceptedStories=0;
+     var percentageProgress=0;
+     Project.aggregate([{$unwind: "$story"}, {$match: {$and: [{"projectName": req.params.name}, {"story.status": "Accepted"}]}},
+     {
+     $group: {_id: "$_id","count": {$sum: 1}}}],
+     function(err,proj) {
+     if (err) {
+
+     res.json(err);
+     }
+     else {
+     if(proj.length) {
+     console.log("accepted story count" + proj[0].count);
+     acceptedStories = proj[0].count;
+     }else {
+     acceptedStories =0;
+     }
+     percentageCompletion = Math.round((acceptedStories/storiesCount)*100);
+     percentageProgress=100-percentageCompletion;
+     console.log("percentageCompletion"+percentageCompletion);
+     console.log("percentageCompletion"+percentageProgress);
+
+     Project.update({_id: req.params.id},{$set:
+     {"completedStatus":percentageCompletion,
+     "progressStatus":percentageProgress}},
+     function (err) {
+     if (err) res.json(err);
+     else {
+     Project.find({_id: req.params.id},
+     function(err,doc){
+     if(err) res.json(err);
+     else {
+     console.log("ans"+doc[0]);
+     res.render('project/progressBar', {projects:doc[0]});
+     }
+     });
+     }
+     });
+
+     }
+     });
+     }
+     });
+     });
+
 
 };
