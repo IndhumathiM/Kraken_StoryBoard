@@ -594,150 +594,63 @@ module.exports = function (router) {
             });
 
     });
-
-    /*router.get('/:id/:name/showStatus', function (req, res) {
-        function logSuccess(story) {
-            return new Promise.spread(function (fulfill, reject) {
-                var storiesCount = story;
-                var acceptedStories = 0;
-                var percentageCompletion = 0;
-                var percentageProgress = 0;
-                Project.aggregate([{$unwind: "$story"}, {$match: {$and: [{"projectName": req.params.name}, {"story.status": "Accepted"}]}},
-                        {
-                            $group: {_id: "$_id", "count": {$sum: 1}}
-                        }],
-                    function (err, proj) {
-                        if (err) {
-
-                            res.json(err);
-                        }
-                        else {
-                            if (proj.length) {
-                                console.log("accepted story count" + proj[0].count);
-                                acceptedStories = proj[0].count;
-                            } else {
-                                acceptedStories = 0;
+/* Getting the status of the project */
+    router.get('/:id/:name/showStatus', function (req, res) {
+        Project.aggregate({$match: {"projectName": req.params.name}},
+            {$unwind: "$story"}, {$group: {_id: "$_id", "count": {$sum: 1}, story: {$addToSet: "$story"}}},
+            function (err, docs) {
+                if (err)  res.json(err);
+                else {
+                    console.log("story count" + docs[0].count);
+                    // if(docs[0].count!= 0){
+                    var storiesCount = docs[0].count;
+                    var percentageCompletion = 0;
+                    var acceptedStories = 0;
+                    var percentageProgress = 0;
+                    Project.aggregate([{$unwind: "$story"}, {$match: {$and: [{"projectName": req.params.name}, {"story.status": "Accepted"}]}},
+                            {
+                                $group: {_id: "$_id", "count": {$sum: 1}}
+                            }],
+                        function (err, proj) {
+                            if (err) {
+                                res.json(err);
                             }
-                            percentageCompletion = Math.round((acceptedStories / storiesCount) * 100);
-                            percentageProgress = 100 - percentageCompletion;
-                            console.log("percentageCompletion" + percentageCompletion);
-                            console.log("percentageprogress" + percentageProgress);
-                            fulfill(percentageCompletion, percentageProgress);
-                            console.log("update");
-                            console.log("percentageCompletion" + percentageCompletion);
-                            console.log("percentageProgress" + percentageProgress);
+                            else {
+                                if (proj.length) {
+                                    console.log("accepted story count" + proj[0].count);
+                                    acceptedStories = proj[0].count;
+                                } else {
+                                    acceptedStories = 0;
+                                }
+                                percentageCompletion = Math.round((acceptedStories / storiesCount) * 100);
+                                percentageProgress = 100 - percentageCompletion;
+                                console.log("percentageCompletion" + percentageCompletion);
+                                console.log("percentageCompletion" + percentageProgress);
+                                Project.update({_id: req.params.id}, {
+                                        $set: {
+                                            "completedStatus": percentageCompletion,
+                                            "progressStatus": percentageProgress
+                                        }
+                                    },
+                                    function (err) {
+                                        if (err) res.json(err);
+                                        else {
+                                            Project.find({_id: req.params.id},
+                                                function (err, doc) {
+                                                    if (err) res.json(err);
+                                                    else {
+                                                        console.log("ans" + doc[0]);
+                                                        res.render('project/progressBar', {projects: doc[0]});
+                                                    }
+                                                });
+                                        }
+                                    });
 
-                            Project.update({_id: req.params.id}, {
-                                    $set: {
-                                        "completedStatus": percentageCompletion,
-                                        "progressStatus": percentageProgress
-                                    }
-                                },
-                                function (err) {
-                                    if (err) res.json(err);
-                                    else {
-                                        Project.find({_id: req.params.id},
-                                            function (err, doc) {
-                                                if (err) res.json(err);
-                                                else {
-                                                    console.log("ans" + doc[0]);
-                                                    res.render('project/progressBar', {projects: doc[0]});
-                                                }
-                                            });
-                                    }
-                                });
-                        }
-                    });
+                            }
+                        });
+                }
             });
-        };
-
-        function logFailure(story) {
-            console.log("Story error" + story);
-        }
-
-        var n = 0;
-
-        var promise = new Promise(function (fulfill, reject) {
-            Project.aggregate({$match: {"projectName": req.params.name}},
-                {$unwind: "$story"}, {
-                    $group: {
-                        _id: "$_id",
-                        "count": {$sum: 1},
-                        story: {$addToSet: "$story"}
-                    }
-                },
-                function (err, docs) {
-                    if (err) res.json(err);
-                    else {
-                        n = docs[0].count;
-                        console.log("n" + n);
-                        if (n !== 0) {
-                            fulfill(n);
-                        } else {
-                            reject(n);
-                        }
-                    }
-                });
-
-        });
-        promise.then(logSuccess, null)
-            .catch(logFailure);
-
-    });  */
-     router.get('/:id/:name/showStatus', function (req, res) {
-     Project.aggregate({$match: {"projectName": req.params.name}},
-     {$unwind: "$story"}, {$group: {_id: "$_id", "count": {$sum: 1}, story: {$addToSet: "$story"}}},
-     function (err, docs) {
-     if (err)  res.json(err);
-     else {
-     console.log("story count" + docs[0].count);
-     // if(docs[0].count!= 0){
-     var storiesCount = docs[0].count;
-     var percentageCompletion = 0;
-     var acceptedStories=0;
-     var percentageProgress=0;
-     Project.aggregate([{$unwind: "$story"}, {$match: {$and: [{"projectName": req.params.name}, {"story.status": "Accepted"}]}},
-     {
-     $group: {_id: "$_id","count": {$sum: 1}}}],
-     function(err,proj) {
-     if (err) {
-
-     res.json(err);
-     }
-     else {
-     if(proj.length) {
-     console.log("accepted story count" + proj[0].count);
-     acceptedStories = proj[0].count;
-     }else {
-     acceptedStories =0;
-     }
-     percentageCompletion = Math.round((acceptedStories/storiesCount)*100);
-     percentageProgress=100-percentageCompletion;
-     console.log("percentageCompletion"+percentageCompletion);
-     console.log("percentageCompletion"+percentageProgress);
-
-     Project.update({_id: req.params.id},{$set:
-     {"completedStatus":percentageCompletion,
-     "progressStatus":percentageProgress}},
-     function (err) {
-     if (err) res.json(err);
-     else {
-     Project.find({_id: req.params.id},
-     function(err,doc){
-     if(err) res.json(err);
-     else {
-     console.log("ans"+doc[0]);
-     res.render('project/progressBar', {projects:doc[0]});
-     }
-     });
-     }
-     });
-
-     }
-     });
-     }
-     });
-     });
+    });
 
 
 };
