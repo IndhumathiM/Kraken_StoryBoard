@@ -31,7 +31,7 @@
                </legend>
             {#projects.story}
                 <li>
-                    <p> name: {name}/p>
+                    <p> name: {name}</p>
                     <p>creator: {creator}</p>
                     <p>creation date: {date}</p>
                     <p> desc: {desc}</p>
